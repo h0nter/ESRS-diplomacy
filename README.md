@@ -57,6 +57,7 @@ Responsible for the game backend logic (such as the map data, player moves histo
 ## Requirements
 
 ### Functional
+> C/E -> Core/Extended Requirements
 
 | # | C/E | Requirement | Requirement description | Notes |
 |---|---|---|---|---|
@@ -102,6 +103,8 @@ Responsible for the game backend logic (such as the map data, player moves histo
 
 
 ### Non-functional
+> C/E -> Core/Extended Requirements
+
 | # | C/E | Requirement | Requirement description | Notes |
 |---|---|---|---|---|
 | 1 | C | Mobile-first design | The application should be designed mobile-first, allowing the users to use it through a mobile device, and provide unified experience between mobile and desktop devices. | The game should be playable with both a touch screen and mouse & keyboard. |
