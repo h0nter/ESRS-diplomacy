@@ -1,4 +1,4 @@
-from units import Army, Navy
+from units_type import Army, Navy
 
 class CarFactory():
     
