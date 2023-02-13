@@ -1,32 +1,46 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import DarkModeSwitch from "@/components/DarkModeSwitch.vue";
+import Wrapper from "@/components/Wrapper.vue";
+import Container from "@/components/Container.vue";
 </script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
+  <Wrapper>
+    <DarkModeSwitch />
+    <Container>
+    <header>
+      <img
+        alt="Vue logo"
+        class="logo"
+        src="@/assets/logo.svg"
+        width="125"
+        height="125"
+      />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <div class="wrapper">
+        <HelloWorld msg="You did it!" />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-  <RouterView />
+    <RouterView />
+
+    </Container>
+  </Wrapper>
 </template>
 
-<style scoped>
+<style>
+
+body{
+  @apply bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
