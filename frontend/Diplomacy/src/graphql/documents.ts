@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client/core";
 
+// Example GraphQL query
 const REPO_FRAGMENT = gql`
   fragment repo on Repository {
     id
