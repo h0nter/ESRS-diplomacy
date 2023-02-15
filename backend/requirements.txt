@@ -1,6 +1,6 @@
 aniso8601==9.0.1
 asgiref==3.6.0
-certifi @ file:///C:/b/abs_85o_6fm0se/croot/certifi_1671487778835/work/certifi
+#certifi @ file:///C:/b/abs_85o_6fm0se/croot/certifi_1671487778835/work/certifi
 Django==4.1.6
 graphene==3.2.1
 graphene-django==3.0.0
