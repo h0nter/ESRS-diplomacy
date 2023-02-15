@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # apps
-    'room',
+    'room.apps.RoomConfig',
     # 3rd Party apps
     'graphene_django',
 ]
