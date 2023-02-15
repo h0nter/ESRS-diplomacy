@@ -4,6 +4,9 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {},
+    container: {
+      center: true,
+    },
   },
   plugins: [],
 }
