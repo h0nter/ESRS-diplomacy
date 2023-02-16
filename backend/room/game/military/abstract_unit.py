@@ -5,6 +5,7 @@ class Abstract_unit(ABC):
         self.ID
         self.belong
         self.position
+        self.can_float
         self.availble_movent
         
     @abstractmethod

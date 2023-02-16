@@ -1,20 +1,15 @@
-from units_type import Army, Navy
+from units import Tank, Warship
 
-class CarFactory():
-    
-    units_function_dict = {
-        'army': Army,
-        'navy': Navy
-    }
-
+class UnitFactory:
 
     @staticmethod
-    def build_car(plan):
+    def build_unit(plan):
         try:
-            if plan == "Sedan":
-                pass
-            raise AssertionError("Unit type is not valid.")
-
+            if plan == "army":
+                return Tank()
+            elif plan == "navy":
+                return Warship()
+            raise AssertionError("Unit is not valid.")
 
         except AssertionError as e:
             print(e)
