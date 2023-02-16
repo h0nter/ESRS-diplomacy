@@ -1,5 +1,4 @@
 <template>
-  <Header title="Game View"/>
   <ButtonRouterLink to="/" text="Home" />
   <Map />
 </template>
