@@ -1,4 +1,4 @@
-from units import Tank, Warship
+from units import Army, Fleet
 
 class UnitFactory:
 
@@ -6,9 +6,9 @@ class UnitFactory:
     def build_unit(plan):
         try:
             if plan == "army":
-                return Tank()
-            elif plan == "navy":
-                return Warship()
+                return Army()
+            elif plan == "fleet":
+                return Fleet()
             raise AssertionError("Unit is not valid.")
 
         except AssertionError as e:

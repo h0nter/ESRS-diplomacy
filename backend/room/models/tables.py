@@ -16,3 +16,5 @@ class Units(models.Model):
         verbose_name_plural = 'Units'
     
 
+class Next_to(models.Model):
+    next_to = models.ForeignKey(Location)
