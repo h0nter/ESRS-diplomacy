@@ -1,6 +1,8 @@
 <template>
   <g :title="name">
-    <polygon :class="type" :points="polygon"/>
+    <polygon v-if="polygon1" :class="type1" :points="polygon1"/>
+    <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
+    <path v-if="path" :class="type1" :d="path"/>
     <text :x="textX" :y="textY">{{ text }}</text>
   </g>
 </template>
@@ -8,8 +10,11 @@
 <script setup>
 const props = defineProps({
   name: String,
-  polygon: String,
-  type: String,
+  polygon1: String,
+  type1: String,
+  polygon2: String,
+  type2: String,
+  path: String,
   text: String,
   textX: Number,
   textY: Number,
@@ -38,4 +43,12 @@ const props = defineProps({
     .Italy  	{fill:#00FF00; stroke:black}
     .Russia 	{fill:#008000; stroke:black}
     .Turkey 	{fill:#FFFF00; stroke:black}
+
+    text {
+      -webkit-user-select: none; /* Safari */        
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+/Edge */
+      user-select: none; /* Standard */
+      pointer-events: none;
+    }
 </style>
