@@ -4,10 +4,13 @@
     <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
     <path v-if="path" :class="type1" :d="path"/>
     <text :x="textX" :y="textY">{{ text }}</text>
+    <Unit v-if="unit" :type="unit" :transform="'translate('+ (textX + 8) + ', ' + (textY - 14) + ')'"/>
   </g>
 </template>
 
 <script setup>
+import Unit from "@/components/Unit.vue";
+
 const props = defineProps({
   name: String,
   polygon1: String,
@@ -18,6 +21,7 @@ const props = defineProps({
   text: String,
   textX: Number,
   textY: Number,
+  unit: String,
 })
 </script>
 
