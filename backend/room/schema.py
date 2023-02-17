@@ -1,18 +1,18 @@
 import graphene
 from graphene_django import DjangoObjectType
 from .models.graph_demo import Category, Book, Grocery
-from .models.tables import Units, Location
+from .models.tables import Unit, Location
 
 
 class UnitsType(DjangoObjectType):
     class Meta: 
-        model = Units
-        fields = ('id', 'belong', 'position', 'can_float')
+        model = Unit
+        fields = ('id', 'owner', 'location', 'can_float')
 
 class LocationType(DjangoObjectType):
     class Meta: 
         model = Location
-        fields = ('id', 'name', 'is_sea')
+        fields = ('id', 'name', 'is_sea', 'is_coast', 'unit_spawn','map')
 
 class CategoryType(DjangoObjectType):
     class Meta: 
@@ -62,7 +62,7 @@ class Query(graphene.ObjectType):
 
     def resolve_units(root, info, **kwargs):
             # Querying a list
-            return Units.objects.all()
+            return Unit.objects.all()
 
     def resolve_books(root, info, **kwargs):
         # Querying a list
