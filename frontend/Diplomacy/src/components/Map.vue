@@ -2,17 +2,20 @@
   <div>
     <svg viewBox="-0.5 -0.5 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <Territory v-for="territory in territories" :name="territory.name" :polygon1="territory.polygon1" :type1="territory.type1" :polygon2="territory.polygon2" :type2="territory.type2" :path="territory.path" :text="territory.text" :textX="territory.textPos[0]" :textY="territory.textPos[1]" @territoryHovered="onTerritoryHovered" />
-      <use id="onTop" href="" />
+      <use id="onTop" :href="currentlyHoveredTerritory" />
     </svg>
   </div>
 </template>
 
 <script setup>
 
+  import { ref } from 'vue'
   import Territory from "@/components/Territory.vue";
 
+  const currentlyHoveredTerritory = ref("#");
+
   function onTerritoryHovered(name) {
-    document.querySelector("#onTop").setAttribute("href", "#" + name);
+    currentlyHoveredTerritory.value = "#" + name;
   }
 
   const territories = [
