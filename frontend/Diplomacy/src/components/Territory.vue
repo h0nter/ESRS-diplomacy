@@ -1,5 +1,5 @@
 <template>
-  <g :title="name">
+  <g :title="name" :id="name" @mouseenter="$emit('territoryHovered', name)">
     <polygon v-if="polygon1" :class="type1" :points="polygon1"/>
     <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
     <path v-if="path" :class="type1" :d="path"/>
@@ -8,33 +8,28 @@
 </template>
 
 <script setup>
-const props = defineProps({
-  name: String,
-  polygon1: String,
-  type1: String,
-  polygon2: String,
-  type2: String,
-  path: String,
-  text: String,
-  textX: Number,
-  textY: Number,
-})
+
+  const props = defineProps({
+    name: String,
+    polygon1: String,
+    type1: String,
+    polygon2: String,
+    type2: String,
+    path: String,
+    text: String,
+    textX: Number,
+    textY: Number,
+  });
+
 </script>
 
 <style scoped>
-    g:hover{
-      @apply active
-    }
 
   	.l, .Unowned	{fill:#FFFFDD; stroke:black; stroke-linejoin:round}
     .w		{fill:#99CCFF; stroke:black; stroke-linejoin:round}
     .s		{fill:#DDDDDD; stroke:black; stroke-linejoin:round}
 
     text {font-family:Arial,Helvetica,sans-serif; font-size:8px}
-
-    .active {
-        stroke-width: 3px;
-    }
 
     .Austria	{fill:#FF0000; stroke:black}
     .England	{fill:#0000FF; stroke:black}
@@ -51,4 +46,5 @@ const props = defineProps({
       user-select: none; /* Standard */
       pointer-events: none;
     }
+
 </style>
