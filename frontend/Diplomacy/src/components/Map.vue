@@ -1,13 +1,17 @@
 <template>
   <div>
     <svg viewBox="0 0 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <UnitsSetup />
       <Territory v-for="territory in territories" :name="territory.name" :polygon1="territory.polygon1" :type1="territory.type1" :polygon2="territory.polygon2" :type2="territory.type2" :path="territory.path" :text="territory.text" :textX="territory.textPos[0]" :textY="territory.textPos[1]" :unit="territory.unit"/>
+      <Unit v-for="territory in territories" :type="territory.unit" :territory="territory.name" :positionX="territory.textPos[0]" :positionY="territory.textPos[1]"/>
     </svg>
   </div>
 </template>
 
 <script setup>
   import Territory from "@/components/Territory.vue";
+  import Unit from "@/components/Unit.vue";
+  import UnitsSetup from "@/components/UnitsSetup.vue";
 
   const territories = [
   {
@@ -23,7 +27,7 @@
       type1: "w",
       text: "NTH",
       textPos: [190, 230],
-      unit: "sc"
+      unit: "F"
   },
   {
       name: "Switzerland",
@@ -38,6 +42,7 @@
       type1: "w",
       text: "ADR",
       textPos: [308, 460],
+      unit: "sc",
   },
   {
       name: "Aegean Sea",
@@ -45,6 +50,7 @@
       type1: "w",
       text: "AEG",
       textPos: [392, 510],
+      unit: "F"
   },
   {
       name: "Albania",

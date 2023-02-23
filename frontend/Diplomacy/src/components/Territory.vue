@@ -4,7 +4,8 @@
     <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
     <path v-if="path" :class="type1" :d="path"/>
     <text :x="textX" :y="textY">{{ text }}</text>
-    <Unit v-if="unit" :type="unit" :transform="'translate('+ (textX + 8) + ', ' + (textY - 14) + ')'"/>
+<!--    <Unit v-if="unit" :type="unit" :transform="'translate('+ (textX + 8) + ', ' + (textY - 14) + ')'"/>-->
+    <use v-bind="{'xlink:href' : unit}" :id="name" :class="[country ? country : '']" :transform="'translate(' + (textX + 8) + ', ' + (textY - 14) + ')'"/>
   </g>
 </template>
 
@@ -13,6 +14,7 @@ import Unit from "@/components/Unit.vue";
 
 const props = defineProps({
   name: String,
+  country: String,
   polygon1: String,
   type1: String,
   polygon2: String,
@@ -26,6 +28,8 @@ const props = defineProps({
 </script>
 
 <style scoped>
+    @import "@/assets/countries.css";
+
     g:hover{
       @apply active
     }
@@ -39,14 +43,6 @@ const props = defineProps({
     .active {
         stroke-width: 3px;
     }
-
-    .Austria	{fill:#FF0000; stroke:black}
-    .England	{fill:#0000FF; stroke:black}
-    .France 	{fill:#00FFFF; stroke:black}
-    .Germany	{fill:#808080; stroke:black}
-    .Italy  	{fill:#00FF00; stroke:black}
-    .Russia 	{fill:#008000; stroke:black}
-    .Turkey 	{fill:#FFFF00; stroke:black}
 
     text {
       -webkit-user-select: none; /* Safari */        
