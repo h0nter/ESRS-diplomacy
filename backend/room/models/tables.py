@@ -17,4 +17,4 @@ class Units(models.Model):
     
 
 class Next_to(models.Model):
-    next_to = models.ForeignKey(Location)
+    next_to = models.ForeignKey(Location, on_delete=models.CASCADE)
