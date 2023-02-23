@@ -1,27 +1,31 @@
 import graphene
-from ..room.models.tables import Units, Location
-from items.location import LocationType, CreateLocation, UpdateLocation
-from items.units import UnitsType, CreateUnits, UpdateUnits
+from ..room.models.tables import Unit as UnitTable
+from ..room.models.tables import Order as OrderTable
+from items.unit_type import UnitType
+from items.order_type import OrderType, CreateOrders
+
 
 
 class Query(graphene.ObjectType):
-    locations = graphene.List(LocationType)
-    units = graphene.List(UnitsType)
+    units = graphene.List(UnitType)
+    order = graphene.List(OrderType, order_id=graphene.Int())
 
-    def resolve_locations(root, info, **kwargs):
-            # Querying a list
-            return Location.objects.all()
+    def resolve_units(root):
+            # Querying for unit
+            return UnitTable.objects.all()
 
-    def resolve_units(root, info, **kwargs):
-            # Querying a list
-            return Units.objects.all()
+    def resolve_all_orders(root):
+            # Querying for unit
+            return OrderTable.objects.all()
+
+    def resolve_turn_orders(root, turn):
+            # Querying for unit
+            return OrderTable.objects.filter(turn=turn).all()
 
 
 class Mutation(graphene.ObjectType):
     
-    update_location = UpdateLocation.Field()
-    create_location = CreateLocation.Field()
-    update_units = UpdateUnits.Field()
-    create_units = CreateUnits.Field()
+    create_order = CreateOrders.Field()
+
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
