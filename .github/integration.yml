@@ -14,17 +14,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Change to frontend dir
+        run: cd frontend/Diplomacy
       - name: Setup Node.js
         uses: actions/setup-node@v2
-      - name: Install Dependencies
+      - name: Install frontend dependencies
         run: npm ci
-      - name: Run the tests
+      - name: Run the frontend tests
         run: |
-          CI=true npm test
+          CI=true npm test:unit
         env:
           CI: true
-      - name: Build project assets
+      - name: Build frontend assets
         run: npm run build
+      - name: Zip frontend assets
+        run: |
+          zip -r frontend dist/
+      - name: Change to backend dir
+        run:  cd ../../backend
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
