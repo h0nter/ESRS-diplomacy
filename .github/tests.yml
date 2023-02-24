@@ -1,0 +1,21 @@
+name: Run NPM Tests
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    name: Test the project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Install Dependecies
+        run: npm ci
+      - name: Run the tests
+        run: |
+          CI=true npm test
+        env:
+          CI: true
