@@ -1,21 +1,24 @@
-name: Run NPM Tests
+name: Run Frontend (Vue.js) Tests
 on:
   pull_request:
+    branches: 'dev'
     types: [opened, synchronize]
 
 jobs:
   test:
-    name: Test the project
+    name: Test the frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Change to frontend dir
+        run:  cd frontend/Diplomacy
       - name: Setup Node.js
         uses: actions/setup-node@v2
-      - name: Install Dependecies
+      - name: Install Dependencies
         run: npm ci
       - name: Run the tests
         run: |
-          CI=true npm test
+          CI=true npm test:unit
         env:
           CI: true
