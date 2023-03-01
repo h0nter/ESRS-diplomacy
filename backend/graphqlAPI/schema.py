@@ -1,7 +1,7 @@
 import graphene
 from room.models.tables import Turn, Unit, Order, Outcome,Location
 from .items.table_type import TurnType, UnitType, OrderType, OutcomeType, LocationType
-from .items.order_mutation import UpdateOrders
+from .items.order_mutation import UpdateOrder
 
 
 class Query(graphene.ObjectType):
@@ -37,7 +37,7 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     
-    update_order = UpdateOrders.Field()
+    update_order = UpdateOrder.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
