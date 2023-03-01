@@ -1,6 +1,6 @@
-from graphene_django import DjangoObjectType
-from ...room.models.tables import Order
 import graphene
+from graphene_django import DjangoObjectType
+from room.models.tables import Order
 
 
 class OrderType(DjangoObjectType):
@@ -8,33 +8,30 @@ class OrderType(DjangoObjectType):
         model = Order
         fields = "__all__"
 
+# prepare a input arguments
+class OrderInput(graphene.InputObjectType):
+    # basic information, disable to be null
+    instruction = graphene.String(required=True)
+    year = graphene.Int(required=True)
+    can_float = graphene.Boolean(required=True)
+    target_unit = graphene.String(required=True)
+    current_location = graphene.String(required=True)
+    # convoy operation only
+    reference_unit_pk = graphene.Int()
+    reference_unit_current_location_pk = graphene.Int()
+    reference_unit_new_location_pk = graphene.Int()
 
-# ------------prepare for the mutation------------
-# class UpdateOrders(graphene.Mutation):
-#     class Arguments:
-#         # Mutation to update a unit 
-#         
-#     order = graphene.Field(OrderType)
-
-#     @classmethod
-#     def mutate(cls, order, turn, target_unit, current_location, reference_unit, reference_unit_current_location, reference_unit_new_location):
-
-#         return OrderType(order=order)
-
-class CreateOrders(graphene.Mutation):
+class UpdateOrders(graphene.Mutation):
+    # reference from class OrderInput
     class Arguments:
-        # Mutation to create a unit
-        order = graphene.String(required=True)
+        input = OrderInput(required=True)
+    
+    ok = graphene.Boolean()
 
-    # Class attributes define the response of the mutation
-    unit = graphene.Field(OrderType)
-
+    # Mutation to update a unit 
     @classmethod
-    def mutate(cls, belong, position, can_float):
+    def mutate(cls, root, info, input):
         order = Order()
-        order.belong = belong
-        order.position = position
-        order.can_float = can_float
-        order.save()
+        order.instruction = input.instruction
         
-        return CreateOrders(order = order)
+        return OrderType(ok=True)

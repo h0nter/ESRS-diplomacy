@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # apps
     'room.apps.RoomConfig',
-    'grapgqlAPI.apps.GraphqlapiConfig'
+    'graphqlAPI.apps.GraphqlapiConfig',
     # 3rd Party apps
     'graphene_django',
 ]

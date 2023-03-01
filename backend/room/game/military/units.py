@@ -1,6 +1,6 @@
-from abstract_unit import Abstract_unit
+from abstract_unit import AbstractUnit
 
-class Army(Abstract_unit):
+class Army(AbstractUnit):
     def __init__(self) -> None:
         super().__init__()
         self.can_float = False
@@ -12,7 +12,7 @@ class Army(Abstract_unit):
         return super().support()
 
 
-class Fleet(Abstract_unit):
+class Fleet(AbstractUnit):
     def __init__(self) -> None:
         super().__init__()
         self.can_float = True
