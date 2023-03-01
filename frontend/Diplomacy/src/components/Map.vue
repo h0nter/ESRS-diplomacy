@@ -1,8 +1,10 @@
 <template>
   <div>
     <svg viewBox="-0.5 -0.5 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <UnitsSetup />
       <Territory v-for="territory in territories" :name="territory.name" :polygon1="territory.polygon1" :type1="territory.type1" :polygon2="territory.polygon2" :type2="territory.type2" :path="territory.path" :text="territory.text" :textX="territory.textPos[0]" :textY="territory.textPos[1]" @territoryHovered="onTerritoryHovered" />
       <use id="onTop" :href="currentlyHoveredTerritory" />
+      <Unit v-for="territory in territories" :type="territory.unit" :territory="territory.name" :positionX="territory.textPos[0]" :positionY="territory.textPos[1]"/>
     </svg>
   </div>
 </template>
@@ -11,6 +13,8 @@
 
   import { ref } from 'vue'
   import Territory from "@/components/Territory.vue";
+  import Unit from "@/components/Unit.vue";
+  import UnitsSetup from "@/components/UnitsSetup.vue";
 
   const currentlyHoveredTerritory = ref("#");
 
@@ -32,6 +36,7 @@
       type1: "w",
       text: "NTH",
       textPos: [190, 230],
+      unit: "F"
   },
   {
       name: "Switzerland",
@@ -46,6 +51,7 @@
       type1: "w",
       text: "ADR",
       textPos: [308, 460],
+      unit: "sc",
   },
   {
       name: "Aegean Sea",
@@ -53,6 +59,7 @@
       type1: "w",
       text: "AEG",
       textPos: [392, 510],
+      unit: "F"
   },
   {
       name: "Albania",
@@ -60,6 +67,7 @@
       type1: "l",
       text: "Alb",
       textPos: [333, 460],
+    unit: "A",
   },
   {
       name: "Ankara",
