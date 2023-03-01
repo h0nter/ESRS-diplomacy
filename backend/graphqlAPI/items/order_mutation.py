@@ -20,20 +20,27 @@ class UpdateOrder(graphene.Mutation):
     # reference from class OrderInput
     class Arguments:
         input = OrderInput(required=True)
+        id = graphene.ID()
     
-    
+    ok = graphene.Boolean() 
     order = graphene.Field(OrderType)
-
+    
     # Mutation to update a unit 
     @classmethod
-    def mutate(cls, root, info, input):
-        order = Order()
+    def mutate(cls, root, info, input, id):
+        order = Order.objects.get(pk=id)
         order.instruction = input.instruction
         order.turn = Turn.objects.get(pk=input.turn)
         order.target_unit = Unit.objects.get(pk=input.target_unit)
         order.current_location = Location.objects.get(pk=input.current_location)
-        
+        # while instruction is Convoy, allow further info to be stored.
+        if order.instruction == 'CVY':
+            order.reference_unit = Unit.objects.get(pk=input.reference_unit_pk)
+            order.reference_unit_current_location = Location.objects.get(pk=input.reference_unit_current_location_pk)
+            order.reference_unit_new_location = Location.objects.get(pk=input.reference_unit_new_location_pk)
+            
+        print('Do some verify')
         order.save()
-        print('succesful save')
+        print('Saved successfully')
 
-        return UpdateOrder(oder=order)
+        return UpdateOrder(ok=True, order=order)

@@ -15,24 +15,20 @@ class Query(graphene.ObjectType):
     # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
     # Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data. The resolver method should match the field name. 
 
+    # allow querying all data in beyond tables
     def resolve_turns(root, info, **kwargs):
-        # Querying for turn
         return Turn.objects.all()
     
     def resolve_units(root, info, **kwargs):
-        # Querying for all units
         return Unit.objects.all()
 
     def resolve_orders(root, info, **kwargs):
-        # Querying for one order
         return Order.objects.all()
     
     def resolve_outcomes(root):
-        # Querying for all outcomes
         return Outcome.objects.all()
     
     def resolve_locations(root):
-        # Querying for all outcomes
         return Location.objects.all()
 
 class Mutation(graphene.ObjectType):
