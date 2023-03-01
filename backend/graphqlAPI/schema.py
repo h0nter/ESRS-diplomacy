@@ -1,32 +1,39 @@
 import graphene
-from room.models.tables import Turn as TurnTable
-from room.models.tables import Order as OrderTable
-from room.models.tables import Outcome as OutcomeTable
-from .items.turn_type import TurnType
-from .items.order_type import OrderType, UpdateOrders
-from .items.outcome_type import OutcomeType
+from room.models.tables import Turn, Unit, Order, Outcome,Location
+from .items.table_type import TurnType, UnitType, OrderType, OutcomeType, LocationType
+from .items.order_mutation import UpdateOrders
 
 
 class Query(graphene.ObjectType):
     turns = graphene.List(TurnType)
-    order = graphene.List(OrderType, order_id=graphene.Int())
+    units = graphene.List(UnitType)
+    orders = graphene.List(OrderType, order_id=graphene.Int())
     outcome = graphene.List(OutcomeType)
-    
-    def resolve_last_turn(root):
-        # Querying for unit
-        return TurnTable.objects.last()
+    locations = graphene.List(LocationType)
 
-    def resolve_all_orders(root):
-        # Querying for unit
-        return OrderTable.objects.all()
+    # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
+    # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
+    # Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data. The resolver method should match the field name. 
 
-    def resolve_one_orders(root, turn):
-        # Querying for unit
-        return OrderTable.objects.filter(turn=turn).all()
+    def resolve_turns(root, info, **kwargs):
+        # Querying for turn
+        return Turn.objects.all()
     
-    def resolve_all_outcomes(root):
-        # Querying for unit
-        return OutcomeTable.objects.all()
+    def resolve_units(root, info, **kwargs):
+        # Querying for all units
+        return Unit.objects.all()
+
+    def resolve_orders(root, info, **kwargs):
+        # Querying for one order
+        return Order.objects.all()
+    
+    def resolve_outcomes(root):
+        # Querying for all outcomes
+        return Outcome.objects.all()
+    
+    def resolve_locations(root):
+        # Querying for all outcomes
+        return Location.objects.all()
 
 class Mutation(graphene.ObjectType):
     
