@@ -1,0 +1,92 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.10, 3.11]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Change to frontend dir
+        run: cd frontend/Diplomacy
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Run the frontend tests
+        run: |
+          CI=true npm test:unit
+        env:
+          CI: true
+      - name: Build frontend assets
+        run: npm run build
+      - name: Zip frontend assets
+        run: |
+          zip -r frontend.zip dist/
+      - name: Change to backend dir
+        run:  cd ../../backend
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        #env:
+         # DEBUG: ${{ secrets.DEBUG }}
+         # SECRET_KEY: ${{ secrets.SECRET_KEY }}
+         # DB_ENGINE: ${{ secrets.DB_ENGINE }}
+         # DB_NAME: ${{ secrets.DB_NAME }}
+         # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
+         # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+        run: |
+          python manage.py test
+      - name: Change to main dir
+        run:  cd ..
+      - name: Zip backend assets
+        run: |
+          zip -r backend.zip backend/
+      
+  release:
+    name: Release project
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Frontend Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./frontend/Diplomacy/frontend.zip
+          asset_name: frontend.zip
+          asset_content_type: application/zip
+      - name: Upload Backend Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./backend.zip
+          asset_name: backend.zip
+          asset_content_type: application/zip

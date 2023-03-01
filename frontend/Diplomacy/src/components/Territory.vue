@@ -1,5 +1,5 @@
 <template>
-  <g :title="name">
+  <g :title="name" :id="name" @mouseenter="$emit('territoryHovered', name)">
     <polygon v-if="polygon1" :class="type1" :points="polygon1"/>
     <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
     <path v-if="path" :class="type1" :d="path"/>
@@ -10,21 +10,22 @@
 </template>
 
 <script setup>
-import Unit from "@/components/Unit.vue";
+  import Unit from "@/components/Unit.vue";
 
-const props = defineProps({
-  name: String,
-  country: String,
-  polygon1: String,
-  type1: String,
-  polygon2: String,
-  type2: String,
-  path: String,
-  text: String,
-  textX: Number,
-  textY: Number,
-  unit: String,
-})
+  const props = defineProps({
+    name: String,
+    country: String,
+    polygon1: String,
+    type1: String,
+    polygon2: String,
+    type2: String,
+    path: String,
+    text: String,
+    textX: Number,
+    textY: Number,
+    unit: String,
+  });
+
 </script>
 
 <style scoped>
@@ -51,4 +52,5 @@ const props = defineProps({
       user-select: none; /* Standard */
       pointer-events: none;
     }
+
 </style>

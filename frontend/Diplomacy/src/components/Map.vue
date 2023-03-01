@@ -1,17 +1,26 @@
 <template>
   <div>
-    <svg viewBox="0 0 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg viewBox="-0.5 -0.5 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <UnitsSetup />
-      <Territory v-for="territory in territories" :name="territory.name" :polygon1="territory.polygon1" :type1="territory.type1" :polygon2="territory.polygon2" :type2="territory.type2" :path="territory.path" :text="territory.text" :textX="territory.textPos[0]" :textY="territory.textPos[1]" :unit="territory.unit"/>
+      <Territory v-for="territory in territories" :name="territory.name" :polygon1="territory.polygon1" :type1="territory.type1" :polygon2="territory.polygon2" :type2="territory.type2" :path="territory.path" :text="territory.text" :textX="territory.textPos[0]" :textY="territory.textPos[1]" @territoryHovered="onTerritoryHovered" />
       <Unit v-for="territory in territories" :type="territory.unit" :territory="territory.name" :positionX="territory.textPos[0]" :positionY="territory.textPos[1]"/>
+      <use id="onTop" :href="currentlyHoveredTerritory" />
     </svg>
   </div>
 </template>
 
 <script setup>
+
+  import { ref } from 'vue'
   import Territory from "@/components/Territory.vue";
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
+
+  const currentlyHoveredTerritory = ref("#");
+
+  function onTerritoryHovered(name) {
+    currentlyHoveredTerritory.value = "#" + name;
+  }
 
   const territories = [
   {
@@ -556,22 +565,29 @@
       text: "Yor",
       textPos: [155, 254],
   },
-
-
   ]
+
 </script>
 
 <style scoped>
+
     div {
+      align-items: center;
       display: flex;
       justify-content: center;
-      align-items: center;
-      width: 70%;
+      width: 90%;
     }
 
     svg {
-        width: 100%;
-        max-width: 100vw;
+        border: 1.25px solid black;
         max-height: 100vh;
+        max-width: 100vw;
+        width: 100%;
+        stroke-width: 0.75px;
     }
+
+    #onTop:hover {
+        stroke-width: 2.5px;
+    }
+
 </style>
