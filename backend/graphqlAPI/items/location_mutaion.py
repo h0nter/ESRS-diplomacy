@@ -1,11 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from ...room.models.tables import Location
-
-class LocationType(DjangoObjectType):
-    class Meta: 
-        model = Location
-        fields = ('id', 'name', 'is_sea')
+from table_type import LocationType
 
 class UpdateLocation(graphene.Mutation):
     class Arguments:
