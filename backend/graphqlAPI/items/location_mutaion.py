@@ -10,15 +10,15 @@ class UpdateLocation(graphene.Mutation):
         name = graphene.String(required=True)
         is_sea = graphene.Boolean()
 
-    locaiotn = graphene.Field(LocationType)
+    location = graphene.Field(LocationType)
 
     @classmethod
     def mutate(cls, root, info, name, id):
-        locaiotn = Location.objects.get(pk=id)
-        locaiotn.name = name
-        locaiotn.save()
+        location = Location.objects.get(pk=id)
+        location.name = name
+        location.save()
         
-        return UpdateLocation(locaiotn=locaiotn)
+        return UpdateLocation(location=location)
 
 class CreateLocation(graphene.Mutation):
     class Arguments:
