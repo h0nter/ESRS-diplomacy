@@ -1,6 +1,5 @@
 from django.contrib import admin
-
-from .models.tables import Unit, Country, Location, Order, Turn, Map, Next_to
+from .tables import Unit, Country, Location, Order, Turn, Map, Next_to
 
 # Register your models here.
 admin.site.register(Country)

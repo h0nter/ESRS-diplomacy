@@ -1,5 +1,5 @@
 import graphene
-from room.models.tables import Turn, Unit, Order, Outcome,Location
+from room.tables import Turn, Unit, Order, Outcome,Location
 from .items.table_type import TurnType, UnitType, OrderType, OutcomeType, LocationType
 from .items.order_mutation import UpdateOrder
 
@@ -13,9 +13,7 @@ class Query(graphene.ObjectType):
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
-    # Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data. The resolver method should match the field name. 
-
-    # allow querying all data in beyond tables
+    # Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data.
     def resolve_turns(root, info, **kwargs):
         return Turn.objects.all()
     

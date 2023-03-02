@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from room.models.tables import Order, Turn, Unit, Location
+from room.tables import Order, Turn, Unit, Location
 from .table_type import OrderType
 
 
