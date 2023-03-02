@@ -282,3 +282,6 @@ yarn-error.log
 
 ### Jetbrains IDEs
 .idea/
+
+## vscode
+.vscode/
