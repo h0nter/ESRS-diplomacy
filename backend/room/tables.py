@@ -32,8 +32,8 @@ class Location(models.Model):
 class Next_to(models.Model):
     # not sure on on delete here
     # only one type of location but many next_tos
-    location = models.OneToOneField(Location,on_delete=models.CASCADE,related_name='location')
-    next_to = models.ManyToManyField(Location,related_name='next_to')
+    location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='location')
+    next_to = models.ForeignKey(Location,related_name='next_to')
     def __str__(self):
         return str(self.pk)
     class Meta:
