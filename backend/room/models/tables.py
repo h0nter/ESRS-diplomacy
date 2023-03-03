@@ -12,7 +12,7 @@ class Map(models.Model):
 class Country(models.Model):
     # will have user ID assoiated with it??
     name = models.CharField(max_length=30)
-    # map = models.ForeignKey(Map,on_delete=models.CASCADE)
+    map = models.ForeignKey(Map,on_delete=models.CASCADE)
     def __str__(self):
         return self.name
     class Meta:
@@ -23,7 +23,7 @@ class Location(models.Model):
     unit_spawn = models.BooleanField()
     is_sea = models.BooleanField()
     is_coast = models.BooleanField()
-    # map = models.ForeignKey(Map,on_delete=models.CASCADE)
+    map = models.ForeignKey(Map,on_delete=models.CASCADE)
     polygon = models.CharField(max_length=200)
     text_pos = models.CharField(max_length=10)
     current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
