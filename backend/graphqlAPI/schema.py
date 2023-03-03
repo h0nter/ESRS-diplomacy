@@ -1,5 +1,5 @@
 import graphene
-from room.tables import Turn, Unit, Order, Outcome,Location
+from room.models.tables import Turn, Unit, Order, Outcome,Location
 from .items.table_type import TurnType, UnitType, OrderType, OutcomeType, LocationType
 from .items.order_mutation import UpdateOrder
 
