@@ -13,6 +13,7 @@ class Country(models.Model):
     # will have user ID assoiated with it??
     name = models.CharField(max_length=30)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
+    colour = models.CharField(max_length=10)
     def __str__(self):
         return self.name
     class Meta:
