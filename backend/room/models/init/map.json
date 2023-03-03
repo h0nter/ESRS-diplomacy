@@ -1,7 +1,9 @@
 // Use JSON with Comments Schema for this file
-{
-    "Europe":{
+// All Maps
+// name, max_countries 
+[
+    {
         "name": "Europe",
         "max_countries": 7
     }
-}
+]
