@@ -19,7 +19,7 @@ class Country(models.Model):
         verbose_name_plural = 'Countries'
 
 class Location(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,primary_key=True)
     unit_spawn = models.BooleanField()
     is_sea = models.BooleanField()
     is_coast = models.BooleanField()
