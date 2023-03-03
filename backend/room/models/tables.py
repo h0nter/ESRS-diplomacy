@@ -25,13 +25,21 @@ class Location(models.Model):
     is_sea = models.BooleanField()
     is_coast = models.BooleanField()
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
-    polygon = models.CharField(max_length=200)
     text_pos = models.CharField(max_length=10)
     current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
     class Meta:
         verbose_name_plural = 'Locations'
     def __str__(self):
         return self.name
+
+# a location can have many polygons
+class Map_Polygon(models.Model):
+    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    polygon = models.CharField(max_length=500)
+    class Meta:
+        verbose_name_plural = 'Map_Polygons'
+    def __str__(self):
+        return self.pk
 
 # the location and what is next to itself
 class Next_to(models.Model):
