@@ -1,1 +1,7 @@
 // Use JSON with Comments Schema for this file
+{
+    "Europe":{
+        "name": "Europe",
+        "max_countries": 7
+    }
+}

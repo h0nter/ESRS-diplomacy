@@ -1,1 +1,38 @@
 // Use JSON with Comments Schema for this file
+{
+    "England":{
+        "name": "England",
+        "map": "Europe",
+        "colour": "#0000FF"
+    },
+    "France":{
+        "name": "France",
+        "map": "Europe",
+        "colour": "#00FFFF"
+    },
+    "Germany":{
+        "name": "Germany",
+        "map": "Europe",
+        "colour": "#808080"
+    },
+    "Italy":{
+        "name": "Italy",
+        "map": "Europe",
+        "colour": "#00FF00"
+    },
+    "Austria":{
+        "name": "Austria",
+        "map": "Europe",
+        "colour": "#FF0000"
+    },
+    "Russia":{
+        "name": "Russia",
+        "map": "Europe",
+        "colour": "#008000"
+    },
+    "Turkey":{
+        "name": "Turkey",
+        "map": "Europe",
+        "colour": "#FFFF00"
+    }
+}
