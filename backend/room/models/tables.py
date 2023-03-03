@@ -23,6 +23,10 @@ class Location(models.Model):
     unit_spawn = models.BooleanField()
     is_sea = models.BooleanField()
     is_coast = models.BooleanField()
+    map = models.ForeignKey(Map,on_delete=models.CASCADE)
+    polygon = models.CharField(max_length=200)
+    text_pos = models.CharField(max_length=10)
+    current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
     class Meta:
         verbose_name_plural = 'Locations'
     def __str__(self):
@@ -33,7 +37,7 @@ class Next_to(models.Model):
     # not sure on on delete here
     # only one type of location but many next_tos
     location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='location')
-    next_to = models.ForeignKey(Location,related_name='next_to')
+    next_to = models.ForeignKey(Location,on_delete=models.DO_NOTHING,related_name='next_to')
     def __str__(self):
         return str(self.pk)
     class Meta:
