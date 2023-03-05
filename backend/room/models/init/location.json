@@ -1,1 +1,538 @@
 // Use JSON with Comments Schema for this file
+[
+    {
+        "name": "Norwegian Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[220, 70]",
+    },
+    {
+        "name": "North Sea",
+        "is_sea": true,
+        
+        "text_pos": "[190, 230]",
+        
+    },
+    // {
+    //     "name": "Switzerland",
+        
+    //     "is_sea": false,
+        
+    //     "text_pos": "[215, 378]",
+    // },
+    {
+        "name": "Adriatic Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[308, 460]",
+        
+    },
+    {
+        "name": "Aegean Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[392, 510]",
+        
+    },
+    {
+        "name": "Albania",
+        
+        "is_sea": false,
+        
+        "text_pos": "[333, 460]",
+      
+    },
+    {
+        "name": "Ankara",
+        
+        "is_sea": false,
+        
+        "text_pos": "[510, 455]",
+    },
+    {
+        "name": "Apulia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[291, 470]",
+    },
+    {
+        "name": "Armenia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[585, 467]",
+    },
+    {
+        "name": "Baltic Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[308, 260]",
+    },
+    {
+        "name": "Barents Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[440, 15]",
+    },
+    {
+        "name": "Belgium",
+        
+        "is_sea": false,
+        
+        "text_pos": "[192, 321]",
+    },
+    {
+        "name": "Berlin",
+        
+        "is_sea": false,
+        
+        "text_pos": "[272, 292]",
+    },
+    {
+        "name": "Black Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[500, 418]",
+    },
+    {
+        "name": "Bohemia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[283, 347]",
+    },
+    {
+        "name": "Brest",
+        
+        "is_sea": false,
+        
+        "text_pos": "[130, 345]",
+    },
+    {
+        "name": "Budapest",
+        
+        "is_sea": false,
+        
+        "text_pos": "[350, 390]",
+    },
+    {
+        "name": "Bulgaria",
+        
+        "is_sea": false,
+        
+        "text_pos": "[395, 443]",
+    },
+    {
+        "name": "Burgundy",
+        
+        "is_sea": false,
+        
+        "text_pos": "[185, 371]",
+    },
+    {
+        "name": "Clyde",
+        
+        "is_sea": false,
+        
+        "text_pos": "[133, 201]",
+    },
+    {
+        "name": "Constantinople",
+        
+        "is_sea": false,
+                
+        "text_pos": "[435, 483]",
+    },
+    {
+        "name": "Denmark",
+        
+        "is_sea": false,
+        
+        
+        "text_pos": "[250, 235]",
+    },
+    {
+        "name": "Eastern Mediterranean",
+        
+        "is_sea": true,
+        
+        "text_pos": "[455, 550]",
+    },
+    {
+        "name": "Edinburgh",
+        
+        "is_sea": false,
+        
+        "text_pos": "[152, 202]",
+    },
+    {
+        "name": "English Channel",
+        
+        "is_sea": true,
+        
+        "text_pos": "[135, 306]",
+    },
+    {
+        "name": "Finland",
+        
+        "is_sea": false,
+        
+        "text_pos": "[375, 160]",
+    },
+    {
+        "name": "Galicia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[355, 343]",
+    },
+    {
+        "name": "Gascony",
+        
+        "is_sea": false,
+        
+        "text_pos": "[130, 400]",
+    },
+    {
+        "name": "Greece",
+        
+        "is_sea": false,
+        
+        "text_pos": "[352, 490]",
+    },
+    {
+        "name": "Gulf of Lyon",
+        
+        "is_sea": true,
+        
+        "text_pos": "[170, 457]",
+    },
+    {
+        "name": "Gulf of Bothnia",
+        
+        "is_sea": true,
+        
+        "text_pos": "[328, 175]",
+    },
+    {
+        "name": "Helgoland Bight",
+        
+        "is_sea": true,
+        
+        "text_pos": "[220, 265]",
+    },
+    {
+        "name": "Holland",
+        
+        "is_sea": false,
+        
+        "text_pos": "[210, 290]",
+    },
+    {
+        "name": "Ionian Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[315, 520]",
+    },
+    {
+        "name": "Irish Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[95, 270]",
+    },
+    {
+        "name": "Kiel",
+        
+        "is_sea": false,
+                
+        "text_pos": "[237, 285]",
+    },
+    {
+        "name": "Liverpool",
+        
+        "is_sea": false,
+        
+        "text_pos": "[138, 230]",
+    },
+    {
+        "name": "Livonia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[380, 260]",
+    },
+    {
+        "name": "London",
+        
+        "is_sea": false,
+        
+        "text_pos": "[160, 280]",
+    },
+    {
+        "name": "Marseilles",
+        
+        "is_sea": false,
+        
+        "text_pos": "[173, 412]",
+    },
+    {
+        "name": "Mid Atlantic Ocean",
+        
+        "is_sea": true,
+        
+        "text_pos": "[50, 355]",
+    },
+    {
+        "name": "Moscow",
+        
+        "is_sea": false,
+        
+        "text_pos": "[460, 265]",
+    },
+    {
+        "name": "Munich",
+        
+        "is_sea": false,
+        
+        "text_pos": "[235, 360]",
+    },
+    {
+        "name": "Naples",
+        
+        "is_sea": false,
+        
+        "text_pos": "[293, 493]",
+    },
+    {
+        "name": "North Atlantic Ocean",
+        
+        "is_sea": true,
+        
+        "text_pos": "[65, 120]",
+    },
+    {
+        "name": "North Africa",
+        
+        "is_sea": false,
+        
+        "text_pos": "[130, 536]",
+    },
+    {
+        "name": "Norway",
+        
+        "is_sea": false,
+        
+        "text_pos": "[250, 175]",
+    },
+    {
+        "name": "Paris",
+        
+        "is_sea": false,
+        
+        "text_pos": "[155, 358]",
+    },
+    {
+        "name": "Picardy",
+        
+        "is_sea": false,
+        
+        "text_pos": "[168, 326]",
+    },
+    {
+        "name": "Piedmont",
+        
+        "is_sea": false,
+        
+        "text_pos": "[215, 408]",
+    },
+    {
+        "name": "Portugal",
+        
+        "is_sea": false,
+        
+        "text_pos": "[22, 440]",
+    },
+    {
+        "name": "Prussia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[335, 283]",
+    },
+    {
+        "name": "Rome",
+        
+        "is_sea": false,
+        
+        "text_pos": "[257, 452]",
+    },
+    {
+        "name": "Ruhr",
+        
+        "is_sea": false,
+        
+        "text_pos": "[215, 330]",
+    },
+    {
+        "name": "Rumania",
+        
+        "is_sea": false,
+        
+        "text_pos": "[410, 415]",
+    },
+    {
+        "name": "Serbia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[350, 450]",
+    },
+    {
+        "name": "Sevastopol",
+        
+        "is_sea": false,
+        
+        "text_pos": "[540, 350]",
+    },
+    {
+        "name": "Silesia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[304, 325]",
+    },
+    {
+        "name": "Skagerrak",
+        
+        "is_sea": true,
+        
+        "text_pos": "[255, 220]",
+    },
+    {
+        "name": "Smyrna",
+        
+        "is_sea": false,
+        
+        "text_pos": "[460, 510]",
+    },
+    {
+        "name": "Spain (sc)",
+        
+        "is_sea": false,
+        
+        "text_pos": "[85, 450]",
+    },
+    {
+        "name": "St Petersburg (nc)",
+        
+        "is_sea": false,
+        
+        "text_pos": "[460, 149]",
+    },
+    {
+        "name": "Sweden",
+        
+        "is_sea": false,
+        
+        "text_pos": "[300, 170]",
+    },
+    {
+        "name": "Syria",
+        
+        "is_sea": false,
+        
+        "text_pos": "[570, 535]",
+    },
+    {
+        "name": "Trieste",
+        
+        "is_sea": false,
+        
+        "text_pos": "[305, 425]",
+    },
+    {
+        "name": "Tunis",
+        
+        "is_sea": false,
+        
+        "text_pos": "[210, 555]",
+    },
+    {
+        "name": "Tuscany",
+        
+        "is_sea": false,
+        
+        "text_pos": "[240, 425]",
+    },
+    {
+        "name": "Tyrolia",
+        
+        "is_sea": false,
+        
+        "text_pos": "[255, 380]",
+    },
+    {
+        "name": "Tyrrhenian Sea",
+        
+        "is_sea": true,
+        
+        "text_pos": "[245, 495]",
+    },
+    {
+        "name": "Ukraine",
+        
+        "is_sea": false,
+        
+        "text_pos": "[420, 340]",
+    },
+    {
+        "name": "Venice",
+        
+        "is_sea": false,
+        
+        "text_pos": "[245, 407]",
+    },
+    {
+        "name": "Vienna",
+        
+        "is_sea": false,
+        
+        "text_pos": "[307, 370]",
+    },
+    {
+        "name": "Wales",
+        
+        "is_sea": false,
+        
+        "text_pos": "[130, 275]",
+    },
+    {
+        "name": "Warsaw",
+        
+        "is_sea": false,
+        
+        "text_pos": "[355, 304]",
+    },
+    {
+        "name": "Western Mediterranean",
+        
+        "is_sea": true,
+        
+        "text_pos": "[160, 491]",
+    },
+    {
+        "name": "Yorkshire",
+        
+        "is_sea": false,
+        "text_pos": "[155, 254]",
+    }
+]
