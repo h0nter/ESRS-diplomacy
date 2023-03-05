@@ -8,7 +8,7 @@ class Query(graphene.ObjectType):
     turns = graphene.List(TurnType)
     units = graphene.List(UnitType)
     orders = graphene.List(OrderType, order_id=graphene.Int())
-    outcome = graphene.List(OutcomeType)
+    outcomes = graphene.List(OutcomeType)
     locations = graphene.List(LocationType)
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
@@ -23,10 +23,10 @@ class Query(graphene.ObjectType):
     def resolve_orders(root, info, **kwargs):
         return Order.objects.all()
     
-    def resolve_outcomes(root):
+    def resolve_outcomes(root, info, **kwargs):
         return Outcome.objects.all()
     
-    def resolve_locations(root):
+    def resolve_locations(root, info, **kwargs):
         return Location.objects.all()
 
 class Mutation(graphene.ObjectType):

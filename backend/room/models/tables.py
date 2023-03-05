@@ -20,9 +20,9 @@ class Country(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=30)
-    unit_spawn = models.BooleanField()
-    is_sea = models.BooleanField()
-    is_coast = models.BooleanField()
+    unit_spawn = models.BooleanField(default=False)
+    is_sea = models.BooleanField(default=False)
+    is_coast = models.BooleanField(default=False)
     class Meta:
         verbose_name_plural = 'Locations'
     def __str__(self):
@@ -44,7 +44,7 @@ class Unit(models.Model):
     
     owner = models.ForeignKey(Country,on_delete=models.CASCADE)
     location = models.ForeignKey(Location,on_delete=models.CASCADE)
-    can_float = models.BooleanField()
+    can_float = models.BooleanField(default=False)
     
     def __str__(self):
         return str(self.pk)
@@ -53,7 +53,7 @@ class Unit(models.Model):
 
 class Turn(models.Model):
     year = models.IntegerField()
-    is_autumn = models.BooleanField()
+    is_autumn = models.BooleanField(default=False)
     def __str__(self):
         return str(self.pk)
 
