@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models.graph_demo import Category, Book, Grocery
 from .models.tables import Unit, Location, Next_to, Map, Country, Order, Outcome
 
 # Register your models here.

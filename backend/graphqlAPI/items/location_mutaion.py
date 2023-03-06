@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from ...room.tables import Location
+from ...room.models.tables import Location
 from table_type import LocationType
 
 class UpdateLocation(graphene.Mutation):

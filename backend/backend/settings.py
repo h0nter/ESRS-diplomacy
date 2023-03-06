@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'graphqlAPI.apps.GraphqlapiConfig',
     # 3rd Party apps
     'graphene_django',
-    "django_filters",
+    #"django_filters",
 ]
 
 MIDDLEWARE = [
