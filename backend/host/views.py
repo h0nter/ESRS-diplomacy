@@ -1,11 +1,11 @@
 from django.http import HttpResponse
-from django.http import Http404
+from django.http import HttpResponseNotAllowed
 import secrets
-from models import User
+from .models import User
 
 
 # Create your views here.
-def insex(request):
+def index(request):
     return HttpResponse('index page')
 
 def register(request):
@@ -20,5 +20,5 @@ def register(request):
             user.save()
             return HttpResponse('here is your cookies').set_cookie('cookie_name', token)
     else:
-        return  Http404("wrong api method")
+        return  HttpResponseNotAllowed(['POST'])
     

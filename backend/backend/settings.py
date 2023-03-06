@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # apps
     'room.apps.RoomConfig',
     'graphqlAPI.apps.GraphqlapiConfig',
+    'host.apps.HostConfig',
     # 3rd Party apps
     'graphene_django',
     "django_filters",
