@@ -54,7 +54,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[510, 455]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Turkey"
     },
     {
         "name": "Apulia",
@@ -102,7 +103,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[272, 292]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Germany"
     },
     {
         "name": "Black Sea",
@@ -126,7 +128,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[130, 345]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"France"
     },
     {
         "name": "Budapest",
@@ -134,7 +137,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[350, 390]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Austria" 
     },
     {
         "name": "Bulgaria",
@@ -167,7 +171,8 @@
         "is_coast": true,
         "unit_spawn":true, 
         "text_pos": "[435, 483]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Turkey" 
     },
     {
         "name": "Denmark",
@@ -192,7 +197,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[152, 202]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"England" 
     },
     {
         "name": "English Channel",
@@ -288,7 +294,8 @@
         "is_coast": true,
         "unit_spawn":true,  
         "text_pos": "[237, 285]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Germany" 
     },
     {
         "name": "Liverpool",
@@ -296,7 +303,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[138, 230]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"England" 
     },
     {
         "name": "Livonia",
@@ -312,7 +320,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[160, 280]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"England" 
     },
     {
         "name": "Marseilles",
@@ -320,7 +329,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[173, 412]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"France" 
     },
     {
         "name": "Mid Atlantic Ocean",
@@ -336,7 +346,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[460, 265]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Russia" 
     },
     {
         "name": "Munich",
@@ -344,7 +355,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[235, 360]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Germany" 
     },
     {
         "name": "Naples",
@@ -352,7 +364,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[293, 493]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Italy" 
     },
     {
         "name": "North Atlantic Ocean",
@@ -384,7 +397,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[155, 358]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"France" 
     },
     {
         "name": "Picardy",
@@ -424,7 +438,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[257, 452]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Italy" 
     },
     {
         "name": "Ruhr",
@@ -456,7 +471,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[540, 350]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Russia" 
     },
     {
         "name": "Silesia",
@@ -480,7 +496,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[460, 510]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Turkey" 
     },
     {
         "name": "Spain",
@@ -496,7 +513,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[460, 149]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Russia" 
     },
     {
         "name": "Sweden",
@@ -520,7 +538,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[305, 425]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Austria" 
     },
     {
         "name": "Tunis",
@@ -568,7 +587,8 @@
         "is_coast": true,
         "unit_spawn":true,
         "text_pos": "[245, 407]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Italy" 
     },
     {
         "name": "Vienna",
@@ -576,7 +596,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[307, 370]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Austria" 
     },
     {
         "name": "Wales",
@@ -592,7 +613,8 @@
         "is_coast": false,
         "unit_spawn":true,
         "text_pos": "[355, 304]",
-        "map": "Europe" 
+        "map": "Europe",
+        "current_owner":"Russia" 
     },
     {
         "name": "Western Mediterranean",
