@@ -3,7 +3,11 @@
 // name, max_countries 
 [
     {
-        "name": "Europe",
-        "max_countries": 7
+        "model": "room.country",
+        "pk": 1,
+        "fields": {
+            "name": "Europe",
+            "max_countries": 7
+        }
     }
 ]
