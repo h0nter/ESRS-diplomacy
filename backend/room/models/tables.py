@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 class Map(models.Model):
-    name = models.CharField(max_length=30,primary_key=True)
+    name = models.CharField(max_length=30)
     max_countries = models.IntegerField()
     class Meta:
         verbose_name_plural = 'Maps'
@@ -20,7 +20,7 @@ class Country(models.Model):
         verbose_name_plural = 'Countries'
 
 class Location(models.Model):
-    name = models.CharField(max_length=30,primary_key=True)
+    name = models.CharField(max_length=30)
     unit_spawn = models.BooleanField()
     is_sea = models.BooleanField()
     is_coast = models.BooleanField()
