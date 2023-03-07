@@ -1,40 +1,88 @@
 // Use JSON with Comments Schema for this file
+
+//[
+// {
+//     "model": "room.country",
+//     "pk": 1,
+//     "fields": {
+//       "phone": "40812345678",
+//       "address": "101 N 1st Street, San Jose, CA"
+//     }
+//   },
+//   {
+//     "model": "hr.contact",
+//     "pk": 2,
+//     "fields": {
+//       "phone": "4081111111",
+//       "address": "202 N 1st Street, San Jose, CA"
+//     }
+//   },
+// ...
+
 // All countries
 // name, map, colour
 [
     {
-        "name": "England",
-        "map": "Europe",
-        "colour": "#0000FF"
+        "model": "room.country",
+        "pk": 1,
+        "fields": {
+            "name": "England",
+            "map": "Europe",
+            "colour": "#0000FF"
+        }
     },
     {
-        "name": "France",
-        "map": "Europe",
-        "colour": "#00FFFF"
+        "model": "room.country",
+        "pk": 2,
+        "fields": {
+            "name": "France",
+            "map": "Europe",
+            "colour": "#00FFFF"
+        }
     },
     {
-        "name": "Germany",
-        "map": "Europe",
-        "colour": "#808080"
+        "model": "room.country",
+        "pk": 3,
+        "fields": {
+            "name": "Germany",
+            "map": "Europe",
+            "colour": "#808080"
+        }
     },
     {
-        "name": "Italy",
-        "map": "Europe",
-        "colour": "#00FF00"
+        "model": "room.country",
+        "pk": 4,
+        "fields": {
+            "name": "Italy",
+            "map": "Europe",
+            "colour": "#00FF00"
+        }
     },
     {
-        "name": "Austria",
-        "map": "Europe",
-        "colour": "#FF0000"
+        "model": "room.country",
+        "pk": 5,
+        "fields": {
+            "name": "Austria",
+            "map": "Europe",
+            "colour": "#FF0000"
+        }
     },
     {
-        "name": "Russia",
-        "map": "Europe",
-        "colour": "#008000"
+        "model": "room.country",
+        "pk": 6,
+        "fields": {
+            "name": "Russia",
+            "map": "Europe",
+            "colour": "#008000"
+        }
     },
     {
-        "name": "Turkey",
-        "map": "Europe",
-        "colour": "#FFFF00"
+        "model": "room.country",
+        "pk": 7,
+        "fields": {
+            "name": "Turkey",
+            "map": "Europe",
+            "colour": "#FFFF00"
+        }
     }
 ]
