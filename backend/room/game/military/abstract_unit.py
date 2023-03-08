@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 # design pattern of factor method
-class Abstract_unit(ABC):
+class AbstractUnit(ABC):
     def __init__(self) -> None:
         self.ID
         self.belong

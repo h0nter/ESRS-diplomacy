@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # apps
     'room.apps.RoomConfig',
+    'graphqlAPI.apps.GraphqlapiConfig',
     # 3rd Party apps
     'graphene_django',
+    #"django_filters",
 ]
 
 MIDDLEWARE = [
@@ -127,5 +129,5 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 GRAPHENE = {
-    "SCHEMA": "room.schema.schema"
+    "SCHEMA": "graphqlAPI.schema.schema"
 }
