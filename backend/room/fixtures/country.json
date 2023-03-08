@@ -27,7 +27,7 @@
         "pk": 1,
         "fields": {
             "name": "England",
-            "map": "Europe",
+            "map": 1,
             "colour": "#0000FF"
         }
     },
@@ -36,7 +36,7 @@
         "pk": 2,
         "fields": {
             "name": "France",
-            "map": "Europe",
+            "map": 1,
             "colour": "#00FFFF"
         }
     },
@@ -45,7 +45,7 @@
         "pk": 3,
         "fields": {
             "name": "Germany",
-            "map": "Europe",
+            "map": 1,
             "colour": "#808080"
         }
     },
@@ -54,7 +54,7 @@
         "pk": 4,
         "fields": {
             "name": "Italy",
-            "map": "Europe",
+            "map": 1,
             "colour": "#00FF00"
         }
     },
@@ -63,7 +63,7 @@
         "pk": 5,
         "fields": {
             "name": "Austria",
-            "map": "Europe",
+            "map": 1,
             "colour": "#FF0000"
         }
     },
@@ -72,7 +72,7 @@
         "pk": 6,
         "fields": {
             "name": "Russia",
-            "map": "Europe",
+            "map": 1,
             "colour": "#008000"
         }
     },
@@ -81,7 +81,7 @@
         "pk": 7,
         "fields": {
             "name": "Turkey",
-            "map": "Europe",
+            "map": 1,
             "colour": "#FFFF00"
         }
     }

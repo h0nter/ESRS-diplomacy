@@ -1,635 +1,924 @@
-// Use JSON with Comments Schema for this file
 [
     {
-        "name": "Norwegian Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[220, 70]",
-        "map": "Europe" 
-    },
-    {
-        "name": "North Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[190, 230]",
-        "map": "Europe" 
-    },
-    // {
-    //     "name": "Switzerland",
-    //     "is_sea": false,
-    //    "is_coast": false,
-    //    "unit_spawn":false,
-    //     "text_pos": "[215, 378]",
-    //     "map": "Europe" 
-    //},
-    {
-        "name": "Adriatic Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[308, 460]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Aegean Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[392, 510]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Albania",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[333, 460]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Ankara",   
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[510, 455]",
-        "map": "Europe",
-        "current_owner":"Turkey"
-    },
-    {
-        "name": "Apulia",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[291, 470]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Armenia",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[585, 467]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Baltic Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[308, 260]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Barents Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[440, 15]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Belgium",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[192, 321]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Berlin",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[272, 292]",
-        "map": "Europe",
-        "current_owner":"Germany"
-    },
-    {
-        "name": "Black Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[500, 418]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Bohemia",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[283, 347]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Brest",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[130, 345]",
-        "map": "Europe",
-        "current_owner":"France"
-    },
-    {
-        "name": "Budapest",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[350, 390]",
-        "map": "Europe",
-        "current_owner":"Austria" 
-    },
-    {
-        "name": "Bulgaria",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[395, 443]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Burgundy",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[185, 371]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Clyde",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[133, 201]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Constantinople",
-        // can be convoyed through
-        "is_sea": true,
-        "is_coast": true,
-        "unit_spawn":true, 
-        "text_pos": "[435, 483]",
-        "map": "Europe",
-        "current_owner":"Turkey" 
-    },
-    {
-        "name": "Denmark",
-        // can be convoyed through
-        "is_sea": true,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[250, 235]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Eastern Mediterranean",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[455, 550]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Edinburgh",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[152, 202]",
-        "map": "Europe",
-        "current_owner":"England" 
-    },
-    {
-        "name": "English Channel",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[135, 306]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Finland",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[375, 160]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Galicia",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[355, 343]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Gascony",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[130, 400]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Greece",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[352, 490]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Gulf of Lyon",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[170, 457]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Gulf of Bothnia",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[328, 175]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Helgoland Bight",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[220, 265]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Holland",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[210, 290]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Ionian Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[315, 520]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Irish Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[95, 270]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Kiel",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,  
-        "text_pos": "[237, 285]",
-        "map": "Europe",
-        "current_owner":"Germany" 
-    },
-    {
-        "name": "Liverpool",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[138, 230]",
-        "map": "Europe",
-        "current_owner":"England" 
-    },
-    {
-        "name": "Livonia",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[380, 260]",
-        "map": "Europe" 
-    },
-    {
-        "name": "London",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[160, 280]",
-        "map": "Europe",
-        "current_owner":"England" 
-    },
-    {
-        "name": "Marseilles",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[173, 412]",
-        "map": "Europe",
-        "current_owner":"France" 
-    },
-    {
-        "name": "Mid Atlantic Ocean",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[50, 355]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Moscow",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[460, 265]",
-        "map": "Europe",
-        "current_owner":"Russia" 
-    },
-    {
-        "name": "Munich",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[235, 360]",
-        "map": "Europe",
-        "current_owner":"Germany" 
-    },
-    {
-        "name": "Naples",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[293, 493]",
-        "map": "Europe",
-        "current_owner":"Italy" 
-    },
-    {
-        "name": "North Atlantic Ocean",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[65, 120]",
-        "map": "Europe" 
-    },
-    {
-        "name": "North Africa",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[130, 536]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Norway",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[250, 175]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Paris",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[155, 358]",
-        "map": "Europe",
-        "current_owner":"France" 
-    },
-    {
-        "name": "Picardy",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[168, 326]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Piedmont",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[215, 408]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Portugal",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[22, 440]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Prussia",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[335, 283]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Rome",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[257, 452]",
-        "map": "Europe",
-        "current_owner":"Italy" 
-    },
-    {
-        "name": "Ruhr",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[215, 330]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Rumania",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[410, 415]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Serbia",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[350, 450]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Sevastopol",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[540, 350]",
-        "map": "Europe",
-        "current_owner":"Russia" 
-    },
-    {
-        "name": "Silesia",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[304, 325]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Skagerrak",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[255, 220]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Smyrna",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[460, 510]",
-        "map": "Europe",
-        "current_owner":"Turkey" 
-    },
-    {
-        "name": "Spain",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[85, 450]",
-        "map": "Europe" 
-    },
-    {
-        "name": "St Petersburg",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[460, 149]",
-        "map": "Europe",
-        "current_owner":"Russia" 
-    },
-    {
-        "name": "Sweden",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[300, 170]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Syria",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[570, 535]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Trieste",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[305, 425]",
-        "map": "Europe",
-        "current_owner":"Austria" 
-    },
-    {
-        "name": "Tunis",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[210, 555]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Tuscany",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[240, 425]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Tyrolia",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[255, 380]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Tyrrhenian Sea",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[245, 495]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Ukraine",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[420, 340]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Venice",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":true,
-        "text_pos": "[245, 407]",
-        "map": "Europe",
-        "current_owner":"Italy" 
-    },
-    {
-        "name": "Vienna",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[307, 370]",
-        "map": "Europe",
-        "current_owner":"Austria" 
-    },
-    {
-        "name": "Wales",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[130, 275]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Warsaw",
-        "is_sea": false,
-        "is_coast": false,
-        "unit_spawn":true,
-        "text_pos": "[355, 304]",
-        "map": "Europe",
-        "current_owner":"Russia" 
-    },
-    {
-        "name": "Western Mediterranean",
-        "is_sea": true,
-        "is_coast": false,
-        "unit_spawn":false,
-        "text_pos": "[160, 491]",
-        "map": "Europe" 
-    },
-    {
-        "name": "Yorkshire",
-        "is_sea": false,
-        "is_coast": true,
-        "unit_spawn":false,
-        "text_pos": "[155, 254]",
-        "map": "Europe" 
+        "model": "room.location",
+        "pk": 1,
+        "fields": {
+            "name": "Norwegian Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[220, 70]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 2,
+        "fields": {
+            "name": "North Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[190, 230]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 3,
+        "fields": {
+            "name": "Adriatic Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[308, 460]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 4,
+        "fields": {
+            "name": "Aegean Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[392, 510]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 5,
+        "fields": {
+            "name": "Albania",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[333, 460]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 6,
+        "fields": {
+            "name": "Ankara",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[510, 455]",
+            "map": 1,
+            "current_owner": 7
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 7,
+        "fields": {
+            "name": "Apulia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[291, 470]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 8,
+        "fields": {
+            "name": "Armenia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[585, 467]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 9,
+        "fields": {
+            "name": "Baltic Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[308, 260]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 10,
+        "fields": {
+            "name": "Barents Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[440, 15]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 11,
+        "fields": {
+            "name": "Belgium",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[192, 321]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 12,
+        "fields": {
+            "name": "Berlin",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[272, 292]",
+            "map": 1,
+            "current_owner": 3
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 13,
+        "fields": {
+            "name": "Black Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[500, 418]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 14,
+        "fields": {
+            "name": "Bohemia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[283, 347]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 15,
+        "fields": {
+            "name": "Brest",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[130, 345]",
+            "map": 1,
+            "current_owner": 2
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 16,
+        "fields": {
+            "name": "Budapest",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[350, 390]",
+            "map": 1,
+            "current_owner": 5
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 17,
+        "fields": {
+            "name": "Bulgaria",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[395, 443]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 18,
+        "fields": {
+            "name": "Burgundy",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[185, 371]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 19,
+        "fields": {
+            "name": "Clyde",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[133, 201]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 20,
+        "fields": {
+            "name": "Constantinople",
+            "is_sea": true,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[435, 483]",
+            "map": 1,
+            "current_owner": 7
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 21,
+        "fields": {
+            "name": "Denmark",
+            "is_sea": true,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[250, 235]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 22,
+        "fields": {
+            "name": "Eastern Mediterranean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[455, 550]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 23,
+        "fields": {
+            "name": "Edinburgh",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[152, 202]",
+            "map": 1,
+            "current_owner": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 24,
+        "fields": {
+            "name": "English Channel",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[135, 306]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 25,
+        "fields": {
+            "name": "Finland",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[375, 160]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 26,
+        "fields": {
+            "name": "Galicia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[355, 343]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 27,
+        "fields": {
+            "name": "Gascony",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[130, 400]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 28,
+        "fields": {
+            "name": "Greece",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[352, 490]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 29,
+        "fields": {
+            "name": "Gulf of Lyon",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[170, 457]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 30,
+        "fields": {
+            "name": "Gulf of Bothnia",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[328, 175]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 31,
+        "fields": {
+            "name": "Helgoland Bight",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[220, 265]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 32,
+        "fields": {
+            "name": "Holland",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[210, 290]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 33,
+        "fields": {
+            "name": "Ionian Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[315, 520]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 34,
+        "fields": {
+            "name": "Irish Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[95, 270]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 35,
+        "fields": {
+            "name": "Kiel",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[237, 285]",
+            "map": 1,
+            "current_owner": 3
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 36,
+        "fields": {
+            "name": "Liverpool",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[138, 230]",
+            "map": 1,
+            "current_owner": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 37,
+        "fields": {
+            "name": "Livonia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[380, 260]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 38,
+        "fields": {
+            "name": "London",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[160, 280]",
+            "map": 1,
+            "current_owner": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 39,
+        "fields": {
+            "name": "Marseilles",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[173, 412]",
+            "map": 1,
+            "current_owner": 2
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 40,
+        "fields": {
+            "name": "Mid Atlantic Ocean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[50, 355]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 41,
+        "fields": {
+            "name": "Moscow",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[460, 265]",
+            "map": 1,
+            "current_owner": 6
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 42,
+        "fields": {
+            "name": "Munich",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[235, 360]",
+            "map": 1,
+            "current_owner": 3
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 43,
+        "fields": {
+            "name": "Naples",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[293, 493]",
+            "map": 1,
+            "current_owner": 4
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 44,
+        "fields": {
+            "name": "North Atlantic Ocean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[65, 120]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 45,
+        "fields": {
+            "name": "North Africa",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[130, 536]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 46,
+        "fields": {
+            "name": "Norway",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[250, 175]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 47,
+        "fields": {
+            "name": "Paris",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[155, 358]",
+            "map": 1,
+            "current_owner": 2
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 48,
+        "fields": {
+            "name": "Picardy",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[168, 326]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 49,
+        "fields": {
+            "name": "Piedmont",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[215, 408]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 50,
+        "fields": {
+            "name": "Portugal",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[22, 440]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 51,
+        "fields": {
+            "name": "Prussia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[335, 283]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 52,
+        "fields": {
+            "name": "Rome",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[257, 452]",
+            "map": 1,
+            "current_owner": 4
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 53,
+        "fields": {
+            "name": "Ruhr",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[215, 330]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 54,
+        "fields": {
+            "name": "Rumania",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[410, 415]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 55,
+        "fields": {
+            "name": "Serbia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[350, 450]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 56,
+        "fields": {
+            "name": "Sevastopol",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[540, 350]",
+            "map": 1,
+            "current_owner": 6
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 57,
+        "fields": {
+            "name": "Silesia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[304, 325]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 58,
+        "fields": {
+            "name": "Skagerrak",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[255, 220]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 59,
+        "fields": {
+            "name": "Smyrna",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[460, 510]",
+            "map": 1,
+            "current_owner": 7
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 60,
+        "fields": {
+            "name": "Spain",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[85, 450]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 61,
+        "fields": {
+            "name": "St Petersburg",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[460, 149]",
+            "map": 1,
+            "current_owner": 6
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 62,
+        "fields": {
+            "name": "Sweden",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[300, 170]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 63,
+        "fields": {
+            "name": "Syria",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[570, 535]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 64,
+        "fields": {
+            "name": "Trieste",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[305, 425]",
+            "map": 1,
+            "current_owner": 5
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 65,
+        "fields": {
+            "name": "Tunis",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[210, 555]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 66,
+        "fields": {
+            "name": "Tuscany",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[240, 425]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 67,
+        "fields": {
+            "name": "Tyrolia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[255, 380]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 68,
+        "fields": {
+            "name": "Tyrrhenian Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[245, 495]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 69,
+        "fields": {
+            "name": "Ukraine",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[420, 340]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 70,
+        "fields": {
+            "name": "Venice",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos": "[245, 407]",
+            "map": 1,
+            "current_owner": 4
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 71,
+        "fields": {
+            "name": "Vienna",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[307, 370]",
+            "map": 1,
+            "current_owner": 5
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 72,
+        "fields": {
+            "name": "Wales",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[130, 275]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 73,
+        "fields": {
+            "name": "Warsaw",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos": "[355, 304]",
+            "map": 1,
+            "current_owner": 6
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 74,
+        "fields": {
+            "name": "Western Mediterranean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos": "[160, 491]",
+            "map": 1
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 75,
+        "fields": {
+            "name": "Yorkshire",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos": "[155, 254]",
+            "map": 1
+        }
     }
 ]
