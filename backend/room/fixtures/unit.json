@@ -1,0 +1,201 @@
+// Use JSON with Comments Schema for this file
+[
+    {
+        "model": "room.unit",
+        "pk": 1,
+        "fields": {
+        "owner":1,
+        "location":"Edinburgh",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 2,
+        "fields": {
+        "owner":1,
+        "location":"Liverpool",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 3,
+        "fields": {
+        "owner":1,
+        "location":"London",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 4,
+        "fields": {
+        "owner":2,
+        "location": "Brest",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 5,
+        "fields": {
+        "owner":2,
+        "location":"Paris",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 6,
+        "fields": {
+        "owner":2,
+        "location":"Marseilles",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 7,
+        "fields": {
+        "owner":3,
+        "location":"Kiel",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 8,
+        "fields": {
+        "owner":3,
+        "location":"Berlin",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 9,
+        "fields": {
+        "owner":3,
+        "location":"Munich",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 10,
+        "fields": {
+        "owner":4,
+        "location":"Venice",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 11,
+        "fields": {
+        "owner":4,
+        "location":"Rome",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 12,
+        "fields": {
+        "owner":4,
+        "location":"Naples",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 13,
+        "fields": {
+        "owner":5,
+        "location":"Vienna",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 14,
+        "fields": {
+        "owner":5,
+        "location":"Trieste",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 15,
+        "fields": {
+        "owner":5,
+        "location":"Budapest",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 16,
+        "fields": {
+        "owner":6,
+        "location":"Warsaw",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 17,
+        "fields": {
+        "owner":6,
+        "location":"St Petersburg",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 18,
+        "fields": {
+        "owner":6,
+        "location":"Moscow",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 19,
+        "fields": {
+        "owner":6,
+        "location":"Sevastopol",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 20,
+        "fields": {
+        "owner":7,
+        "location":"Constantinople",
+        "can_float":false
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 21,
+        "fields": {
+        "owner":7,
+        "location":"Ankara",
+        "can_float":true
+        }
+    },
+    {
+        "model": "room.unit",
+        "pk": 22,
+        "fields": {
+        "owner":7,
+        "location":"Smyrna",
+        "can_float":false
+        }
+    }
+]
