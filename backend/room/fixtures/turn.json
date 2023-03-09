@@ -1,7 +1,4 @@
-// Use JSON with Comments Schema for this file
 [
-    // Subsequent years will be added as game progresses
-    // as it is not of definite length
     {
         "model": "room.turn",
         "pk": 1,
