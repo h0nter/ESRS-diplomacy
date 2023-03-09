@@ -10,6 +10,7 @@ class Query(graphene.ObjectType):
     orders = graphene.List(OrderType, order_id=graphene.Int())
     outcomes = graphene.List(OutcomeType)
     locations = graphene.List(LocationType)
+    # map, country, Map_Polygon, next_to
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
