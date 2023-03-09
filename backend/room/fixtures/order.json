@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 1,
             "current_location": 23
         }
@@ -14,7 +14,7 @@
         "pk": 2,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 2,
             "current_location": 36
         }
@@ -24,7 +24,7 @@
         "pk": 3,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 3,
             "current_location": 38
         }
@@ -34,7 +34,7 @@
         "pk": 4,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 4,
             "current_location": 15
         }
@@ -44,7 +44,7 @@
         "pk": 5,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 5,
             "current_location": 47
         }
@@ -54,7 +54,7 @@
         "pk": 6,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 6,
             "current_location": 39
         }
@@ -64,7 +64,7 @@
         "pk": 7,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 7,
             "current_location": 35
         }
@@ -74,7 +74,7 @@
         "pk": 8,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 8,
             "current_location": 12
         }
@@ -84,7 +84,7 @@
         "pk": 9,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 9,
             "current_location": 42
         }
@@ -94,7 +94,7 @@
         "pk": 10,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 10,
             "current_location": 70
         }
@@ -104,7 +104,7 @@
         "pk": 11,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 11,
             "current_location": 52
         }
@@ -114,7 +114,7 @@
         "pk": 12,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 12,
             "current_location": 43
         }
@@ -124,7 +124,7 @@
         "pk": 13,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 13,
             "current_location": 71
         }
@@ -134,7 +134,7 @@
         "pk": 14,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 14,
             "current_location": 64
         }
@@ -144,7 +144,7 @@
         "pk": 15,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 15,
             "current_location": 16
         }
@@ -154,7 +154,7 @@
         "pk": 16,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 16,
             "current_location": 73
         }
@@ -164,7 +164,7 @@
         "pk": 17,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 17,
             "current_location": 61
         }
@@ -174,7 +174,7 @@
         "pk": 18,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 18,
             "current_location": 41
         }
@@ -184,7 +184,7 @@
         "pk": 19,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 19,
             "current_location": 56
         }
@@ -194,7 +194,7 @@
         "pk": 20,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 20,
             "current_location": 20
         }
@@ -204,7 +204,7 @@
         "pk": 21,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 21,
             "current_location": 6
         }
@@ -214,7 +214,7 @@
         "pk": 22,
         "fields": {
             "instruction": "HLD",
-            "turn": 0,
+            "turn": 1,
             "target_unit": 22,
             "current_location": 59
         }
