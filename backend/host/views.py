@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.http import HttpResponseNotAllowed
+from django.views.decorators.csrf import csrf_exempt
 import secrets
 from .models import User
 
@@ -8,6 +9,7 @@ from .models import User
 def index(request):
     return HttpResponse('index page')
 
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         name = request.POST.get("name")
