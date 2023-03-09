@@ -1,7 +1,7 @@
 import {createApp, h, provide} from "vue";
 
-import {apolloClient} from "@/apollo-config";
-import {ApolloClients} from "@vue/apollo-composable";
+import { DefaultApolloClient } from '@vue/apollo-composable';
+import { apolloClient} from "@/apollo-config";
 
 import App from "./App.vue";
 import router from "./router";
@@ -12,9 +12,7 @@ import "./index.css";
 
 const app = createApp({
   setup() {
-    provide(ApolloClients, {
-      default: apolloClient,
-    });
+    provide(DefaultApolloClient, apolloClient);
   },
   render: () => h(App),
 });

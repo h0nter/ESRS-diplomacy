@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+  import { UNITS } from "@/gql/documents";
 
   import { ref } from 'vue'
   import Territory from "@/components/Territory.vue";
