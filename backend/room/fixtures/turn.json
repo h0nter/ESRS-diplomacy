@@ -1,0 +1,21 @@
+// Use JSON with Comments Schema for this file
+[
+    // Subsequent years will be added as game progresses
+    // as it is not of definite length
+    {
+        "model": "room.turn",
+        "pk": 1,
+        "fields": {
+        "year":"1901",
+        "is_autumn":false
+        }
+    },
+    {
+        "model": "room.turn",
+        "pk": 2,
+        "fields": {
+        "year":"1901",
+        "is_autumn":true
+        }
+    }
+]

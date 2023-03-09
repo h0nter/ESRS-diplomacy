@@ -1,0 +1,225 @@
+// Use JSON with Comments Schema for this file
+[
+    // Subsequent turns will be auto initialised
+    // Other fields bar these can be null
+    {
+        "model": "room.order",
+        "pk": 1,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":1,
+        "current_location":"Edinburgh"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 2,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":2,
+        "current_location":"Liverpool"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 3,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":3,
+        "current_location":"London"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 4,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":4,
+        "current_location":"Brest"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 5,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":5,
+        "current_location":"Paris"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 6,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":6,
+        "current_location":"Marseilles"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 7,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":7,
+        "current_location":"Kiel"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 8,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":8,
+        "current_location":"Berlin"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 9,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":9,
+        "current_location":"Munich"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 10,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":10,
+        "current_location":"Venice"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 11,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":11,
+        "current_location":"Rome"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 12,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":12,
+        "current_location":"Naples"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 13,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":13,
+        "current_location":"Vienna"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 14,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":14,
+        "current_location":"Trieste"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 15,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":15,
+        "current_location":"Budapest"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 16,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":16,
+        "current_location":"Warsaw"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 17,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":17,
+        "current_location":"St Petersburg"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 18,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":18,
+        "current_location":"Moscow"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 19,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":19,
+        "current_location":"Sevastopol"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 20,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":20,
+        "current_location":"Constantinople"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 21,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":21,
+        "current_location":"Ankara"
+        }
+    },
+    {
+        "model": "room.order",
+        "pk": 22,
+        "fields": {
+        "instruction":"HLD",
+        "turn":0,
+        "target_unit":22,
+        "current_location":"Smyrna"
+        }
+    }
+]

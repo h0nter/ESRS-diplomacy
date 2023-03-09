@@ -1,0 +1,13 @@
+// Use JSON with Comments Schema for this file
+// All Maps
+// name, max_countries 
+[
+    {
+        "model": "room.country",
+        "pk": 1,
+        "fields": {
+            "name": "Europe",
+            "max_countries": 7
+        }
+    }
+]
