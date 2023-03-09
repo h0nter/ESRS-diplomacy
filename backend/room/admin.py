@@ -1,6 +1,6 @@
 from django.contrib import admin
-# from .models.graph_demo import Category, Book, Grocery
 from .models.tables import Unit, Location, Next_to, Map, Country, Order, Outcome, Turn
+
 
 # Register your models here.
 admin.site.register(Country)
