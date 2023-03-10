@@ -285,3 +285,6 @@ yarn-error.log
 
 ## vscode
 .vscode/
+
+### GQL Frontend Schema
+remote-schema.graphql
