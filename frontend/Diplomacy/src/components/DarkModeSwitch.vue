@@ -28,10 +28,5 @@ const toggleDark = useToggle(isDark);
 </template>
 
 <style scoped>
- .dark-mode-switch{
-   position: absolute;
-   top: 1rem;
-   right: 1.5rem;
-   z-index: 99;
- }
+
 </style>

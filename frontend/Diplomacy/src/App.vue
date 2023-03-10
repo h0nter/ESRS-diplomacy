@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import DarkModeSwitch from "@/components/DarkModeSwitch.vue";
 import Wrapper from "@/components/Wrapper.vue";
 import Container from "@/components/Container.vue";
 import Header from "@/components/Header.vue";
 import ButtonRouterLink from "@/components/ButtonRouterLink.vue";
 import HomeView from "@/views/HomeView.vue";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <template>
   <Wrapper>
-    <DarkModeSwitch />
+    <Navbar :key="$route.path" />
     <Container>
       <RouterView/>
     </Container>

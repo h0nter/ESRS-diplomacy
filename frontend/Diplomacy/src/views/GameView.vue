@@ -1,5 +1,4 @@
 <template>
-  <ButtonRouterLink to="/" text="Home" />
   <Map />
 </template>
 

@@ -1,6 +1,5 @@
 <template>
   <Header title="ESRS Diplomacy"/>
-  <ButtonRouterLink url="/game" text="Start"/>
 </template>
 
 <script setup>
