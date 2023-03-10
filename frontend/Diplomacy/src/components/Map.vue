@@ -11,6 +11,10 @@
 
 <script setup>
   import { UNITS } from "@/gql/documents";
+  import { useQuery } from '@vue/apollo-composable'
+  import { computed } from 'vue'
+  import { graphql } from '@/gql'
+
 
   import { ref } from 'vue'
   import Territory from "@/components/Territory.vue";
@@ -22,6 +26,12 @@
   function onTerritoryHovered(name) {
     currentlyHoveredTerritory.value = "#" + name;
   }
+
+  const { result } = useQuery(UNITS);
+
+  const units = computed(() => result.value?.map(e => e?.units))
+
+  console.log(units);
 
   const territories = [
   {

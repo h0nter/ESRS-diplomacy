@@ -4,7 +4,8 @@ import { gql } from "@apollo/client/core";
 export const UNITS = gql`
     query {
         units {
-            id
+            id,
+            canFloat
         }
     }
 `;
