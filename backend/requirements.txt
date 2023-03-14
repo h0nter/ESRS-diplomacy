@@ -4,6 +4,7 @@ astroid==2.14.2
 colorama==0.4.6
 dill==0.3.6
 Django==4.1.6
+django-cors-headers==3.14.0
 django-filter==22.1
 graphene==3.2.1
 graphene-django==3.0.0
