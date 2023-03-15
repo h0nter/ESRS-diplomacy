@@ -1,6 +1,6 @@
 import graphene
-from room.models.tables import Turn, Unit, Order, Outcome,Location
-from .items.table_type import TurnType, UnitType, OrderType, OutcomeType, LocationType
+from room.models.tables import *
+from .items.table_type import *
 from .items.order_mutation import UpdateOrder
 
 
@@ -10,7 +10,10 @@ class Query(graphene.ObjectType):
     orders = graphene.List(OrderType, order_id=graphene.Int())
     outcomes = graphene.List(OutcomeType)
     locations = graphene.List(LocationType)
-    # map, country, Map_Polygon, next_to
+    map = graphene.List(MapType)
+    country = graphene.List(CountryType)
+    Map_Polygon = graphene.List(Map_PolygonType)
+    next_to = graphene.List(Next_toType)
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
@@ -29,6 +32,18 @@ class Query(graphene.ObjectType):
     
     def resolve_locations(root, info, **kwargs):
         return Location.objects.all()
+
+    def resolve_locations(root, info, **kwargs):
+        return Map.objects.all()
+
+    def resolve_locations(root, info, **kwargs):
+        return Map_Polygon.objects.all()
+
+    def resolve_locations(root, info, **kwargs):
+        return Next_to.objects.all()
+
+    def resolve_locations(root, info, **kwargs):
+        return Country.objects.all()
 
 class Mutation(graphene.ObjectType):
     
