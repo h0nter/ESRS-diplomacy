@@ -37,13 +37,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Enabling CORS
+    'corsheaders',
     # apps
     'room.apps.RoomConfig',
     'graphqlAPI.apps.GraphqlapiConfig',
     'host.apps.HostConfig',
     # 3rd Party apps
     'graphene_django',
-    #"django_filters",
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Enabling CORS 
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -132,3 +136,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 GRAPHENE = {
     "SCHEMA": "graphqlAPI.schema.schema"
 }
+
+CORS_ALLOWED_ORIGINS = [
+"http://localhost:5173",
+"http://127.0.0.1:5173",
+"http://localhost:8080",
+"http://127.0.0.1:8080",
+]
