@@ -4,10 +4,9 @@ from abc import ABC, abstractmethod
 class AbstractUnit(ABC):
     def __init__(self) -> None:
         self.ID
-        self.belong
-        self.position
-        self.can_float
-        self.availble_movent
+        self.current_location
+        self.target_location
+        self.instruction
     
     # announce the methods and will be implement in child class
     @abstractmethod
