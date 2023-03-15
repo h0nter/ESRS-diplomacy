@@ -29,7 +29,7 @@
 
   const { result } = useQuery(UNITS);
 
-  const units = computed(() => result.value?.map(e => e?.units))
+  const units = computed(() => result.value)
 
   console.log(units);
 
