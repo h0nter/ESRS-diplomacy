@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import datetime
 
 class Map(models.Model):
     name = models.CharField(max_length=30)
@@ -70,9 +71,15 @@ class Unit(models.Model):
 class Turn(models.Model):
     year = models.IntegerField()
     is_autumn = models.BooleanField(default=False)
+    build_time = models.DateTimeField(auto_now_add=True)
+    close_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
 
     def __str__(self):
         return str(self.pk)
+    # set the close_time while save, automatactly add 2 hours
+    def save(self, *args, **kwargs):
+        self.close_time = self.build_time + datetime.timedelta(hours=2)
+        super(Turn, self).save(*args, **kwargs)
 
 # want the order to be kept for history, even if unit is destoryed later
 class Order(models.Model):
