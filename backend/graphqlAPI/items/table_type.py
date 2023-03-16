@@ -1,5 +1,5 @@
 from graphene_django import DjangoObjectType
-from room.models.tables import Location, Order, Unit, Outcome, Turn
+from room.models.tables import *
 
 # allow access overall parameters
 class LocationType(DjangoObjectType):
@@ -27,9 +27,24 @@ class OutcomeType(DjangoObjectType):
         model = Outcome
         fields = "__all__"
 
+class MapType(DjangoObjectType):
+    class Meta: 
+        model = Map
+        fields = "__all__"
+
+class CountryType(DjangoObjectType):
+    class Meta: 
+        model = Country
+        fields = "__all__"
 
 
+class Map_PolygonType(DjangoObjectType):
+    class Meta: 
+        model = Map_Polygon
+        fields = "__all__"
 
-
-
+class Next_toType(DjangoObjectType):
+    class Meta: 
+        model = Next_to
+        fields = "__all__"
 
