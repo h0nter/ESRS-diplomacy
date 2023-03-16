@@ -13,19 +13,50 @@ export type Scalars = {
   Float: number;
 };
 
+export type CountryType = {
+  __typename?: 'CountryType';
+  colour: Scalars['String'];
+  id: Scalars['ID'];
+  locationSet: Array<LocationType>;
+  map: MapType;
+  name: Scalars['String'];
+  unitSet: Array<UnitType>;
+};
+
 export type LocationType = {
   __typename?: 'LocationType';
   currentLocation: Array<OrderType>;
+  currentOwner?: Maybe<CountryType>;
   id: Scalars['ID'];
   isCoast: Scalars['Boolean'];
   isSea: Scalars['Boolean'];
+  location: Array<Next_ToType>;
+  map: MapType;
+  mapPolygonSet: Array<Map_PolygonType>;
   name: Scalars['String'];
+  nextTo: Array<Next_ToType>;
   referenceUnitCurrentLocation: Array<OrderType>;
   referenceUnitNewLocation: Array<OrderType>;
   targetLocation: Array<OrderType>;
   textPos: Scalars['String'];
   unitSet: Array<UnitType>;
   unitSpawn: Scalars['Boolean'];
+};
+
+export type MapType = {
+  __typename?: 'MapType';
+  countrySet: Array<CountryType>;
+  id: Scalars['ID'];
+  locationSet: Array<LocationType>;
+  maxCountries: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type Map_PolygonType = {
+  __typename?: 'Map_PolygonType';
+  id: Scalars['ID'];
+  location: LocationType;
+  polygon: Scalars['String'];
 };
 
 export type Mutation = {
@@ -37,6 +68,13 @@ export type Mutation = {
 export type MutationUpdateOrderArgs = {
   id?: InputMaybe<Scalars['ID']>;
   input: OrderInput;
+};
+
+export type Next_ToType = {
+  __typename?: 'Next_toType';
+  id: Scalars['ID'];
+  location: LocationType;
+  nextTo: LocationType;
 };
 
 export type OrderInput = {
@@ -77,7 +115,11 @@ export type OutcomeType = {
 
 export type Query = {
   __typename?: 'Query';
+  MapPolygon?: Maybe<Array<Maybe<Map_PolygonType>>>;
+  country?: Maybe<Array<Maybe<CountryType>>>;
   locations?: Maybe<Array<Maybe<LocationType>>>;
+  map?: Maybe<Array<Maybe<MapType>>>;
+  nextTo?: Maybe<Array<Maybe<Next_ToType>>>;
   orders?: Maybe<Array<Maybe<OrderType>>>;
   outcomes?: Maybe<Array<Maybe<OutcomeType>>>;
   turns?: Maybe<Array<Maybe<TurnType>>>;
@@ -114,6 +156,7 @@ export type UnitType = {
   canFloat: Scalars['Boolean'];
   id: Scalars['ID'];
   location: LocationType;
+  owner: CountryType;
   referenceUnit: Array<OrderType>;
   targetUnit: Array<OrderType>;
 };

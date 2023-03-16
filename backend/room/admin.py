@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models.tables import Unit, Location, Next_to, Map, Country, Order, Outcome, Turn
+from .models.tables import *
 
 
 # Register your models here.
@@ -11,3 +11,5 @@ admin.site.register(Order)
 admin.site.register(Outcome)
 admin.site.register(Unit)
 admin.site.register(Turn)
+admin.site.register(Map_Polygon)
+

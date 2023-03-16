@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { UNITS } from "@/gql/documents";
   import { useQuery } from '@vue/apollo-composable'
   import { computed } from 'vue'
@@ -20,18 +20,21 @@
   import Territory from "@/components/Territory.vue";
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
+  import type {LocationType} from "@/gql/graphql";
 
   const currentlyHoveredTerritory = ref("#");
 
-  function onTerritoryHovered(name) {
+  function onTerritoryHovered(name:string) {
     currentlyHoveredTerritory.value = "#" + name;
   }
 
   const { result } = useQuery(UNITS);
 
-  const units = computed(() => result.value)
+  const locations : LocationType[] = computed(() => result.value).value
 
-  console.log(units);
+  locations.forEach( (location) => {
+    console.log(location.id);
+  });
 
   const territories = [
   {

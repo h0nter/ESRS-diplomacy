@@ -33,16 +33,16 @@ class Query(graphene.ObjectType):
     def resolve_locations(root, info, **kwargs):
         return Location.objects.all()
 
-    def resolve_locations(root, info, **kwargs):
+    def resolve_map(root, info, **kwargs):
         return Map.objects.all()
 
-    def resolve_locations(root, info, **kwargs):
+    def resolve_map_polygon(root, info, **kwargs):
         return Map_Polygon.objects.all()
 
-    def resolve_locations(root, info, **kwargs):
+    def resolve_next_to(root, info, **kwargs):
         return Next_to.objects.all()
 
-    def resolve_locations(root, info, **kwargs):
+    def resolve_country(root, info, **kwargs):
         return Country.objects.all()
 
 class Mutation(graphene.ObjectType):

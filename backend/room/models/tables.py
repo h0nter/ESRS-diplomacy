@@ -40,7 +40,7 @@ class Map_Polygon(models.Model):
     class Meta:
         verbose_name_plural = 'Map_Polygons'
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 # the location and what is next to itself
 class Next_to(models.Model):
