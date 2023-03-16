@@ -10,6 +10,7 @@ class AbstractUnit(ABC):
         self.location = self.unit.location
         self.can_float = self.unit.can_float
         self.instruction = self.order.instruction
+        self.country = self.unit.owner
     
     # announce the methods and will be implement in child class
     @abstractmethod
