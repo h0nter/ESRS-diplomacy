@@ -1,15 +1,10 @@
+###
+# NO LONGER NEEDED
+
 from room.models.tables  import *
+from django.test import TestCase
 
-
-class InitialInsert:
-    # a finish sign decorator
-    def stamp(func):
-        def wrap(cls):
-            func(cls)
-            print('function '+func.__name__+' completed')
-        return wrap
-        
-    @classmethod
+class InitialInsert():
     def all_insert(cls):
         cls.insertMap()
         cls.insertCountry()
