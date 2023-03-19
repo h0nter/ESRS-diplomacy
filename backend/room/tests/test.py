@@ -3,6 +3,7 @@ from django.test import TestCase
 from backend.room.models.tables import Map,Country,Location,Next_to,Order,Outcome,Turn,Unit
 from room.game.unit_factory import UnitFactory
 
+# https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_unitTest1(TestCase):
     # setup test database to use throughout this class
     @classmethod
