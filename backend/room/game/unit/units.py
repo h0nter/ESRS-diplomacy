@@ -13,8 +13,8 @@ class Army(AbstractUnit):
 
 
 class Fleet(AbstractUnit):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, order) -> None:
+        super().__init__(order)
 
     def move(self):
         super().move()
