@@ -71,8 +71,8 @@ class Unit(models.Model):
 class Turn(models.Model):
     year = models.IntegerField()
     is_autumn = models.BooleanField(default=False)
-    build_time = models.DateTimeField(auto_now_add=True)
-    close_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    #build_time = models.DateTimeField(auto_now_add=True)
+    #close_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
 
     def __str__(self):
         return str(self.pk)
@@ -107,12 +107,12 @@ class Order(models.Model):
     def __str__(self):
         return str(self.pk)
     
-class Outcome(Order):
+class Outcome(models.Model):
     # copy of Orders - show the orders that actually happened
     order_reference = models.ForeignKey(Order,on_delete=models.DO_NOTHING,related_name='order_reference')
     validation = models.BooleanField()
     class Meta:
-        proxy = True
+        # proxy = True
         verbose_name_plural = 'Outcomes'
         
     def __str__(self):

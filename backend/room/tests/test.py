@@ -1,5 +1,6 @@
 # Create your tests here.
 from django.test import TestCase
+from backend.room.game.unit.units import Army
 from backend.room.models.tables import Map,Country,Location,Next_to,Order,Outcome,Turn,Unit
 from backend.room.game.unit.unit_factory import UnitFactory
 
@@ -23,10 +24,16 @@ class room_app_unitTest1(TestCase):
     #     from .initial_insert import InitialInsert as II
     #     II.all_insert()
 
+    def test_build(self):
+        army = UnitFactory.build_unit(self.orderA)
+        self.assertTrue(army is Army)
+
     #Each test takes self as a parameter
-    def test_move(self):
+    def test_before_move(self):
         #self then relates to the database objects
         print(self.orderA)
+        army = UnitFactory.build_unit(self.orderA)
+        self.assertNotEqual(army.location,self.orderA.target_location)
         # army = UnitFactory.build_unit(self.orderA)
         # army.move()
         # self.assertEqual(army.location, self.orderA.target_location)
