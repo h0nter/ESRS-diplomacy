@@ -1,28 +1,34 @@
-import time
-
-
 class Step:
-    # format the room database
-    def initialize():
-        # update the status table which is in room app, when the room is ready.
-        pass
+    def __init__(cls, host:object):
+            cls.host = host
+            cls.StatusType = host.room_status
+            cls.initialize()
+            
+    @classmethod
+    def isFinished() -> bool:
+         pass
 
     @classmethod
-    def opening() -> bool:
-        # wait for user to login the game.
-        pass
+    def initialize(cls) -> None: # format the room database
+        cls.host(room_status='Open').save()
 
     @classmethod
-    def waiting() -> bool:
-        # wait for user to make a decision
-        time.sleep(3)
-
+    def opening(cls) -> None: # wait for user to login the game.
+        cls.host(room_status='Wait').save()
+        
+    @classmethod
+    def waiting(cls) -> None: # wait for user to make a decision
+        cls.host(room_status='Check').save()
 
     @classmethod
-    def checking() -> bool:
-        # need to update the status to host app
-        pass
+    def checking(cls) -> None: # need to update the status to host app
+        if cls.isFinished():
+            cls.host(room_status='end').save()
 
-    def Closing():
-        pass
+    @classmethod
+    def ending(cls) -> None: # the status before the room are totaly closed.
+        cls.host(room_status='close').save()
     
+    @classmethod
+    def closed(cls) -> None: # will only change the status to be 'closed'
+        cls.host(room_status='closed').save()

@@ -9,14 +9,8 @@ def dfs(node, target, graph, visited=set()):
             
             if result is True:
                 return True
-
-@staticmethod
-def isConnect(node, target, graph):
-    if dfs(node, target, graph):
-        return True
-    else:
-        return False
-
+            
+    return False
 
 if __name__ == "__main__":
 
@@ -35,5 +29,5 @@ if __name__ == "__main__":
     '11':['10']
     }
 
-    print(isConnect('1', '11', graph))  # Traverse to each node of a graph
+    print(dfs('1', '12', graph))  # Traverse to each node of a graph
 

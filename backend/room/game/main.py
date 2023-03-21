@@ -1,38 +1,24 @@
-from host.models import Host
-import step
+from step import Step
 
-class Playing(step.Step):
+
+class Room(Step):
+    def __init__(cls, host: object):
+        super().__init__(host)
 
     @classmethod
-    def main(cls):
-        def __init__(host:classmethod):
-            cls.host = host
-            cls.StatusType = host.room_status
-            cls.initialize()
-
-        cls.host(room_status='Open').save()
+    def launch(cls) -> None:        
+        while cls.StatusType != 'Closed': # while the game is not closed, execute the following step
         
-        while cls.StatusType == 'Opening':
-            # waiting process
-            is_opening = cls.opening()
-            if is_opening != True:
-                cls.StatusType = 'Wait'
+            if cls.StatusType == 'Opening': # open the room and wait for player to join in
+                cls.opening()
+                
+            elif cls.StatusType == 'Waiting': # wait for user to commit their order
+                cls.waiting()
 
-        while cls.StatusType != 'Closing':
-        
-            while cls.StatusType == 'Wait':
-                # waiting process
-                is_waiting = cls.waiting()
-                if is_waiting != True:
-                   cls.StatusType = 'Check'
-            
-            while cls.StatusType == 'Check':
-                # Checking the closeing conditions
-                is_finish = cls.checking()
-                if is_finish:
-                    cls.StatusType = 'Closing'
-                else:
-                    cls.StatusType = 'Check'
+            elif cls.StatusType == 'Checking': # Check the closeing conditions
+                cls.checking()
 
+            elif cls.StatusType == 'ending':  # the status before the room are totaly closed.
+                cls.ending()
 
-        cls.Closing() 
+        cls.closed()

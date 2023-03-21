@@ -9,7 +9,8 @@ class Host(models.Model):
         Opening = 'Open', _('Opening')
         Waiting = 'Wait' , _('Waiting')
         Checking = 'Check', _('Checking')
-        Closing = 'Close', _('Closing')
+        Ending = 'End', _('Ending')
+        Closed = 'Closed', _('Closed')
 
     total_user = models.IntegerField(default=1)
     alive_user = models.IntegerField(default=1)
