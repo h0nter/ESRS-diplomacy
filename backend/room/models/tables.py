@@ -109,6 +109,8 @@ class Order(models.Model):
     
 class Outcome(Order):
     # copy of Orders - show the orders that actually happened
+    order_reference = models.ForeignKey(Order,on_delete=models.DO_NOTHING,related_name='order_reference')
+    validation = models.BooleanField()
     class Meta:
         proxy = True
         verbose_name_plural = 'Outcomes'

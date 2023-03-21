@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Enabling CORS
+    # Django package, enable CORS service
     'corsheaders',
     # apps
     'room.apps.RoomConfig',
