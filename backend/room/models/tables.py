@@ -78,7 +78,7 @@ class Turn(models.Model):
         return str(self.pk)
     # set the close_time while save, automatactly add 2 hours
     def save(self, *args, **kwargs):
-        self.close_time = self.build_time + datetime.timedelta(hours=2)
+        #self.close_time = self.build_time + datetime.timedelta(hours=2)
         super(Turn, self).save(*args, **kwargs)
 
 # want the order to be kept for history, even if unit is destoryed later
