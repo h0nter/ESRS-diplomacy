@@ -20,13 +20,17 @@ class room_app_unitTest1(TestCase):
         cls.turn = Turn.objects.create(year=1994)
         cls.orderA = Order.objects.create(instruction='MVE', turn=cls.turn, target_unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
 
-    # def test_insert(self):
-    #     from .initial_insert import InitialInsert as II
-    #     II.all_insert()
-
     def test_build(self):
         army = UnitFactory.build_unit(self.orderA)
         self.assertTrue(type(army) is Army)
+        self.assertTrue(type(army.unit) is Unit)
+        self.assertTrue(army.unit == self.unitA)
+        self.assertFalse(army.can_float)
+        self.assertTrue(type(army.location) is Location)
+        self.assertTrue(army.location == self.locationA)
+        self.assertTrue(type(army.country) is Country)
+        self.assertTrue(army.country == self.countryA)
+
 
     #Each test takes self as a parameter
     def test_before_move(self):
