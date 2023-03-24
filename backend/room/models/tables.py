@@ -63,9 +63,10 @@ class Unit(models.Model):
     can_float = models.BooleanField(default=False)
 
     def move(self,order):
-        print('unit ')
         if(type(order) is Order):
             Unit.objects.filter(pk=self.pk).update(location=order.target_location)
+        else:
+            raise TypeError('Type should be Order')
 #         # print('after')
 #         # print(Unit.objects.filter(pk=self.unit.pk).first().location)
 #         # self.unit = Unit.objects.filter(pk=self.unit.pk).first()
