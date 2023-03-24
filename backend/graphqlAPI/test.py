@@ -25,7 +25,7 @@ class MyFancyTestCase(GraphQLTestCase):
             querySyntax = "query{ " + tableName + " {id} }"
             response = self.query(querySyntax)
             content = json.loads(response.content)
-            print(content)
+            #print(content)
 
             # This validates the status code and if you get errors
             self.assertResponseNoErrors(response)

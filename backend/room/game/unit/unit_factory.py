@@ -1,4 +1,4 @@
-from room.game.unit.units import UnitParent
+from room.game.unit.units import AbstractUnit
 from .units import Army, Fleet
 from room.models.tables import Order
 
@@ -6,7 +6,7 @@ from room.models.tables import Order
 class UnitFactory:
     # input with a order object
     @staticmethod
-    def build_unit(order:Order) -> UnitParent:
+    def build_unit(order:Order) -> AbstractUnit:
         # try:
         if order.target_unit.can_float: 
             return Fleet(order)

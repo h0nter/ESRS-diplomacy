@@ -27,10 +27,10 @@ class room_app_unitTest1(TestCase):
         self.assertTrue(type(army.unit) is Unit)
         self.assertTrue(army.unit == self.unitA)
         self.assertFalse(army.can_float)
-        self.assertTrue(type(army.location) is Location)
-        self.assertTrue(army.location == self.locationA)
-        self.assertTrue(type(army.country) is Country)
-        self.assertTrue(army.country == self.countryA)
+        self.assertTrue(type(army.unit.location) is Location)
+        self.assertTrue(army.unit.location == self.locationA)
+        self.assertTrue(type(army.unit.owner) is Country)
+        self.assertTrue(army.unit.owner == self.countryA)
 
 
     #Each test takes self as a parameter
@@ -38,14 +38,17 @@ class room_app_unitTest1(TestCase):
         #self then relates to the database objects
         print(self.orderA)
         army = UnitFactory.build_unit(self.orderA)
-        self.assertNotEqual(army.location,self.orderA.target_location)
+        self.assertNotEqual(army.unit.location,self.orderA.target_location)
 
 
     #def test_abs(self):
         #abs = AbstractUnit(self.orderA)
         #self.assertEqual(abs.order, self.orderA)
 
-    #def test_move(self):
-        # army = UnitFactory.build_unit(self.orderA)
-        # army.move()
-        # self.assertEqual(army.location, self.orderA.target_location)
+    def test_move(self):
+        army:AbstractUnit = UnitFactory.build_unit(self.orderA)
+        before_location = army.unit.location 
+        print('before_location')
+        print(before_location)
+        army.move()
+        self.assertNotEqual(before_location, army.unit.location)
