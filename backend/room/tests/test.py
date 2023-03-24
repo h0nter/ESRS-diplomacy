@@ -24,13 +24,12 @@ class room_app_unitTest1(TestCase):
     def test_build(self):
         army = UnitFactory.build_unit(self.orderA)
         self.assertTrue(type(army) is Army)
-        self.assertTrue(type(army.unit) is Unit)
-        self.assertTrue(army.unit == self.unitA)
+        self.assertTrue(army == self.unitA)
         self.assertFalse(army.can_float)
-        self.assertTrue(type(army.unit.location) is Location)
-        self.assertTrue(army.unit.location == self.locationA)
-        self.assertTrue(type(army.unit.owner) is Country)
-        self.assertTrue(army.unit.owner == self.countryA)
+        self.assertTrue(type(army.location) is Location)
+        self.assertTrue(army.location == self.locationA)
+        self.assertTrue(type(army.owner) is Country)
+        self.assertTrue(army.owner == self.countryA)
 
 
     #Each test takes self as a parameter
@@ -38,7 +37,7 @@ class room_app_unitTest1(TestCase):
         #self then relates to the database objects
         print(self.orderA)
         army = UnitFactory.build_unit(self.orderA)
-        self.assertNotEqual(army.unit.location,self.orderA.target_location)
+        self.assertNotEqual(army.location,self.orderA.target_location)
 
 
     #def test_abs(self):
@@ -50,5 +49,5 @@ class room_app_unitTest1(TestCase):
         before_location = army.location 
         print('before_location')
         print(before_location)
-        army.move()
+        army.move(self.orderA)
         self.assertNotEqual(before_location, army.location)

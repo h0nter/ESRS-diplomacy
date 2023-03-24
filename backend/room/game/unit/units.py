@@ -5,6 +5,7 @@ class Army(Unit):
         super().__init__(order)
     
     def move(self):
+        #validate move
         super().move()
         pass
 
