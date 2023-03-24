@@ -1,6 +1,6 @@
 # Create your tests here.
 from django.test import TestCase
-from room.game.unit.abstract_unit import AbstractUnit
+# from room.game.unit.abstract_unit import AbstractUnit
 from room.game.unit.units import Army
 from room.models.tables import Map,Country,Location,Next_to,Order,Outcome,Turn,Unit
 from room.game.unit.unit_factory import UnitFactory
@@ -46,9 +46,9 @@ class room_app_unitTest1(TestCase):
         #self.assertEqual(abs.order, self.orderA)
 
     def test_move(self):
-        army:AbstractUnit = UnitFactory.build_unit(self.orderA)
-        before_location = army.unit.location 
+        army:Unit = UnitFactory.build_unit(self.orderA)
+        before_location = army.location 
         print('before_location')
         print(before_location)
         army.move()
-        self.assertNotEqual(before_location, army.unit.location)
+        self.assertNotEqual(before_location, army.location)

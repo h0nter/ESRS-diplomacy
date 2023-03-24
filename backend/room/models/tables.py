@@ -62,6 +62,22 @@ class Unit(models.Model):
     location = models.ForeignKey(Location,on_delete=models.CASCADE)
     can_float = models.BooleanField(default=False)
 
+    def move(self):
+        print('unit ')
+#         # print(Unit.objects.filter(pk=self.unit.pk).first().location)
+#         print('location')
+#         print(self.order.target_location)
+#         # Unit.objects.filter(pk=self.unit.pk).update(location=self.order.target_location)
+#         # print('after')
+#         # print(Unit.objects.filter(pk=self.unit.pk).first().location)
+#         # self.unit = Unit.objects.filter(pk=self.unit.pk).first()
+
+#         self.unit.location = self.order.target_location
+#         self.unit.save()
+#         print(self.unit.location)
+
+    #def support(self):
+    # NEEDED?
     
     def __str__(self):
         return str(self.pk)

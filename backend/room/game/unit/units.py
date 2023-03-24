@@ -1,4 +1,3 @@
-from room.game.unit.abstract_unit import AbstractUnit
 from room.models.tables import Country, Location, Order, Unit
 
 class Army(Unit):
@@ -10,11 +9,11 @@ class Army(Unit):
         pass
 
     def support(self):
-        super().support()
+        #super().support()
         pass
 
 
-class Fleet(AbstractUnit):
+class Fleet(Unit):
     def __init__(self, order) -> None:
         super().__init__(order)
 
