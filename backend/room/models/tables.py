@@ -67,21 +67,37 @@ class Unit(models.Model):
             Unit.objects.filter(pk=self.pk).update(location=order.target_location)
         else:
             raise TypeError('Type should be Order')
-#         # print('after')
-#         # print(Unit.objects.filter(pk=self.unit.pk).first().location)
-#         # self.unit = Unit.objects.filter(pk=self.unit.pk).first()
-
-#         self.unit.location = self.order.target_location
-#         self.unit.save()
-#         print(self.unit.location)
-
-    #def support(self):
-    # NEEDED?
     
     def __str__(self):
         return str(self.pk)
     class Meta:
+        abstract = True
         verbose_name_plural = 'Units'
+
+
+# Moving an actual Unit is done via the Parent Class Unit
+# Calling move(order), this changes the location in the database
+class Army(Unit):
+    def validate_move(self)-> bool:
+        return True
+    
+    def validate_support(self) -> bool:
+        return True
+
+
+class Fleet(Unit):
+    def validate_move(self) -> bool:
+        return True
+
+    def validate_support(self) -> bool:
+        return True
+
+    def validate_convoy(self) -> bool:
+        return True
+    #         self.unit = Unit.objects.filter(pk=self.unit.pk).first()
+    #         self.unit.location = self.order.target_location
+    #         self.unit.save()
+
 
 class Turn(models.Model):
     year = models.IntegerField()
@@ -97,8 +113,35 @@ class Turn(models.Model):
         super(Turn, self).save(*args, **kwargs)
 
 class OrderManager(models.Manager):
-    pass
-    # validate all orders
+    def validate_order_table(self):
+        self.legitamise_orders()
+        self.calculate_moves()
+        self.evaluate_calulations()
+        self.perform_operations()
+        pass
+
+    # remove orders that are theoritcally possible
+    def legitamise_orders(self):
+        #move
+        #support
+        #convoy
+        pass
+
+    # calculate tallies 
+    def calculate_moves(self):
+        # move/support
+        # each location added to list and tallied
+        pass
+
+    # evalulate tallies -> put in table?
+    def evaluate_calulations(self) :
+        # for each calculation evaluate
+        # those that fail, order cancels
+        pass
+
+    # record Orders in Outcome table and Move Units
+    def perform_operations(self):
+        pass
 
 # want the order to be kept for history, even if unit is destoryed later
 class Order(models.Model):
