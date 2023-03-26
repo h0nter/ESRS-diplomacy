@@ -12,7 +12,7 @@ class Query(graphene.ObjectType):
     locations = graphene.List(LocationType)
     map = graphene.List(MapType)
     country = graphene.List(CountryType)
-    Map_Polygon = graphene.List(Map_PolygonType)
+    map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
