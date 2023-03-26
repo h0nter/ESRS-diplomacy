@@ -126,6 +126,10 @@ class OrderManager(models.Manager):
         #move
         #support
         #convoy
+
+        # current?? - input turn number somehow
+        for order in Order.objects.filter(turn='current'):
+            pass
         pass
 
     # calculate tallies 
@@ -140,8 +144,10 @@ class OrderManager(models.Manager):
         # those that fail, order cancels
         pass
 
-    # record Orders in Outcome table and Move Units
+    # Move Units
     def perform_operations(self):
+        for successful_outcome in Outcome.objects.filter(validation=True):
+            successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference)
         pass
 
 # want the order to be kept for history, even if unit is destoryed later
