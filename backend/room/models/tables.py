@@ -114,21 +114,27 @@ class Turn(models.Model):
         super(Turn, self).save(*args, **kwargs)
 
 class OrderManager(models.Manager):
-    def validate_order_table(self):
-        self.legitamise_orders()
+    def validate_order_table(self,turn:Turn):
+        self.legitamise_orders(turn)
         self.calculate_moves()
         self.evaluate_calulations()
         self.perform_operations()
         pass
 
-    # remove orders that are theoritcally possible
-    def legitamise_orders(self):
-        #move
-        #support
-        #convoy
-
+    # remove orders that are theoritcally impossible
+    def legitamise_orders(self,turn:Turn):
         # current?? - input turn number somehow
-        for order in Order.objects.filter(turn='current'):
+        for order in Order.objects.filter(turn=turn):
+            # check moves
+            if(order.instruction == 'MVE'):
+                pass
+            # check supports
+            if(order.instruction == 'SPT'):
+                pass
+            # check convoy
+            if(order.instruction == 'CVY'):
+                pass
+            # Hold auto pass?
             pass
         pass
 
