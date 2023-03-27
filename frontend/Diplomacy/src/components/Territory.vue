@@ -1,5 +1,5 @@
 <template>
-  <g :title="name" :id="name" @mouseenter="$emit('territoryHovered', name)">
+  <g :title="name" :id="name" :coast="isCoast"  @mouseenter="$emit('territoryHovered', name)">
     <polygon v-if="polygon1" :class="type1" :points="polygon1"/>
     <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
     <path v-if="path" :class="type1" :d="path"/>
@@ -20,6 +20,7 @@
     polygon2: String,
     type2: String,
     path: String,
+    isCoast: Boolean,
     text: String,
     textX: Number,
     textY: Number,

@@ -92,9 +92,11 @@ export type OrderType = {
   currentLocation: LocationType;
   id: Scalars['ID'];
   instruction: RoomOrderInstructionChoices;
+  outcome?: Maybe<OutcomeType>;
   referenceUnit?: Maybe<UnitType>;
   referenceUnitCurrentLocation?: Maybe<LocationType>;
   referenceUnitNewLocation?: Maybe<LocationType>;
+  references: Array<OutcomeType>;
   targetLocation?: Maybe<LocationType>;
   targetUnit: UnitType;
   turn: TurnType;
@@ -105,20 +107,23 @@ export type OutcomeType = {
   currentLocation: LocationType;
   id: Scalars['ID'];
   instruction: RoomOrderInstructionChoices;
+  orderPtr: OrderType;
+  orderReference: OrderType;
   referenceUnit?: Maybe<UnitType>;
   referenceUnitCurrentLocation?: Maybe<LocationType>;
   referenceUnitNewLocation?: Maybe<LocationType>;
   targetLocation?: Maybe<LocationType>;
   targetUnit: UnitType;
   turn: TurnType;
+  validation: Scalars['Boolean'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  MapPolygon?: Maybe<Array<Maybe<Map_PolygonType>>>;
   country?: Maybe<Array<Maybe<CountryType>>>;
   locations?: Maybe<Array<Maybe<LocationType>>>;
   map?: Maybe<Array<Maybe<MapType>>>;
+  mapPolygon?: Maybe<Array<Maybe<Map_PolygonType>>>;
   nextTo?: Maybe<Array<Maybe<Next_ToType>>>;
   orders?: Maybe<Array<Maybe<OrderType>>>;
   outcomes?: Maybe<Array<Maybe<OutcomeType>>>;
