@@ -12,6 +12,7 @@
     }
   ],
   "compilerOptions": {
-    "isolatedModules": true
+    "isolatedModules": true,
+    "types": ["vitest/globals"],
   }
 }
