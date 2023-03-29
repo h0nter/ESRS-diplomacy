@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 
 
@@ -15,7 +16,7 @@ class Host(models.Model):
     total_user = models.IntegerField(default=1)
     alive_user = models.IntegerField(default=1)
     location_num = models.IntegerField()
-    room_status = models.CharField(max_length=5,choices=StatusType.choices,default=StatusType.Initial)
+    room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Initial)
     
     class Meta:
         verbose_name_plural = 'Host'
@@ -25,7 +26,7 @@ class Host(models.Model):
 
 
 # Create your models here.
-class User(models.Model):
+class User(AbstractBaseUser):
     name = models.CharField(max_length= 30, unique=True)
     cookies = models.CharField(max_length= 32, unique=True)
-    room = models.ForeignKey(Host,on_delete=models.CASCADE)
+    room = models.ForeignKey(Host,on_delete=models.CASCADE,blank=True, default='')
