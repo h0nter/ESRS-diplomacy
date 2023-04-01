@@ -100,24 +100,31 @@ class OrderManager(models.Manager):
     def legitamise_orders(self,turn:Turn):
         # current?? - input turn number somehow
         for order in Order.objects.filter(turn=turn):
-            # check moves
-            if(order.instruction == 'MVE'):
-                # if not valid
-                if(not order.target_unit.validate_move(order)):
-                   pass
-            # check supports
-            if(order.instruction == 'SPT'):
-                # if not valid
-                if(not order.target_unit.validate_support(order,turn)):
-                   pass
-            # check convoy
-            if(order.instruction == 'CVY'):
-                # if not valid
-                if(not order.target_unit.validate_convoy(order,turn) or type(order.target_unit) is not Fleet):
-                   pass
-            # Hold auto pass?
-            pass
+            current_outcome = Outcome.objects.create(order_reference=order,validation=True)
+            # check current_location is same as actual
+            if(order.current_location == order.target_unit.location):
+                # check moves
+                if(order.instruction == 'MVE'):
+                    # if not valid
+                    if(not order.target_unit.validate_move(order)):
+                        current_outcome.validation = False
+                # check supports
+                elif(order.instruction == 'SPT'):
+                    # if not valid
+                    if(not order.target_unit.validate_support(order,turn)):
+                        current_outcome.validation = False
+                # check convoy
+                elif(order.instruction == 'CVY'):
+                    # if not valid
+                    if(not order.target_unit.validate_convoy(order,turn) or type(order.target_unit) is not Fleet):
+                        current_outcome.validation = False
+                # Hold auto pass
+                else:
+                    pass
+            else:
+                current_outcome.validation = False
 
+        # check convoys can actually happen, if not invalidate all involved
         # do dfs convoy here
 
         pass
