@@ -105,4 +105,3 @@ class OrderManager(models.Manager):
     def perform_operations(self):
         for successful_outcome in Outcome.objects.filter(validation=True):
             successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference)
-        pass
