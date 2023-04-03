@@ -87,17 +87,3 @@ class Fleet(Unit):
     #         self.unit = Unit.objects.filter(pk=self.unit.pk).first()
     #         self.unit.location = self.order.target_location
     #         self.unit.save()
-
-    # should be static but how to reference inside
-    def convoy_dfs(self, node, target, graph, visited=set()):
-        visited.add(node)
-        if node == target:
-            return True
-        for child in graph[node]:
-            if child not in visited:  # Check whether the node is visited or not
-                result = self.convoy_dfs(child, target, graph, visited)  # Call the dfs recursively
-                
-                if result is True:
-                    return True
-                
-        return False

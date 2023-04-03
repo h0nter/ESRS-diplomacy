@@ -11,9 +11,23 @@ class OrderManager(models.Manager):
         self.perform_operations()
         pass
 
+    # should be static but how to reference inside
+    # also don't know where to put this
+    def convoy_dfs(self, node, target, graph, visited=set()):
+        visited.add(node)
+        if node == target:
+            return True
+        for child in graph[node]:
+            if child not in visited:  # Check whether the node is visited or not
+                result = self.convoy_dfs(child, target, graph, visited)  # Call the dfs recursively
+                
+                if result is True:
+                    return True
+                
+        return False
+
     # remove orders that are theoritcally impossible
     def legitamise_orders(self,turn:Turn):
-        # current?? - input turn number somehow
         all_moves_requiring_convoys = []
         for order in Order.objects.filter(turn=turn):
             current_outcome = Outcome.objects.create(order_reference=order,validation=True)
@@ -53,12 +67,27 @@ class OrderManager(models.Manager):
             if type(outcome) is Outcome:
                 # get convoys relating to move
                 related_convoys = Outcome.objects.filter(validation=True)\
-                                            .filter(order_reference__turn=turn)\
-                                            .filter(order_reference__instruction='CVY')\
-                                            .filter(order_reference__reference_unit=outcome.order_reference.target_unit)
-
-
-        pass
+                                    .filter(order_reference__turn=turn)\
+                                    .filter(order_reference__instruction='CVY')\
+                                    .filter(order_reference__reference_unit=outcome.order_reference.target_unit)
+                graph = {}
+                # add current and last locations
+                graph[outcome.order_reference.current_location.pk] = \
+                        Next_to.objects.filter(location=outcome.order_reference.current_location).values_list('pk',flat=True)
+                graph[outcome.order_reference.target_location.pk] = \
+                        Next_to.objects.filter(location=outcome.order_reference.target_location).values_list('pk',flat=True)
+                # add convoy locations
+                for convoy in related_convoys:
+                    # create a graph of pks, similar to '1':['2','3','4']
+                    graph[convoy.order_reference.current_location.pk] = \
+                        Next_to.objects.filter(location=convoy.order_reference.current_location).values_list('pk',flat=True)
+                
+                if(not self.convoy_dfs(outcome.order_reference.current_location.pk,
+                                       outcome.order_reference.target_location.pk,graph)):
+                    #if convoy didn't work
+                    outcome.validation = False
+                    for convoy in related_convoys:
+                        convoy.validation = False
 
     # calculate tallies 
     def calculate_moves(self):
