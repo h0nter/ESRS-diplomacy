@@ -36,6 +36,9 @@ class Query(graphene.ObjectType):
     def resolve_map(root, info, **kwargs):
         return Map.objects.all()
 
+    # def resolve_location_map_polygon(root, info, **kwargs):
+    #     return Location.objects.grab_polygons_and_location()
+
     def resolve_map_polygon(root, info, **kwargs):
         return Map_Polygon.objects.all()
 

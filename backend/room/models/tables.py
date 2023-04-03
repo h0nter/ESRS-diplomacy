@@ -19,14 +19,24 @@ class Country(models.Model):
     class Meta:
         verbose_name_plural = 'Countries'
 
+# class LocationManager(models.Manager):
+#     def get_queryset(self):
+#         return super().get_queryset().polygons
+
+
 class Location(models.Model):
+    #objects = LocationManager()
     name = models.CharField(max_length=30)
     unit_spawn = models.BooleanField(default=False)
     is_sea = models.BooleanField(default=False)
     is_coast = models.BooleanField(default=False)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
-    text_pos = models.CharField(max_length=10)  
+    text_pos_x = models.CharField(max_length=4)
+    text_pos_y = models.CharField(max_length=4)
     current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
+
+    # def grab_polygons(self):
+    #     return Map_Polygon.objects.filter(location=self)
 
     class Meta:
         verbose_name_plural = 'Locations'
@@ -35,8 +45,16 @@ class Location(models.Model):
 
 # a location can have many polygons
 class Map_Polygon(models.Model):
-    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    class Polygon_Colour(models.TextChoices):
+        LAND = 'LAND', _('LAND')
+        AQUA = 'AQUA', _('AQUA')
+        HASH = 'HASH', _('HASH')
+
+    location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='polygons')
     polygon = models.CharField(max_length=500)
+    is_path = models.BooleanField()
+    colour = models.CharField(max_length=4,choices=Polygon_Colour.choices,default=Polygon_Colour.LAND)
+
     class Meta:
         verbose_name_plural = 'Map_Polygons'
     def __str__(self):
