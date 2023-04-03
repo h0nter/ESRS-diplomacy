@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 import datetime
 
+from room.game.order.orderManager import OrderManager
+
 class Map(models.Model):
     name = models.CharField(max_length=30)
     max_countries = models.IntegerField()
@@ -88,65 +90,6 @@ class Turn(models.Model):
         #self.close_time = self.build_time + datetime.timedelta(hours=2)
         super(Turn, self).save(*args, **kwargs)
 
-class OrderManager(models.Manager):
-    def validate_order_table(self,turn:Turn):
-        self.legitamise_orders(turn)
-        self.calculate_moves()
-        self.evaluate_calulations()
-        self.perform_operations()
-        pass
-
-    # remove orders that are theoritcally impossible
-    def legitamise_orders(self,turn:Turn):
-        # current?? - input turn number somehow
-        for order in Order.objects.filter(turn=turn):
-            current_outcome = Outcome.objects.create(order_reference=order,validation=True)
-            # check current_location is same as actual
-            if(order.current_location == order.target_unit.location):
-                # check moves
-                if(order.instruction == 'MVE'):
-                    # if not valid
-                    if(not order.target_unit.validate_move(order)):
-                        current_outcome.validation = False
-                # check supports
-                elif(order.instruction == 'SPT'):
-                    # if not valid
-                    if(not order.target_unit.validate_support(order,turn)):
-                        current_outcome.validation = False
-                # check convoy
-                elif(order.instruction == 'CVY'):
-                    # if not valid
-                    if(not order.target_unit.validate_convoy(order,turn) or type(order.target_unit) is not Fleet):
-                        current_outcome.validation = False
-                # Hold auto pass
-                else:
-                    pass
-            else:
-                current_outcome.validation = False
-
-        # check convoys can actually happen, if not invalidate all involved
-        # do dfs convoy here
-
-        pass
-
-    # calculate tallies 
-    def calculate_moves(self):
-        # move/support
-        # each location added to list and tallied
-        pass
-
-    # evalulate tallies -> put in table?
-    def evaluate_calulations(self) :
-        # for each calculation evaluate
-        # those that fail, order cancels
-        pass
-
-    # Move Units
-    def perform_operations(self):
-        for successful_outcome in Outcome.objects.filter(validation=True):
-            successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference)
-        pass
-
 # want the order to be kept for history, even if unit is destoryed later
 class Order(models.Model):
 
@@ -186,91 +129,3 @@ class Outcome(models.Model):
     def __str__(self):
         return str(self.pk)
     
-
-# Moving an actual Unit is done via the Parent Class Unit
-# Calling move(order), this changes the location in the database
-class Army(Unit):
-    def validate_move(self,order:Order) -> bool:
-        if((not order.current_location.is_sea or order.current_location.is_coast) and
-           (not order.target_location.is_sea or order.target_location.is_coast)):
-            # land to land - move
-            # complicated due to constantinopale - sea and coast at same time..
-            next_to = Next_to.objects.filter(location=order.current_location)\
-                .filter(next_to=order.target_location)
-            if(len(next_to) == 1):
-                return True
-            else:
-                return False
-        elif(order.current_location.is_coast and order.target_location.is_coast):
-            # coast to coast - convoy assist
-            # theoritically true as long as convoys ok
-            return True
-        else:
-            return False
-    
-    def validate_support(self,order:Order,turn:Turn) -> bool:
-        if((not order.current_location.is_sea or order.current_location.is_coast) and 
-           type(order.reference_unit_new_location) is Location):
-               # should be able to move where it is supporting
-            if(not order.reference_unit_new_location.is_sea or order.reference_unit_new_location.is_coast):
-                # check adjacent
-                next_to = Next_to.objects.filter(location=order.current_location)\
-                    .filter(next_to=order.reference_unit_new_location)
-                if(len(next_to) == 1):
-                    # able to support check if support possible
-                    # check referenced Unit is making same Order
-                    support_unit_order = Order.objects.filter(turn=turn)\
-                        .filter(target_unit=order.target_unit)\
-                        .filter(current_location=order.reference_unit_current_location)\
-                        .filter(target_location=order.reference_unit_new_location)\
-                        .filter(instruction='MVE')
-                    if(len(support_unit_order) == 1):
-                        return True
-        return False
-
-
-class Fleet(Unit):
-    def validate_move(self,order:Order) -> bool:
-        if(( order.current_location.is_sea or order.current_location.is_coast) and
-           ( order.target_location.is_sea or order.target_location.is_coast)):
-            # sea to sea, sea to coast, coast to sea, coast to coast
-            next_to = Next_to.objects.filter(location=order.current_location).filter(next_to=order.target_location)
-            if(len(next_to) == 1):
-                return True
-        return False
-
-    def validate_support(self,order:Order,turn:Turn) -> bool:
-        if((order.current_location.is_sea or order.current_location.is_coast) and 
-           type(order.reference_unit_new_location) is Location):
-               # should be able to move where it is supporting
-            if( order.reference_unit_new_location.is_sea or order.reference_unit_new_location.is_coast):
-                # check adjacent
-                next_to = Next_to.objects.filter(location=order.current_location)\
-                    .filter(next_to=order.reference_unit_new_location)
-                if(len(next_to) == 1):
-                    # able to support check if support possible
-                    # check referenced Unit is making same Order
-                    support_unit_order = Order.objects.filter(turn=turn)\
-                        .filter(target_unit=order.target_unit)\
-                        .filter(current_location=order.reference_unit_current_location)\
-                        .filter(target_location=order.reference_unit_new_location)\
-                        .filter(instruction='MVE')
-                    if(len(support_unit_order) == 1):
-                        return True
-        return False
-
-    def validate_convoy(self,order:Order,turn:Turn) -> bool:
-        # validate theoretical convoy
-        # has to be in sea
-        if(order.current_location.is_sea):
-            convoy_unit_order = Order.objects.filter(turn=turn)\
-                        .filter(target_unit=order.target_unit)\
-                        .filter(current_location=order.reference_unit_current_location)\
-                        .filter(target_location=order.reference_unit_new_location)\
-                        .filter(instruction='MVE')
-            if(len(convoy_unit_order) == 1):
-                        return True
-        return False
-    #         self.unit = Unit.objects.filter(pk=self.unit.pk).first()
-    #         self.unit.location = self.order.target_location
-    #         self.unit.save()
