@@ -19,13 +19,22 @@ class Country(models.Model):
     class Meta:
         verbose_name_plural = 'Countries'
 
-# class LocationManager(models.Manager):
-#     def get_queryset(self):
-#         return super().get_queryset().polygons
+class LocationManager(models.Manager):
+    # def get_polgonset(self):
+    #     return super().get_queryset().prefetch_related('map_polygon_set')
+
+    def grab_polygons_and_location(self):
+        return self.get_queryset().annotate(
+            related_polygons = models.Subquery(
+                Map_Polygon.objects.filter(
+                    location_id=models.OuterRef('id')
+                )
+            )
+        )
 
 
 class Location(models.Model):
-    #objects = LocationManager()
+    objects = LocationManager()
     name = models.CharField(max_length=30)
     unit_spawn = models.BooleanField(default=False)
     is_sea = models.BooleanField(default=False)
