@@ -14,7 +14,6 @@ class Query(graphene.ObjectType):
     country = graphene.List(CountryType)
     map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
-    location_map_polygon = graphene.List(LocationType,Map_PolygonType)
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
@@ -36,9 +35,6 @@ class Query(graphene.ObjectType):
 
     def resolve_map(root, info, **kwargs):
         return Map.objects.all()
-
-    def resolve_location_map_polygon(root, info, **kwargs):
-        return Location.objects.grab_polygons_and_location()
 
     def resolve_map_polygon(root, info, **kwargs):
         return Map_Polygon.objects.all()
