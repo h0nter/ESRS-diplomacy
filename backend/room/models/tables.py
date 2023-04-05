@@ -41,14 +41,14 @@ class LocationManager(models.Manager):
 
 
 class Location(models.Model):
-    objects = LocationManager()
+    # objects = LocationManager()
     name = models.CharField(max_length=30)
     unit_spawn = models.BooleanField(default=False)
     is_sea = models.BooleanField(default=False)
     is_coast = models.BooleanField(default=False)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
-    text_pos_x = models.CharField(max_length=4)
-    text_pos_y = models.CharField(max_length=4)
+    text_pos_x = models.IntegerField(max_length=4)
+    text_pos_y = models.IntegerField(max_length=4)
     current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
 
     # def grab_polygons(self):
@@ -68,7 +68,7 @@ class Map_Polygon(models.Model):
 
     location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='polygons')
     polygon = models.CharField(max_length=500)
-    is_path = models.BooleanField()
+    is_path = models.BooleanField(default=False)
     colour = models.CharField(max_length=4,choices=Polygon_Colour.choices,default=Polygon_Colour.LAND)
 
     class Meta:
