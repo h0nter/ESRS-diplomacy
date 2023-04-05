@@ -7,7 +7,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[220, 70]",
+            "text_pos_x": 220,
+            "text_pos_y":  70,
             "map": 1
         }
     },
@@ -19,7 +20,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[190, 230]",
+            "text_pos_x": 190,
+            "text_pos_y":  230,
             "map": 1
         }
     },
@@ -31,7 +33,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[308, 460]",
+            "text_pos_x": 308,
+            "text_pos_y":  460,
             "map": 1
         }
     },
@@ -43,7 +46,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[392, 510]",
+            "text_pos_x": 392,
+            "text_pos_y":  510,
             "map": 1
         }
     },
@@ -55,7 +59,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[333, 460]",
+            "text_pos_x": 333,
+            "text_pos_y":  460,
             "map": 1
         }
     },
@@ -67,7 +72,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[510, 455]",
+            "text_pos_x": 510,
+            "text_pos_y":  455,
             "map": 1,
             "current_owner": 7
         }
@@ -80,7 +86,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[291, 470]",
+            "text_pos_x": 291,
+            "text_pos_y":  470,
             "map": 1
         }
     },
@@ -92,7 +99,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[585, 467]",
+            "text_pos_x": 585,
+            "text_pos_y":  467,
             "map": 1
         }
     },
@@ -104,7 +112,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[308, 260]",
+            "text_pos_x": 308,
+            "text_pos_y":  260,
             "map": 1
         }
     },
@@ -116,7 +125,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[440, 15]",
+            "text_pos_x": 440,
+            "text_pos_y":  15,
             "map": 1
         }
     },
@@ -128,7 +138,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[192, 321]",
+            "text_pos_x": 192,
+            "text_pos_y":  321,
             "map": 1
         }
     },
@@ -140,7 +151,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[272, 292]",
+            "text_pos_x": 272,
+            "text_pos_y":  292,
             "map": 1,
             "current_owner": 3
         }
@@ -153,7 +165,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[500, 418]",
+            "text_pos_x": 500,
+            "text_pos_y":  418,
             "map": 1
         }
     },
@@ -165,7 +178,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[283, 347]",
+            "text_pos_x": 283,
+            "text_pos_y":  347,
             "map": 1
         }
     },
@@ -177,7 +191,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[130, 345]",
+            "text_pos_x": 130,
+            "text_pos_y":  345,
             "map": 1,
             "current_owner": 2
         }
@@ -190,7 +205,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[350, 390]",
+            "text_pos_x": 350,
+            "text_pos_y":  390,
             "map": 1,
             "current_owner": 5
         }
@@ -203,7 +219,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[395, 443]",
+            "text_pos_x": 395,
+            "text_pos_y":  443,
             "map": 1
         }
     },
@@ -215,7 +232,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[185, 371]",
+            "text_pos_x": 185,
+            "text_pos_y":  371,
             "map": 1
         }
     },
@@ -227,7 +245,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[133, 201]",
+            "text_pos_x": 133,
+            "text_pos_y":  201,
             "map": 1
         }
     },
@@ -239,7 +258,8 @@
             "is_sea": true,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[435, 483]",
+            "text_pos_x": 435,
+            "text_pos_y":  483,
             "map": 1,
             "current_owner": 7
         }
@@ -252,7 +272,8 @@
             "is_sea": true,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[250, 235]",
+            "text_pos_x": 250,
+            "text_pos_y":  235,
             "map": 1
         }
     },
@@ -264,7 +285,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[455, 550]",
+            "text_pos_x": 455,
+            "text_pos_y":  550,
             "map": 1
         }
     },
@@ -276,7 +298,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[152, 202]",
+            "text_pos_x": 152,
+            "text_pos_y":  202,
             "map": 1,
             "current_owner": 1
         }
@@ -289,7 +312,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[135, 306]",
+            "text_pos_x": 135,
+            "text_pos_y":  306,
             "map": 1
         }
     },
@@ -301,7 +325,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[375, 160]",
+            "text_pos_x": 375,
+            "text_pos_y":  160,
             "map": 1
         }
     },
@@ -313,7 +338,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[355, 343]",
+            "text_pos_x": 355,
+            "text_pos_y":  343,
             "map": 1
         }
     },
@@ -325,7 +351,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[130, 400]",
+            "text_pos_x": 130,
+            "text_pos_y":  400,
             "map": 1
         }
     },
@@ -337,7 +364,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[352, 490]",
+            "text_pos_x": 352,
+            "text_pos_y":  490,
             "map": 1
         }
     },
@@ -349,7 +377,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[170, 457]",
+            "text_pos_x": 170,
+            "text_pos_y":  457,
             "map": 1
         }
     },
@@ -361,7 +390,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[328, 175]",
+            "text_pos_x": 328,
+            "text_pos_y":  175,
             "map": 1
         }
     },
@@ -373,7 +403,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[220, 265]",
+            "text_pos_x": 220,
+            "text_pos_y":  265,
             "map": 1
         }
     },
@@ -385,7 +416,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[210, 290]",
+            "text_pos_x": 210,
+            "text_pos_y":  290,
             "map": 1
         }
     },
@@ -397,7 +429,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[315, 520]",
+            "text_pos_x": 315,
+            "text_pos_y":  520,
             "map": 1
         }
     },
@@ -409,7 +442,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[95, 270]",
+            "text_pos_x": 95,
+            "text_pos_y":  270,
             "map": 1
         }
     },
@@ -421,7 +455,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[237, 285]",
+            "text_pos_x": 237,
+            "text_pos_y":  285,
             "map": 1,
             "current_owner": 3
         }
@@ -434,7 +469,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[138, 230]",
+            "text_pos_x": 138,
+            "text_pos_y":  230,
             "map": 1,
             "current_owner": 1
         }
@@ -447,7 +483,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[380, 260]",
+            "text_pos_x": 380,
+            "text_pos_y":  260,
             "map": 1
         }
     },
@@ -459,7 +496,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[160, 280]",
+            "text_pos_x": 160,
+            "text_pos_y":  280,
             "map": 1,
             "current_owner": 1
         }
@@ -472,7 +510,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[173, 412]",
+            "text_pos_x": 173,
+            "text_pos_y":  412,
             "map": 1,
             "current_owner": 2
         }
@@ -485,7 +524,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[50, 355]",
+            "text_pos_x": 50,
+            "text_pos_y":  355,
             "map": 1
         }
     },
@@ -497,7 +537,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[460, 265]",
+            "text_pos_x": 460,
+            "text_pos_y":  265,
             "map": 1,
             "current_owner": 6
         }
@@ -510,7 +551,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[235, 360]",
+            "text_pos_x": 235,
+            "text_pos_y":  360,
             "map": 1,
             "current_owner": 3
         }
@@ -523,7 +565,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[293, 493]",
+            "text_pos_x": 293,
+            "text_pos_y":  493,
             "map": 1,
             "current_owner": 4
         }
@@ -536,7 +579,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[65, 120]",
+            "text_pos_x": 65,
+            "text_pos_y":  120,
             "map": 1
         }
     },
@@ -548,7 +592,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[130, 536]",
+            "text_pos_x": 130,
+            "text_pos_y":  536,
             "map": 1
         }
     },
@@ -560,7 +605,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[250, 175]",
+            "text_pos_x": 250,
+            "text_pos_y":  175,
             "map": 1
         }
     },
@@ -572,7 +618,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[155, 358]",
+            "text_pos_x": 155,
+            "text_pos_y":  358,
             "map": 1,
             "current_owner": 2
         }
@@ -585,7 +632,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[168, 326]",
+            "text_pos_x": 168,
+            "text_pos_y":  326,
             "map": 1
         }
     },
@@ -597,7 +645,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[215, 408]",
+            "text_pos_x": 215,
+            "text_pos_y":  408,
             "map": 1
         }
     },
@@ -609,7 +658,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[22, 440]",
+            "text_pos_x": 22,
+            "text_pos_y":  440,
             "map": 1
         }
     },
@@ -621,7 +671,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[335, 283]",
+            "text_pos_x": 335,
+            "text_pos_y":  283,
             "map": 1
         }
     },
@@ -633,7 +684,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[257, 452]",
+            "text_pos_x": 257,
+            "text_pos_y":  452,
             "map": 1,
             "current_owner": 4
         }
@@ -646,7 +698,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[215, 330]",
+            "text_pos_x": 215,
+            "text_pos_y":  330,
             "map": 1
         }
     },
@@ -658,7 +711,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[410, 415]",
+            "text_pos_x": 410,
+            "text_pos_y":  415,
             "map": 1
         }
     },
@@ -670,7 +724,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[350, 450]",
+            "text_pos_x": 350,
+            "text_pos_y":  450,
             "map": 1
         }
     },
@@ -682,7 +737,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[540, 350]",
+            "text_pos_x": 540,
+            "text_pos_y":  350,
             "map": 1,
             "current_owner": 6
         }
@@ -695,7 +751,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[304, 325]",
+            "text_pos_x": 304,
+            "text_pos_y":  325,
             "map": 1
         }
     },
@@ -707,7 +764,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[255, 220]",
+            "text_pos_x": 255,
+            "text_pos_y":  220,
             "map": 1
         }
     },
@@ -719,7 +777,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[460, 510]",
+            "text_pos_x": 460,
+            "text_pos_y":  510,
             "map": 1,
             "current_owner": 7
         }
@@ -732,7 +791,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[85, 450]",
+            "text_pos_x": 85,
+            "text_pos_y":  450,
             "map": 1
         }
     },
@@ -744,7 +804,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[460, 149]",
+            "text_pos_x": 460,
+            "text_pos_y":  149,
             "map": 1,
             "current_owner": 6
         }
@@ -757,7 +818,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[300, 170]",
+            "text_pos_x": 300,
+            "text_pos_y":  170,
             "map": 1
         }
     },
@@ -769,7 +831,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[570, 535]",
+            "text_pos_x": 570,
+            "text_pos_y":  535,
             "map": 1
         }
     },
@@ -781,7 +844,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[305, 425]",
+            "text_pos_x": 305,
+            "text_pos_y":  425,
             "map": 1,
             "current_owner": 5
         }
@@ -794,7 +858,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[210, 555]",
+            "text_pos_x": 210,
+            "text_pos_y":  555,
             "map": 1
         }
     },
@@ -806,7 +871,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[240, 425]",
+            "text_pos_x": 240,
+            "text_pos_y":  425,
             "map": 1
         }
     },
@@ -818,7 +884,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[255, 380]",
+            "text_pos_x": 255,
+            "text_pos_y":  380,
             "map": 1
         }
     },
@@ -830,7 +897,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[245, 495]",
+            "text_pos_x": 245,
+            "text_pos_y":  495,
             "map": 1
         }
     },
@@ -842,7 +910,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[420, 340]",
+            "text_pos_x": 420,
+            "text_pos_y":  340,
             "map": 1
         }
     },
@@ -854,7 +923,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": true,
-            "text_pos": "[245, 407]",
+            "text_pos_x": 245,
+            "text_pos_y":  407,
             "map": 1,
             "current_owner": 4
         }
@@ -867,7 +937,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[307, 370]",
+            "text_pos_x": 307,
+            "text_pos_y":  370,
             "map": 1,
             "current_owner": 5
         }
@@ -880,7 +951,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[130, 275]",
+            "text_pos_x": 130,
+            "text_pos_y":  275,
             "map": 1
         }
     },
@@ -892,7 +964,8 @@
             "is_sea": false,
             "is_coast": false,
             "unit_spawn": true,
-            "text_pos": "[355, 304]",
+            "text_pos_x": 355,
+            "text_pos_y":  304,
             "map": 1,
             "current_owner": 6
         }
@@ -905,7 +978,8 @@
             "is_sea": true,
             "is_coast": false,
             "unit_spawn": false,
-            "text_pos": "[160, 491]",
+            "text_pos_x": 160,
+            "text_pos_y":  491,
             "map": 1
         }
     },
@@ -917,7 +991,8 @@
             "is_sea": false,
             "is_coast": true,
             "unit_spawn": false,
-            "text_pos": "[155, 254]",
+            "text_pos_x": 155,
+            "text_pos_y":  254,
             "map": 1
         }
     }
