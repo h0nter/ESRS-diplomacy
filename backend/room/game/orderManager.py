@@ -51,8 +51,7 @@ class OrderManager(models.Manager):
                 # check convoy
                 elif(order.instruction == 'CVY'):
                     # if not valid
-                    from room.game.unitTypes import Fleet
-                    if(not order.target_unit.validate_convoy(order,turn) or type(order.target_unit) is not Fleet):
+                    if(not order.target_unit.validate_convoy(order,turn) or not order.target_unit.can_float):
                         current_outcome.validation = False
                 # Hold auto pass
                 else:

@@ -1,6 +1,6 @@
 # Create your tests here.
 from django.test import TestCase
-from room.game.unitTypes import Unit, Army
+from room.game.unitTypes import Unit
 # from room.game.unit.abstract_unit import AbstractUnit
 from room.models.locations import Map,Country,Location,Next_to
 from room.models.order import Order,Outcome,Turn
