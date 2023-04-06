@@ -10,7 +10,7 @@ class Unit(models.Model):
 
     def move(self,location):
         if(type(location) is Location):
-            Unit.objects.filter(pk=self.pk).update(location=location)
+            self.location = location
         else:
             raise TypeError('Type should be Location')
     
@@ -23,6 +23,9 @@ class Unit(models.Model):
 # Moving an actual Unit is done via the Parent Class Unit
 # Calling move(order), this changes the location in the database
 class Army(Unit):
+    class Meta:
+        abstract = True
+
     def validate_move(self,order) -> bool:
         from room.models.locations import Next_to
         if((not order.current_location.is_sea or order.current_location.is_coast) and
@@ -66,6 +69,9 @@ class Army(Unit):
 
 
 class Fleet(Unit):
+    class Meta:
+        abstract = True
+
     def validate_move(self,order) -> bool:
         from room.models.locations import Next_to
         if(( order.current_location.is_sea or order.current_location.is_coast) and

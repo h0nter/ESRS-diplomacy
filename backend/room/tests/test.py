@@ -46,6 +46,5 @@ class room_app_unitTest1(TestCase):
     def test_move(self):
         army = self.orderA.target_unit
         before_location = army.location 
-        print(self.orderA.target_location)
         army.move(self.orderA.target_location)
         self.assertNotEqual(before_location,army.location)
