@@ -15,11 +15,15 @@ class room_app_unitTest1(TestCase):
         cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
         cls.locationA = Location.objects.create(name="location A",map=cls.map)
         cls.locationB = Location.objects.create(name="location B",map=cls.map)
+        cls.locationC = Location.objects.create(name='location C',map=cls.map)
         cls.nextToAB = Next_to.objects.create(location=cls.locationA, next_to=cls.locationB)
         cls.nextToBA = Next_to.objects.create(location=cls.locationB, next_to=cls.locationA)
+        cls.nextToCB = Next_to.objects.create(location=cls.locationC, next_to=cls.locationB)
+        cls.nextToBC = Next_to.objects.create(location=cls.locationB, next_to=cls.locationC)
         cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)
         cls.turn = Turn.objects.create(year=1994)
         cls.orderA = Order.objects.create(instruction='MVE', turn=cls.turn, target_unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
+        cls.orderB = Order.objects.create(instrucion='MVE', turn=cls.turn, target_unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationC)
 
     def test_build(self):
         army = self.orderA.target_unit
@@ -43,9 +47,15 @@ class room_app_unitTest1(TestCase):
         #abs = AbstractUnit(self.orderA)
         #self.assertEqual(abs.order, self.orderA)
 
+    # def test_valid_move(self):
+        
+
     def test_move(self):
         army = self.orderA.target_unit
         before_location = army.location 
         army.move(self.orderA.target_location)
         self.assertNotEqual(before_location,army.location)
         self.assertNotEqual(self.locationA,self.unitA.location)
+
+    # def test_invalid_move(self):
+    #     s
