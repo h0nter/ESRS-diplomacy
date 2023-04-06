@@ -1,15 +1,11 @@
 from django.db import models
-from backend.room.models.units import Army,Fleet
-from room.models.tables import Turn,Order,Outcome,Next_to
-
 
 class OrderManager(models.Manager):
-    def validate_order_table(self,turn:Turn):
+    def validate_order_table(self,turn):
         self.legitamise_orders(turn)
         self.calculate_moves()
         self.evaluate_calulations()
         self.perform_operations()
-        pass
 
     # should be static but how to reference inside
     # also don't know where to put this
@@ -27,7 +23,9 @@ class OrderManager(models.Manager):
         return False
 
     # remove orders that are theoritcally impossible
-    def legitamise_orders(self,turn:Turn):
+    def legitamise_orders(self,turn):
+        from room.models.locations import Next_to
+        from room.models.order import Order,Outcome
         all_moves_requiring_convoys = []
         for order in Order.objects.filter(turn=turn):
             current_outcome = Outcome.objects.create(order_reference=order,validation=True)
@@ -53,6 +51,7 @@ class OrderManager(models.Manager):
                 # check convoy
                 elif(order.instruction == 'CVY'):
                     # if not valid
+                    from room.game.unitTypes import Fleet
                     if(not order.target_unit.validate_convoy(order,turn) or type(order.target_unit) is not Fleet):
                         current_outcome.validation = False
                 # Hold auto pass
@@ -96,12 +95,13 @@ class OrderManager(models.Manager):
         pass
 
     # evalulate tallies -> put in table?
-    def evaluate_calulations(self) :
+    def evaluate_calulations(self):
         # for each calculation evaluate
         # those that fail, order cancels
         pass
 
     # Move Units
     def perform_operations(self):
+        from room.models.order import Outcome
         for successful_outcome in Outcome.objects.filter(validation=True):
             successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference)

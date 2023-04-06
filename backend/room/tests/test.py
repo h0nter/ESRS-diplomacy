@@ -1,7 +1,9 @@
 # Create your tests here.
 from django.test import TestCase
+from room.game.unitTypes import Unit, Army
 # from room.game.unit.abstract_unit import AbstractUnit
-from room.models.tables import Map,Country,Location,Next_to,Order,Outcome,Turn,Unit
+from room.models.locations import Map,Country,Location,Next_to
+from room.models.order import Order,Outcome,Turn
 
 # https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_unitTest1(TestCase):
@@ -33,7 +35,6 @@ class room_app_unitTest1(TestCase):
     #Each test takes self as a parameter
     def test_before_move(self):
         #self then relates to the database objects
-        print(self.orderA)
         army = self.orderA.target_unit
         self.assertNotEqual(army.location,self.orderA.target_location)
 
@@ -43,9 +44,8 @@ class room_app_unitTest1(TestCase):
         #self.assertEqual(abs.order, self.orderA)
 
     def test_move(self):
-        army:Unit = self.orderA.target_unit
+        army = self.orderA.target_unit
         before_location = army.location 
-        print('before_location')
-        print(before_location)
-        army.move(self.orderA)
-        self.assertNotEqual(before_location, army.location)
+        print(self.orderA.target_location)
+        army.move(self.orderA.target_location)
+        self.assertNotEqual(before_location,army.location)

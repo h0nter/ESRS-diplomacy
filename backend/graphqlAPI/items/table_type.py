@@ -1,5 +1,8 @@
+from graphene import ObjectType, Union, List
 from graphene_django import DjangoObjectType
-from room.models.tables import *
+from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
+from room.models.order import Order, Turn, Outcome
+from room.game.unitTypes import Army, Fleet
 
 # allow access overall parameters
 class LocationType(DjangoObjectType):
@@ -12,10 +15,34 @@ class OrderType(DjangoObjectType):
         model = Order
         fields = "__all__"
 
-class UnitType(DjangoObjectType):
+class ArmyType(DjangoObjectType):
     class Meta: 
-        model = Unit
+        model = Army
         fields = "__all__"
+
+class FleetType(DjangoObjectType):
+    class Meta: 
+        model = Fleet
+        fields = "__all__" 
+
+class UnitUnion(Union):
+    @classmethod
+    def resolve_type(cls, instance, info):
+		# This function tells Graphene what Graphene type the instance is
+        if isinstance(instance, Army):
+            return ArmyType
+        if isinstance(instance, Fleet):
+            return FleetType
+        return UnitUnion.resolve_type(instance, info)
+
+    class Meta: 
+        types = (ArmyType, FleetType)
+
+class UnitType(ObjectType):
+    all_posts = List(UnitUnion)
+
+    def resolve_all_posts(self, info):
+        return list(Army.objects.all()) + list(Fleet.objects.all())
 
 class TurnType(DjangoObjectType):
     class Meta: 

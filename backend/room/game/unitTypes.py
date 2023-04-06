@@ -1,9 +1,30 @@
-from room.models.tables import Unit,Order,Turn,Location,Next_to
+from django.db import models
+from room.models.locations import Country, Location
+
+class Unit(models.Model):
+    # Don't want to delete previous location if Unit moves
+    
+    owner = models.ForeignKey(Country,on_delete=models.CASCADE)
+    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    can_float = models.BooleanField(default=False)
+
+    def move(self,location):
+        if(type(location) is Location):
+            Unit.objects.filter(pk=self.pk).update(location=location)
+        else:
+            raise TypeError('Type should be Location')
+    
+    def __str__(self):
+        return str(self.pk)
+    class Meta:
+        verbose_name_plural = 'Units'
+
 
 # Moving an actual Unit is done via the Parent Class Unit
 # Calling move(order), this changes the location in the database
 class Army(Unit):
-    def validate_move(self,order:Order) -> bool:
+    def validate_move(self,order) -> bool:
+        from room.models.locations import Next_to
         if((not order.current_location.is_sea or order.current_location.is_coast) and
            (not order.target_location.is_sea or order.target_location.is_coast)):
             # land to land - move
@@ -21,7 +42,8 @@ class Army(Unit):
         else:
             return False
     
-    def validate_support(self,order:Order,turn:Turn) -> bool:
+    def validate_support(self,order,turn) -> bool:
+        from room.models.locations import Location,Next_to
         if((not order.current_location.is_sea or order.current_location.is_coast) and 
            type(order.reference_unit_new_location) is Location):
                # should be able to move where it is supporting
@@ -32,6 +54,7 @@ class Army(Unit):
                 if(len(next_to) == 1):
                     # able to support check if support possible
                     # check referenced Unit is making same Order
+                    from room.models.order import Order
                     support_unit_order = Order.objects.filter(turn=turn)\
                         .filter(target_unit=order.target_unit)\
                         .filter(current_location=order.reference_unit_current_location)\
@@ -43,7 +66,8 @@ class Army(Unit):
 
 
 class Fleet(Unit):
-    def validate_move(self,order:Order) -> bool:
+    def validate_move(self,order) -> bool:
+        from room.models.locations import Next_to
         if(( order.current_location.is_sea or order.current_location.is_coast) and
            ( order.target_location.is_sea or order.target_location.is_coast)):
             # sea to sea, sea to coast, coast to sea, coast to coast
@@ -52,7 +76,8 @@ class Fleet(Unit):
                 return True
         return False
 
-    def validate_support(self,order:Order,turn:Turn) -> bool:
+    def validate_support(self,order,turn) -> bool:
+        from room.models.locations import Location,Next_to
         if((order.current_location.is_sea or order.current_location.is_coast) and 
            type(order.reference_unit_new_location) is Location):
                # should be able to move where it is supporting
@@ -63,6 +88,7 @@ class Fleet(Unit):
                 if(len(next_to) == 1):
                     # able to support check if support possible
                     # check referenced Unit is making same Order
+                    from room.models.order import Order
                     support_unit_order = Order.objects.filter(turn=turn)\
                         .filter(target_unit=order.target_unit)\
                         .filter(current_location=order.reference_unit_current_location)\
@@ -72,9 +98,10 @@ class Fleet(Unit):
                         return True
         return False
 
-    def validate_convoy(self,order:Order,turn:Turn) -> bool:
+    def validate_convoy(self,order,turn) -> bool:
         # validate theoretical convoy
         # has to be in sea
+        from room.models.order import Order
         if(order.current_location.is_sea):
             convoy_unit_order = Order.objects.filter(turn=turn)\
                         .filter(target_unit=order.target_unit)\
