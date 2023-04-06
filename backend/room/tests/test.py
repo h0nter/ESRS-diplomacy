@@ -48,3 +48,4 @@ class room_app_unitTest1(TestCase):
         before_location = army.location 
         army.move(self.orderA.target_location)
         self.assertNotEqual(before_location,army.location)
+        self.assertNotEqual(self.locationA,self.unitA.location)

@@ -10,7 +10,9 @@ class Unit(models.Model):
 
     def move(self,location):
         if(type(location) is Location):
+            #thisUnit = Unit.objects.get(pk=self.pk)
             self.location = location
+            self.save()
         else:
             raise TypeError('Type should be Location')
     
