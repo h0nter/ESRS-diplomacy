@@ -31,7 +31,7 @@ class Unit(models.Model):
             return False
 
     def validate_move(self,order) -> bool:
-        if(self.can_float):
+        if(order.target_unit.can_float):
             #Fleet
             if(( order.current_location.is_sea or order.current_location.is_coast) and
                 ( order.target_location.is_sea or order.target_location.is_coast)):
@@ -40,15 +40,15 @@ class Unit(models.Model):
                 return False
         else:
             # Army
-            if((not order.current_location.is_sea or order.current_location.is_coast) and
+            if(order.current_location.is_coast and order.target_location.is_coast):
+                # coast to coast - convoy assist
+                # theoritically true as long as convoys ok
+                return True
+            elif((not order.current_location.is_sea or order.current_location.is_coast) and
             (not order.target_location.is_sea or order.target_location.is_coast)):
                 # land to land - move
                 # complicated due to constantinopale - sea and coast at same time..
                 return self.check_move_next_to(order)
-            elif(order.current_location.is_coast and order.target_location.is_coast):
-                # coast to coast - convoy assist
-                # theoritically true as long as convoys ok
-                return True
             else:
                 return False
 
@@ -62,7 +62,7 @@ class Unit(models.Model):
             # check referenced Unit is making same Order
             from room.models.order import Order
             support_unit_order = Order.objects.filter(turn=turn)\
-                .filter(target_unit=order.target_unit)\
+                .filter(target_unit=order.reference_unit)\
                 .filter(current_location=order.reference_unit_current_location)\
                 .filter(target_location=order.reference_unit_new_location)\
                 .filter(instruction='MVE')
@@ -73,7 +73,7 @@ class Unit(models.Model):
 
     def validate_support(self,order,turn) -> bool:
         from room.models.locations import Location,Next_to
-        if(self.can_float):
+        if(order.target_unit.can_float):
             #Fleet
             if((order.current_location.is_sea or order.current_location.is_coast) and 
                 type(order.reference_unit_new_location) is Location):
@@ -96,10 +96,10 @@ class Unit(models.Model):
         from room.models.order import Order
         if(order.current_location.is_sea):
             convoy_unit_order = Order.objects.filter(turn=turn)\
-                        .filter(target_unit=order.target_unit)\
+                        .filter(target_unit=order.reference_unit)\
                         .filter(current_location=order.reference_unit_current_location)\
                         .filter(target_location=order.reference_unit_new_location)\
                         .filter(instruction='MVE')
             if(len(convoy_unit_order) == 1):
-                        return True
+                return True
         return False
