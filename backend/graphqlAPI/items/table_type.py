@@ -1,5 +1,7 @@
 from graphene_django import DjangoObjectType
-from room.models.tables import *
+from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
+from room.models.order import Order, Turn, Outcome
+from room.game.unitTypes import Unit
 
 # allow access overall parameters
 class LocationType(DjangoObjectType):
