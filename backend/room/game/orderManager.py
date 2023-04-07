@@ -24,7 +24,7 @@ class OrderManager(models.Manager):
 
     # remove orders that are theoritcally impossible
     def legitamise_orders(self,turn):
-        from room.models.locations import Next_to
+        from room.models.locations import Next_to, Location
         from room.models.order import Order,Outcome
         all_moves_requiring_convoys = []
         for order in Order.objects.filter(turn=turn):
@@ -62,7 +62,7 @@ class OrderManager(models.Manager):
         # check convoys can actually happen, if not invalidate all involved
         # do dfs convoy here
         for outcome in all_moves_requiring_convoys:
-            if type(outcome) is Outcome:
+            if type(outcome) is Outcome and type(outcome.order_reference.target_location) is Location:
                 # get convoys relating to move
                 related_convoys = Outcome.objects.filter(validation=True)\
                                     .filter(order_reference__turn=turn)\
@@ -103,4 +103,4 @@ class OrderManager(models.Manager):
     def perform_operations(self):
         from room.models.order import Outcome
         for successful_outcome in Outcome.objects.filter(validation=True):
-            successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference)
+            successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference.target_location)
