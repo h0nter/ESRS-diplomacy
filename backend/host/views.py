@@ -4,9 +4,9 @@ from django.contrib.auth import login, authenticate
 from .forms import CustomUserCreationForm
 
 
-# Create your views here.
-def index(request):
-    return HttpResponse('index page')
+# # Create your views here.
+# def index(request):
+#     return HttpResponse('index page')
 
 
 def registration(request):
