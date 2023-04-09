@@ -1,24 +1,24 @@
-from step import Step
+from steps import Step
 
 
-class Room(Step):
-    def __init__(cls, host: object):
-        super().__init__(host)
+class Game(Step):
+    def __init__(cls, room_ID: int):
+        super().__init__(room_ID)
 
     @classmethod
     def launch(cls) -> None:        
-        while cls.StatusType != 'Closed': # while the game is not closed, execute the following step
+        while cls.status != 'Closed': # while the game is not closed, execute the following step
         
-            if cls.StatusType == 'Opening': # open the room and wait for player to join in
+            if cls.status == 'Opening': # open the room and wait for player to join in
                 cls.opening()
                 
-            elif cls.StatusType == 'Waiting': # wait for user to commit their order
+            elif cls.status == 'Waiting': # wait for user to commit their order
                 cls.waiting()
 
-            elif cls.StatusType == 'Checking': # Check the closeing conditions
+            elif cls.status == 'Checking': # Check the closeing conditions
                 cls.checking()
 
-            elif cls.StatusType == 'ending':  # the status before the room are totaly closed.
+            elif cls.status == 'ending':  # the status before the room are totaly closed.
                 cls.ending()
 
         cls.closed()
