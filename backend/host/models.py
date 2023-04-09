@@ -18,7 +18,7 @@ class Room(models.Model):
     room_ID = models.IntegerField(unique=True, primary_key=True)
     hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
     players = models.ManyToManyField(User)
-    
+
     class Meta:
         verbose_name_plural = 'Room'
 

@@ -5,9 +5,6 @@ from .forms import CustomUserCreationForm
 from .models import Room
 from room.models.order import Turn
 
-# Create your views here.
-def index(request):
-    return HttpResponse('index page')
 
 
 def registration(request):
@@ -43,5 +40,3 @@ def launch_room(request):
     room.save()
     room.player.add(user)
    
-
-
