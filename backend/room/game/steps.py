@@ -1,5 +1,5 @@
 from .orderManager import OrderManager
-from room.models import Room
+from host.models import Room
 
 
 class Step:
