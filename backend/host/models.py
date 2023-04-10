@@ -13,8 +13,8 @@ class Room(models.Model):
         Ending = 'End', _('Ending')
         Closed = 'Closed', _('Closed')
 
-    room_status = models.CharField(max_length=5,choices=StatusType.choices,default=StatusType.Initial)
-    turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='room_turn', default=Turn.get)
+    room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Initial)
+    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
     room_ID = models.IntegerField(unique=True, primary_key=True)
     hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
     players = models.ManyToManyField(User)
@@ -26,7 +26,8 @@ class Room(models.Model):
         return str(self.pk)
 
 
+
 class Player(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='player')
-    joining_rooms = models.ManyToManyField(Room)
-    invitations = models.ManyToManyField(Room)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='player_user')
+    joining_rooms = models.ManyToManyField(Room,related_name='joining_rooms')
+    invitations = models.ManyToManyField(Room, related_name='invitations')
