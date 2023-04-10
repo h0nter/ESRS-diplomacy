@@ -1,4 +1,4 @@
-from steps import Step
+from .steps import Step
 
 
 class Game(Step):

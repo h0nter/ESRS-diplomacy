@@ -1,6 +1,6 @@
 from .orderManager import OrderManager
 from host.models import Room
-
+from django.core.management import call_command
 
 class Step:
     def __init__(cls, room_ID:int):
@@ -24,6 +24,7 @@ class Step:
 
     @classmethod
     def initialize(cls) -> None: # format the room database
+        call_command('loaddata', 'room/fixtures/*json')
         cls.room.update(room_status='Open')
 
     @classmethod
