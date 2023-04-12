@@ -1,16 +1,17 @@
 <template>
-  <g :title="name" :id="name" :coast="isCoast"  @mouseenter="$emit('territoryHovered', name)">
+  <g :title="name" :id="'territory-' + name" :coast="isCoast"  @mouseenter="$emit('territoryHovered', name)">
     <polygon v-for="polygon in polygons" :key="polygon.id" :class="polygon.colour === PolygonColourChoices.Land ? 'l' : 'w' " :points="polygon.polygon"/>
     <text :x="textX" :y="textY">{{ text }}</text>
 <!--    <Unit v-if="unit" :type="unit" :transform="'translate('+ (textX + 8) + ', ' + (textY - 14) + ')'"/>-->
-    <use v-bind="{'xlink:href' : unit}" :id="name" :class="[country ? country : '']" :transform="'translate(' + (textX + 8) + ', ' + (textY - 14) + ')'"/>
+    <use v-bind="{'xlink:href' : linkedUnit.ref.value}" :id="name + '-unit-slot'" :style="'fill:' + linkedUnit.color" :transform="'translate(' + (textX + 8) + ', ' + (textY - 14) + ')'" />
   </g>
+
+<!--  v-bind="{'xlink:href' : unit}"-->
 </template>
 
 <script lang="ts" setup>
-  import Unit from "@/components/Unit.vue";
-  import { PropType } from "vue";
-  import type { Map_PolygonType } from "@/gql/graphql";
+import {PropType, ref, Ref, watchEffect} from "vue";
+  import type {Map_PolygonType, UnitType} from "@/gql/graphql";
   import { RoomMap_PolygonColourChoices } from "@/gql/graphql";
 
   const props = defineProps({
@@ -21,10 +22,31 @@
     text: String,
     textX: Number,
     textY: Number,
-    unit: String,
+    units: Array as PropType<UnitType[]>,
   });
 
+  type Unit = {
+    ref: Ref<string>,
+    color: String,
+}
+
   const PolygonColourChoices : any = RoomMap_PolygonColourChoices;
+  const linkedUnit : Unit = {ref : ref("#")} as Unit;
+
+  watchEffect(() => {
+    if (props.units && props.units.length > 0) {
+      props.units.forEach((unit) => {
+        if (unit.location.name === props.name) {
+          if (unit.canFloat) {
+            linkedUnit.ref.value = "#F";
+          } else {
+            linkedUnit.ref.value = "#A";
+          }
+          linkedUnit.color = unit.owner.colour;
+        }
+      })
+    }
+  });
 </script>
 
 <style scoped>

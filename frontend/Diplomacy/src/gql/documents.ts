@@ -1,16 +1,6 @@
 import { gql } from "@apollo/client/core";
 
-// Example GraphQL query
-export const LOCATIONS = gql`
-    query {
-        locations {
-            id,
-            isCoast
-        }
-    }
-`;
-
-export const TERRITORIES = gql`
+export const INITIAL_MAP_SETUP = gql`
     query {
         locations {
             id,
@@ -26,7 +16,21 @@ export const TERRITORIES = gql`
                 colour
             },
             currentOwner{
-                name
+                name,
+                colour
+            }
+        },
+        units {
+            id,
+            canFloat,
+            owner { 
+                name,
+                colour
+            },
+            location {
+                name,
+                textPosX,
+                textPosY
             }
         }
     }
