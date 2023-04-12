@@ -11,7 +11,7 @@
     </p>
     <svg v-else viewBox="-0.5 -0.5 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <UnitsSetup />
-      <Territory v-for="territory in territories" :key="territory.location.id" :name="territory.location.name" :polygon1="territory.polygon" :type1="territory.location.isSea ? 'w' : 'l'" :text="territory.location.name" :textX="0" :textY="0" @territoryHovered="onTerritoryHovered" />
+      <Territory v-for="territory in territories" :key="territory.id" :name="territory.name" :polygons="territory.polygons" :text="territory.abbreviation" :textX="territory.textPosX" :textY="territory.textPosY" @territoryHovered="onTerritoryHovered" />
       <use id="onTop" :href="currentlyHoveredTerritory" />
       <Unit v-for="unit in units" :key="unit.id" :type="unit.canFloat" :territory="unit.location.name" :positionX="0" :positionY="0"/>
     </svg>
@@ -39,8 +39,8 @@
 
   const {result : ter_return, loading : ter_loading, error : ter_error} = useQuery(TERRITORIES);
 
-  let territories : Map_PolygonType[] = [];
-  watchEffect(() => {territories = (computed(() => ter_return.value?.mapPolygon).value)});
+  let territories : LocationType[] = [];
+  watchEffect(() => {territories = (computed(() => ter_return.value?.locations).value)});
 
   const {result : unit_return, loading : unit_loading, error : unit_error} = useQuery(UNITS);
   let units : UnitType[] = [];

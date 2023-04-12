@@ -1,25 +1,22 @@
 <template>
   <g :title="name" :id="name" :coast="isCoast"  @mouseenter="$emit('territoryHovered', name)">
-    <polygon v-if="polygon1" :class="type1" :points="polygon1"/>
-    <polygon v-if="polygon2" :class="type2" :points="polygon2"/>
-    <path v-if="path" :class="type1" :d="path"/>
+    <polygon v-for="polygon in polygons" :key="polygon.id" :class="polygon.colour === PolygonColourChoices.Land ? 'l' : 'w' " :points="polygon.polygon"/>
     <text :x="textX" :y="textY">{{ text }}</text>
 <!--    <Unit v-if="unit" :type="unit" :transform="'translate('+ (textX + 8) + ', ' + (textY - 14) + ')'"/>-->
     <use v-bind="{'xlink:href' : unit}" :id="name" :class="[country ? country : '']" :transform="'translate(' + (textX + 8) + ', ' + (textY - 14) + ')'"/>
   </g>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import Unit from "@/components/Unit.vue";
+  import { PropType } from "vue";
+  import type { Map_PolygonType } from "@/gql/graphql";
+  import { RoomMap_PolygonColourChoices } from "@/gql/graphql";
 
   const props = defineProps({
     name: String,
     country: String,
-    polygon1: String,
-    type1: String,
-    polygon2: String,
-    type2: String,
-    path: String,
+    polygons: Array as PropType<Map_PolygonType[]>,
     isCoast: Boolean,
     text: String,
     textX: Number,
@@ -27,6 +24,7 @@
     unit: String,
   });
 
+  const PolygonColourChoices : any = RoomMap_PolygonColourChoices;
 </script>
 
 <style scoped>

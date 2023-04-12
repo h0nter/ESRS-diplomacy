@@ -25,6 +25,7 @@ export type CountryType = {
 
 export type LocationType = {
   __typename?: 'LocationType';
+  abbreviation: Scalars['String'];
   currentLocation: Array<OrderType>;
   currentOwner?: Maybe<CountryType>;
   id: Scalars['ID'];
@@ -32,13 +33,14 @@ export type LocationType = {
   isSea: Scalars['Boolean'];
   location: Array<Next_ToType>;
   map: MapType;
-  mapPolygonSet: Array<Map_PolygonType>;
   name: Scalars['String'];
   nextTo: Array<Next_ToType>;
+  polygons: Array<Map_PolygonType>;
   referenceUnitCurrentLocation: Array<OrderType>;
   referenceUnitNewLocation: Array<OrderType>;
   targetLocation: Array<OrderType>;
-  textPos: Scalars['String'];
+  textPosX: Scalars['Int'];
+  textPosY: Scalars['Int'];
   unitSet: Array<UnitType>;
   unitSpawn: Scalars['Boolean'];
 };
@@ -54,6 +56,7 @@ export type MapType = {
 
 export type Map_PolygonType = {
   __typename?: 'Map_PolygonType';
+  colour: RoomMap_PolygonColourChoices;
   id: Scalars['ID'];
   location: LocationType;
   polygon: Scalars['String'];
@@ -92,11 +95,10 @@ export type OrderType = {
   currentLocation: LocationType;
   id: Scalars['ID'];
   instruction: RoomOrderInstructionChoices;
-  outcome?: Maybe<OutcomeType>;
+  orderReference: Array<OutcomeType>;
   referenceUnit?: Maybe<UnitType>;
   referenceUnitCurrentLocation?: Maybe<LocationType>;
   referenceUnitNewLocation?: Maybe<LocationType>;
-  references: Array<OutcomeType>;
   targetLocation?: Maybe<LocationType>;
   targetUnit: UnitType;
   turn: TurnType;
@@ -104,17 +106,8 @@ export type OrderType = {
 
 export type OutcomeType = {
   __typename?: 'OutcomeType';
-  currentLocation: LocationType;
   id: Scalars['ID'];
-  instruction: RoomOrderInstructionChoices;
-  orderPtr: OrderType;
   orderReference: OrderType;
-  referenceUnit?: Maybe<UnitType>;
-  referenceUnitCurrentLocation?: Maybe<LocationType>;
-  referenceUnitNewLocation?: Maybe<LocationType>;
-  targetLocation?: Maybe<LocationType>;
-  targetUnit: UnitType;
-  turn: TurnType;
   validation: Scalars['Boolean'];
 };
 
@@ -135,6 +128,16 @@ export type Query = {
 export type QueryOrdersArgs = {
   orderId?: InputMaybe<Scalars['Int']>;
 };
+
+/** An enumeration. */
+export enum RoomMap_PolygonColourChoices {
+  /** AQUA */
+  Aqua = 'AQUA',
+  /** HASH */
+  Hash = 'HASH',
+  /** LAND */
+  Land = 'LAND'
+}
 
 /** An enumeration. */
 export enum RoomOrderInstructionChoices {

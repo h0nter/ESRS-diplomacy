@@ -12,17 +12,21 @@ export const LOCATIONS = gql`
 
 export const TERRITORIES = gql`
     query {
-        mapPolygon {
-            polygon,
-            location {
+        locations {
+            id,
+            name,
+            isCoast,
+            isSea,
+            abbreviation,
+            textPosX,
+            textPosY,
+            polygons {
                 id,
-                name,
-                isCoast,
-                isSea,
-                textPos,
-                currentOwner{
-                    name
-                }
+                polygon,
+                colour
+            },
+            currentOwner{
+                name
             }
         }
     }
