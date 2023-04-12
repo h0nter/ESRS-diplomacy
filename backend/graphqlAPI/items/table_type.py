@@ -8,10 +8,10 @@ class Map_PolygonType(DjangoObjectType):
         fields = "__all__"
 
 class LocationType(DjangoObjectType):
-    polygons = DjangoListField(Map_PolygonType)
+    # polygons = DjangoListField(Map_PolygonType)
     class Meta: 
         model = Location
-        fields = ('name', 'unit_spawn', 'is_sea', 'is_coast', 'map', 'text_pos_x', 'text_pos_y', 'current_owner', 'polygons')
+        fields = "__all__"
 
 class OrderType(DjangoObjectType):
     class Meta: 

@@ -47,7 +47,6 @@ class Map_Polygon(models.Model):
 
     location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='polygons')
     polygon = models.CharField(max_length=500)
-    is_path = models.BooleanField(default=False)
     colour = models.CharField(max_length=4,choices=Polygon_Colour.choices,default=Polygon_Colour.LAND)
 
     class Meta:
