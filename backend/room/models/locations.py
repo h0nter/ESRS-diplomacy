@@ -25,7 +25,8 @@ class Location(models.Model):
     is_sea = models.BooleanField(default=False)
     is_coast = models.BooleanField(default=False)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
-    text_pos = models.CharField(max_length=10)  
+    text_pos_x = models.IntegerField(max_length=4)
+    text_pos_y = models.IntegerField(max_length=4)
     current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
     abbreviation = models.CharField(max_length=3)
 
@@ -36,8 +37,15 @@ class Location(models.Model):
 
 # a location can have many polygons
 class Map_Polygon(models.Model):
-    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    class Polygon_Colour(models.TextChoices):
+        LAND = 'LAND', _('LAND')
+        AQUA = 'AQUA', _('AQUA')
+        HASH = 'HASH', _('HASH')
+
+    location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='polygons')
     polygon = models.CharField(max_length=500)
+    colour = models.CharField(max_length=4,choices=Polygon_Colour.choices,default=Polygon_Colour.LAND)
+
     class Meta:
         verbose_name_plural = 'Map_Polygons'
     def __str__(self):
