@@ -25,8 +25,8 @@ class Location(models.Model):
     is_sea = models.BooleanField(default=False)
     is_coast = models.BooleanField(default=False)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
-    text_pos_x = models.IntegerField(max_length=4)
-    text_pos_y = models.IntegerField(max_length=4)
+    text_pos_x = models.IntegerField(default=0)
+    text_pos_y = models.IntegerField(default=0)
     current_owner = models.ForeignKey(Country,blank=True,null=True,on_delete=models.DO_NOTHING)
     abbreviation = models.CharField(max_length=3)
 
