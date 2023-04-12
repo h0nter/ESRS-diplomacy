@@ -1,14 +1,10 @@
-from graphene_django import DjangoObjectType, DjangoListField
-from room.models.tables import *
+from graphene_django import DjangoObjectType
+from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
+from room.models.order import Order, Turn, Outcome
+from room.game.unitTypes import Unit
 
 # allow access overall parameters
-class Map_PolygonType(DjangoObjectType):
-    class Meta:
-        model = Map_Polygon
-        fields = "__all__"
-
 class LocationType(DjangoObjectType):
-    # polygons = DjangoListField(Map_PolygonType)
     class Meta: 
         model = Location
         fields = "__all__"
@@ -41,6 +37,12 @@ class MapType(DjangoObjectType):
 class CountryType(DjangoObjectType):
     class Meta: 
         model = Country
+        fields = "__all__"
+
+
+class Map_PolygonType(DjangoObjectType):
+    class Meta: 
+        model = Map_Polygon
         fields = "__all__"
 
 class Next_toType(DjangoObjectType):

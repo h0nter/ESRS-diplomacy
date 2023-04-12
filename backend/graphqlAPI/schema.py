@@ -1,5 +1,7 @@
 import graphene
-from room.models.tables import *
+from room.models.locations import Map, Country, Location
+from room.models.order import Turn, Order, Outcome
+from room.game.unitTypes import Unit
 from .items.table_type import *
 from .items.order_mutation import UpdateOrder
 
