@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from room.models.order import Turn
-from django.contrib.auth.models import User
+import secrets
+import string
 
 # status for each room
 class Room(models.Model):
@@ -13,11 +14,12 @@ class Room(models.Model):
         Ending = 'End', _('Ending')
         Closed = 'Closed', _('Closed')
 
+    room_name = models.CharField(max_length=30, primary_key=True)
+    code = models.CharField(max_length=6, default='')
     room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Initial)
     current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
-    room_ID = models.IntegerField(unique=True, primary_key=True)
-    hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
-    players = models.ManyToManyField(User)
+    hoster = models.ForeignKey('user.User', on_delete=models.DO_NOTHING, related_name='hoster')
+    players = models.ManyToManyField('user.User')
 
     class Meta:
         verbose_name_plural = 'Room'
@@ -25,9 +27,15 @@ class Room(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    def initial_room(self):
+        self.players.add(self.hoster)
+        self.current_turn = Turn.objects.create(year=1901)
+        self.code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))
+        self.save()
 
 
-class Player(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='player_user')
-    joining_rooms = models.ManyToManyField(Room,related_name='joining_rooms')
-    invitations = models.ManyToManyField(Room, related_name='invitations')
+
+
+
+
+

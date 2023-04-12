@@ -2,7 +2,7 @@ import graphene
 from room.models.locations import Map, Country, Location
 from room.models.order import Turn, Order, Outcome
 from room.game.unitTypes import Unit
-from host.models import Player
+# from host.models import Player
 from .items.table_type import *
 from .items.order_mutation import UpdateOrder
 
@@ -17,7 +17,7 @@ class Query(graphene.ObjectType):
     country = graphene.List(CountryType)
     map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
-    player = graphene.List(PlayerType)
+    # player = graphene.List(PlayerType)
 
     # A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     # Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.

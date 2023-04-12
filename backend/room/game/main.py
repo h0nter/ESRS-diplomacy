@@ -6,7 +6,7 @@ class Game(Step):
         super().__init__(room_ID)
 
     @classmethod
-    def launch(cls) -> None:        
+    def what_up(cls) -> None:        
         while cls.status != 'Closed': # while the game is not closed, execute the following step
         
             if cls.status == 'Opening': # open the room and wait for player to join in

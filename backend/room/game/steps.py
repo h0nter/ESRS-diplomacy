@@ -1,5 +1,5 @@
 from .orderManager import OrderManager
-from host.models import Room
+from host.models.room import Room
 from django.core.management import call_command
 
 class Step:
@@ -26,6 +26,7 @@ class Step:
     def initialize(cls) -> None: # format the room database
         call_command('loaddata', 'room/fixtures/*json')
         cls.room.update(room_status='Open')
+        return 'success'
 
     @classmethod
     def opening(cls) -> None: # wait for user to login the game.
