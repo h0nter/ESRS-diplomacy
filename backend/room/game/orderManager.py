@@ -145,6 +145,15 @@ class OrderManager(models.Manager):
         # for each calculation evaluate
         # those that fail, order cancels
         for location_name,location in location_resolver.items():
+            # needs some sort of dfs to work out end of trees
+            # i.e. which locations can be resolved easily
+
+            # or 
+
+            # do the ones that can be resolved instantly
+            # keep going until all are done (iterative)
+            # remove from dict as you go?
+
             pass
 
     # Move Units
