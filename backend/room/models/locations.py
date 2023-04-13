@@ -13,7 +13,7 @@ class Map(models.Model):
 class Country(models.Model):
     # will have user ID assoiated with it??
     player = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='player', null=True, blank=True)
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=30)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
     colour = models.CharField(max_length=10)
     def __str__(self):
