@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from room.models.order import Turn
+from django.contrib.auth.models import User
 import secrets
 import string
 
@@ -18,8 +19,8 @@ class Room(models.Model):
     code = models.CharField(max_length=6, default='')
     room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Initial)
     current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
-    hoster = models.ForeignKey('user.User', on_delete=models.DO_NOTHING, related_name='hoster')
-    players = models.ManyToManyField('user.User')
+    hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
+    players = models.ManyToManyField(User)
 
     class Meta:
         verbose_name_plural = 'Room'

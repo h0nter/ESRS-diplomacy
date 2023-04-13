@@ -9,5 +9,5 @@ class Player(models.Model):
     invitations = models.ManyToManyField(room.Room, related_name='invitations')
 
     def __str__(self):
-        return self.get_username()
+        return self.user.get_username()
     
