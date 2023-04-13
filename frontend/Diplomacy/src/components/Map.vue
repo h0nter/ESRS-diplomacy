@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { INITIAL_MAP_SETUP } from "@/gql/documents";
+  import { INITIAL_MAP_SETUP } from "@/gql/documents/map";
   import {useQuery} from '@vue/apollo-composable'
   import {computed, watchEffect} from 'vue'
 
