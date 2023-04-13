@@ -1,11 +1,11 @@
 from django.db import models
 
+
 class OrderManager(models.Manager):
     def validate_order_table(self,turn):
         self.legitamise_orders(turn)
-        self.calculate_moves()
-        self.evaluate_calulations()
-        self.perform_operations()
+        self.evaluate_orders(turn)
+        self.perform_move_operations(turn)
 
     # should be static but how to reference inside
     # also don't know where to put this
@@ -88,19 +88,67 @@ class OrderManager(models.Manager):
                         convoy.validation = False
 
     # calculate tallies 
-    def calculate_moves(self):
+    def calculate_moves(self,turn):
         # move/support
         # each location added to list and tallied
-        pass
+        from locationResolver import LocationResolver
+        from room.models.locations import Location
+        from room.models.order import Outcome
+        location_resolver: dict[str,LocationResolver] = {}
 
-    # evalulate tallies -> put in table?
-    def evaluate_calulations(self):
+        for legit_order in Outcome.objects.filter(validation=True).filter(order_reference__turn=turn):
+            # shorten names
+            current_location = legit_order.order_reference.current_location
+            target_location = legit_order.order_reference.target_location
+            reference_unit_current_location = legit_order.order_reference.reference_unit_current_location
+            reference_unit_new_location = legit_order.order_reference.reference_unit_new_location
+
+            # ensure location resolver is init for all involved
+            if location_resolver[current_location.name] is None:
+                location_resolver[current_location.name] = LocationResolver()
+            if type(target_location) is Location and \
+                location_resolver[target_location.name] is None:
+                location_resolver[target_location.name] = LocationResolver()
+            if type(reference_unit_current_location) is Location and \
+                location_resolver[reference_unit_current_location.name] is None:
+                location_resolver[reference_unit_current_location.name] = LocationResolver()
+            if type(reference_unit_new_location) is Location and \
+                location_resolver[reference_unit_new_location.name] is None:
+                location_resolver[reference_unit_new_location.name] = LocationResolver()
+
+            # defending - current location
+            location_resolver[current_location.name].add_to_defence(legit_order.order_reference)
+            # is the current unit in location
+            location_resolver[current_location.name].current_unit_order = legit_order.order_reference
+
+            #SPT
+            if(legit_order.order_reference.instruction == 'SPT' and reference_unit_current_location):
+                if(reference_unit_new_location is None ):
+                    # supporting defending unit - this could be a HLD OR CVY
+                    location_resolver[reference_unit_current_location.name].add_to_defence(legit_order.order_reference)
+                elif(reference_unit_new_location and legit_order.order_reference.reference_unit):
+                    # supporting a MVE
+                    location_resolver[reference_unit_new_location.name].add_to_attacking(legit_order.order_reference.reference_unit,legit_order.order_reference)
+            #MVE
+            elif(legit_order.order_reference.instruction == 'MVE' and target_location):
+                location_resolver[target_location.name].add_to_attacking(legit_order.order_reference.target_unit,legit_order.order_reference)
+                location_resolver[current_location.name].current_unit_moved = True
+            else:
+                # 'HLD' or 'CVY' don't affect other moves already covered with defence
+                pass
+
+        return location_resolver
+
+    def evaluate_orders(self,turn):
+        from locationResolver import LocationResolver
+        location_resolver: dict[str,LocationResolver] = self.calculate_moves(turn)
         # for each calculation evaluate
         # those that fail, order cancels
-        pass
+        for location_name,location in location_resolver.items():
+            pass
 
     # Move Units
-    def perform_operations(self):
+    def perform_move_operations(self,turn):
         from room.models.order import Outcome
-        for successful_outcome in Outcome.objects.filter(validation=True):
+        for successful_outcome in Outcome.objects.filter(validation=True).filter(order_reference__turn=turn):
             successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference.target_location)
