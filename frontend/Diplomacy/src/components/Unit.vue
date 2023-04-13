@@ -19,4 +19,8 @@ const props = defineProps({
     stroke: black;
     stroke-width: 1px;
   }
+
+  .unit:hover {
+    stroke-width: 2px;
+  }
 </style>
