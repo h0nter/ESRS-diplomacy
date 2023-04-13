@@ -2,8 +2,6 @@
   <g :title="name" :id="'territory-' + name" :coast="isCoast"  @mouseenter="$emit('territoryHovered', name)">
     <polygon v-for="polygon in polygons" :key="polygon.id" :class="polygon.colour === PolygonColourChoices.Land ? 'l' : 'w' " :points="polygon.polygon"/>
     <text :x="textX" :y="textY">{{ text }}</text>
-<!--    <Unit v-if="unit" :type="unit" :transform="'translate('+ (textX + 8) + ', ' + (textY - 14) + ')'"/>-->
-    <use v-bind="{'xlink:href' : linkedUnit.ref.value}" :id="name + '-unit-slot'" :style="'fill:' + linkedUnit.color" :transform="'translate(' + (textX + 8) + ', ' + (textY - 14) + ')'" />
   </g>
 
 <!--  v-bind="{'xlink:href' : unit}"-->
@@ -22,31 +20,9 @@ import {PropType, ref, Ref, watchEffect} from "vue";
     text: String,
     textX: Number,
     textY: Number,
-    units: Array as PropType<UnitType[]>,
   });
-
-  type Unit = {
-    ref: Ref<string>,
-    color: String,
-}
 
   const PolygonColourChoices : any = RoomMap_PolygonColourChoices;
-  const linkedUnit : Unit = {ref : ref("#")} as Unit;
-
-  watchEffect(() => {
-    if (props.units && props.units.length > 0) {
-      props.units.forEach((unit) => {
-        if (unit.location.name === props.name) {
-          if (unit.canFloat) {
-            linkedUnit.ref.value = "#F";
-          } else {
-            linkedUnit.ref.value = "#A";
-          }
-          linkedUnit.color = unit.owner.colour;
-        }
-      })
-    }
-  });
 </script>
 
 <style scoped>

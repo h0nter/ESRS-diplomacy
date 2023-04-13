@@ -1,29 +1,22 @@
 <template>
-<g :title="territory">
-  <use v-bind="{'xlink:href' : '#' + type}" :id="territory" :class="country" :transform="'translate(' + (positionX + 8) + ', ' + (positionY - 14) + ')'"/>
-</g>
+<use v-bind="{'xlink:href' : '#' + type}" :id="'unit-'+unit_id" :style="'fill:' + color" :transform="'translate(' + (positionX + 8) + ', ' + (positionY - 14) + ')'" class="unit"/>
 </template>
 
 <script setup>
 import {Country} from "@/models/Country";
 
 const props = defineProps({
-  type: ('A'|'F'|'sc'),
-  territory: String,
-  country: Country,
+  unit_id: String,
+  type: ('A'|'F'),
+  color: String,
   positionX: Number,
   positionY: Number,
 });
 </script>
 
 <style scoped>
-@import "@/assets/countries.css";
-
- g:hover{
-      @apply active
- }
-
- .active {
-        stroke-width: 3px;
-    }
+  .unit {
+    stroke: black;
+    stroke-width: 1px;
+  }
 </style>

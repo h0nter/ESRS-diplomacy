@@ -10,7 +10,7 @@
       <UnitsSetup />
       <Territory v-for="territory in territories" :key="territory.id" :name="territory.name" :polygons="territory.polygons" :text="territory.abbreviation" :textX="territory.textPosX" :textY="territory.textPosY" :units="units" @territoryHovered="onTerritoryHovered" />
       <use id="onTop" :href="currentlyHoveredTerritory" />
-      <Unit v-for="unit in units" :key="unit.id" :type="unit.canFloat" :territory="unit.location.name" :positionX="unit.location.textPosX" :positionY="unit.location.textPosY"/>
+      <Unit v-for="unit in units" :key="unit.id" :unit_id="unit.id" :type="[unit.canFloat ? 'F' : 'A']" :color="unit.owner.colour" :positionX="unit.location.textPosX" :positionY="unit.location.textPosY"/>
     </svg>
   </div>
 </template>
