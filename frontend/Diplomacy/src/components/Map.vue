@@ -1,7 +1,7 @@
 <template>
   <div class="flex-col justify-center items-center">
     <p v-if="init_error" class="text-red-600">
-      Something went wrong: {{ ter_error }}
+      Something went wrong: {{ init_error }}
     </p>
     <p v-if="init_loading">
       Loading...
@@ -25,9 +25,7 @@
   import Territory from "@/components/Territory.vue";
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
-  import type {CountryType, LocationType, Map_PolygonType, UnitType} from "@/gql/graphql";
-
-  const emit = defineEmits(['unitsUpdated'])
+  import type {LocationType, UnitType} from "@/gql/graphql";
 
   const currentlyHoveredTerritory = ref("#");
 
