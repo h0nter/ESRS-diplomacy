@@ -9,7 +9,7 @@ import Container from "@/App.vue";
 import Header from "@/components/Header.vue";
 import ButtonRouterLink from "@/components/ButtonRouterLink.vue";
 import Map from "@/components/Map.vue";
-import {RouteNames} from "@/router/RouteNames";
+import {RouteNames} from "@/router/";
 </script>
 
 <style scoped>

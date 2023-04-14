@@ -1,16 +1,21 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "@/views/HomeView.vue";
+
+export enum RouteNames {
+    HOME = "home",
+    GAME = "game",
+}
 
 const routes = [
     {
       path: "/",
-      name: "home",
+      name: RouteNames.HOME,
       component: HomeView,
       alias: "/home"
     },
     {
       path: "/game",
-      name: "game",
+      name: RouteNames.GAME,
       component: () => import("@/views/GameView.vue"),
     },
     // {
