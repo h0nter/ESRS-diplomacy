@@ -1,5 +1,5 @@
 <template>
-<RouterLink v-bind:to="url" class="btn btn-blue">
+<RouterLink v-bind:to="{name: to}" class="btn btn-blue">
   {{ text }}
 </RouterLink>
 </template>
@@ -8,7 +8,7 @@
 import { RouterLink } from "vue-router";
 
 const props = defineProps({
-  url: String,
+  to: String,
   text: String
 })
 </script>
