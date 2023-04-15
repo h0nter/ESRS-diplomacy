@@ -11,5 +11,4 @@
 <g id="sc">
   <circle r="4"/>
 </g>
-<use id="SC" xlink:href="#sc" class="Unowned"/>
 </template>

@@ -8,6 +8,7 @@
     </p>
     <svg v-else viewBox="-0.5 -0.5 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <UnitsSetup />
+      <UnitActonMenuSetup/>
       <Territory v-for="territory in territories" :key="territory.id" :name="territory.name" :polygons="territory.polygons" :text="territory.abbreviation" :textX="territory.textPosX" :textY="territory.textPosY" :units="units" @territoryHovered="onTerritoryHovered" />
       <use id="onTop" :href="currentlyHoveredTerritory" />
       <Unit v-for="unit in units" :key="unit.id" :unit_id="unit.id" :type="[unit.canFloat ? 'F' : 'A']" :color="unit.owner.colour" :positionX="unit.location.textPosX" :positionY="unit.location.textPosY"/>
@@ -26,6 +27,7 @@
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
   import type {LocationType, UnitType} from "@/gql/graphql";
+  import UnitActonMenuSetup from "@/components/UnitActonMenuSetup.vue";
 
   const currentlyHoveredTerritory = ref("#");
 

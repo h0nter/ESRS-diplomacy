@@ -36,7 +36,7 @@ import {PropType, ref, Ref, watchEffect} from "vue";
     .w		{fill:#99CCFF; stroke:black; stroke-linejoin:round}
     .s		{fill:#DDDDDD; stroke:black; stroke-linejoin:round}
 
-    text {font-family:Arial,Helvetica,sans-serif; font-size:8px}
+    text {font-family:Arial,Helvetica,sans-serif; font-size:9px}
 
     .active {
         stroke-width: 3px;
