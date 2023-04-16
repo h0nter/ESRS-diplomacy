@@ -5,5 +5,5 @@ class HostConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'host'
 
-    # def ready(self):
-    #     import host.signals  # noqa
+    def ready(self):
+        import host.signals  # noqa

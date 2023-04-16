@@ -17,8 +17,5 @@ class CreateUserMutation(Mutation):
 
     @staticmethod
     def mutate( root, info, input):
-        # Create a new user
-        print('adgafh')
         user = User.objects.create_user(username=input.username, password=input.password)
-    
         return CreateUserMutation(user=user)
