@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
 from .forms import CustomUserCreationForm
@@ -7,8 +8,7 @@ import json
 
 def registration(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        form = CustomUserCreationForm(data)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             # Authenticate and log in the user
@@ -16,7 +16,10 @@ def registration(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            return JsonResponse()
+            # return redirect('/')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'host/register.html', {'form': form})
 
 
 # csrf token response

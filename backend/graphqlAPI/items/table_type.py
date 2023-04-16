@@ -2,7 +2,8 @@ from graphene_django import DjangoObjectType
 from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
 from room.models.order import Order, Turn, Outcome
 from room.game.unitTypes import Unit
-# from host.models import Player
+from host.models.player import Player
+from django.contrib.auth.models import User
 
 # allow access overall parameters
 class LocationType(DjangoObjectType):
@@ -51,7 +52,12 @@ class Next_toType(DjangoObjectType):
         model = Next_to
         fields = "__all__"
 
-# class PlayerType(DjangoObjectType):
-#     class Meta: 
-#         model = Player
-#         fields = "__all__"
+class PlayerType(DjangoObjectType):
+    class Meta: 
+        model = Player
+        fields = "__all__"
+
+class UserType(DjangoObjectType):
+    class Meta: 
+        model = User
+        fields = "__all__"
