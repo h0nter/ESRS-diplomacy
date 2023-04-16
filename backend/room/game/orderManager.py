@@ -154,6 +154,12 @@ class OrderManager(models.Manager):
             # keep going until all are done (iterative)
             # remove from dict as you go?
 
+
+            # the ones that can be resolved instantly are ones that don't depend on outside sources
+            
+
+            # orrr we do a first pass, only looking at indiviual tiles?
+
             pass
 
     # Move Units
