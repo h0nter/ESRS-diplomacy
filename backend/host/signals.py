@@ -7,5 +7,6 @@ from .models.player import Player
 # A post_save signal received when a User instance is created
 @receiver(post_save, sender=User)
 def create_player(sender, instance, created, **kwargs):
+    
     if created:
         Player.objects.create(user=instance)
