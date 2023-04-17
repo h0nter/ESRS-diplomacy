@@ -60,4 +60,4 @@ class PlayerType(DjangoObjectType):
 class UserType(DjangoObjectType):
     class Meta: 
         model = User
-        fields = "__all__"
+        fields = ["username", "id", "is_staff"]
