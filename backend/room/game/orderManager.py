@@ -91,60 +91,71 @@ class OrderManager(models.Manager):
     def calculate_moves(self,turn):
         # move/support
         # each location added to list and tallied
-        from locationResolver import LocationResolver
+        from locationResolver import LocationResolver, SituationResolver, ResolverList
         from room.models.locations import Location
         from room.models.order import Outcome
-        location_resolver: dict[str,LocationResolver] = {}
+        resolverList: ResolverList = ResolverList()
 
         for legit_order in Outcome.objects.filter(validation=True).filter(order_reference__turn=turn):
+            
+            resolverList.add_order_locations(legit_order)
             # shorten names
             current_location = legit_order.order_reference.current_location
             target_location = legit_order.order_reference.target_location
             reference_unit_current_location = legit_order.order_reference.reference_unit_current_location
             reference_unit_new_location = legit_order.order_reference.reference_unit_new_location
-
-            # ensure location resolver is init for all involved
-            if location_resolver[current_location.name] is None:
-                location_resolver[current_location.name] = LocationResolver()
-            if type(target_location) is Location and \
-                location_resolver[target_location.name] is None:
-                location_resolver[target_location.name] = LocationResolver()
-            if type(reference_unit_current_location) is Location and \
-                location_resolver[reference_unit_current_location.name] is None:
-                location_resolver[reference_unit_current_location.name] = LocationResolver()
-            if type(reference_unit_new_location) is Location and \
-                location_resolver[reference_unit_new_location.name] is None:
-                location_resolver[reference_unit_new_location.name] = LocationResolver()
+            #get resolver_id for one as it same for the rest
+            resolver_id = resolverList.get_situation_id_by_loc_name(current_location.name)
+            location = resolverList.list[resolver_id].locationResolvers
 
             # defending - current location
-            location_resolver[current_location.name].add_to_defence(legit_order.order_reference)
+            location[current_location.name].add_to_defence(legit_order.order_reference)
             # is the current unit in location
-            location_resolver[current_location.name].current_unit_order = legit_order.order_reference
+            location[current_location.name].current_unit_order = legit_order.order_reference
 
             #SPT
             if(legit_order.order_reference.instruction == 'SPT' and reference_unit_current_location):
                 if(reference_unit_new_location is None ):
                     # supporting defending unit - this could be a HLD OR CVY
-                    location_resolver[reference_unit_current_location.name].add_to_defence(legit_order.order_reference)
+                    location[reference_unit_current_location.name].add_to_defence(legit_order.order_reference)
                 elif(reference_unit_new_location and legit_order.order_reference.reference_unit):
                     # supporting a MVE
-                    location_resolver[reference_unit_new_location.name].add_to_attacking(legit_order.order_reference.reference_unit,legit_order.order_reference)
+                    location[reference_unit_new_location.name].add_to_attacking(legit_order.order_reference.reference_unit,legit_order.order_reference)
             #MVE
             elif(legit_order.order_reference.instruction == 'MVE' and target_location):
-                location_resolver[target_location.name].add_to_attacking(legit_order.order_reference.target_unit,legit_order.order_reference)
-                location_resolver[current_location.name].current_unit_moved = True
+                location[target_location.name].add_to_attacking(legit_order.order_reference.target_unit,legit_order.order_reference)
+                location[current_location.name].current_unit_moved = True
             else:
                 # 'HLD' or 'CVY' don't affect other moves already covered with defence
                 pass
 
-        return location_resolver
+        return resolverList
 
     def evaluate_orders(self,turn):
-        from locationResolver import LocationResolver
-        location_resolver: dict[str,LocationResolver] = self.calculate_moves(turn)
+        from locationResolver import LocationResolver, SituationResolver, ResolverList
+        resolverList: ResolverList = self.calculate_moves(turn)
         # for each calculation evaluate
         # those that fail, order cancels
-        for location_name,location in location_resolver.items():
+
+        # change location resolver to be situation resolver
+        # can then resolve each situation as separate problems linearly
+        for situation in resolverList.list:
+            # for each sitatution there is a start point, we find the start pt we can resolve everything
+            locations = situation.locationResolvers
+
+            if len(locations) == 1:
+                #hold unrelated to others passes
+                pass
+            if len(locations) == 2:
+                #length of 2
+                for name,location in locations.items():
+                    if location.get_attacking_amount == 0:
+                        # nothing attacking location so related order all good
+                        pass
+
+            else:
+                #all other lengths
+
             # needs some sort of dfs to work out end of trees
             # i.e. which locations can be resolved easily
 

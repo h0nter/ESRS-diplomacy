@@ -39,4 +39,48 @@ class LocationResolver:
             else:
                 self.attacking[country] = [order]
 
+class SituationResolver:
+    def __init__(self) -> None:
+       self.locationResolvers: dict[str,LocationResolver] = {}
+
+    def add_new_location(self,name):
+        if not self.locationResolvers.get(name,False):
+            self.locationResolvers[name] = LocationResolver()
+
+    def is_location_in_resolver(self,name):
+        return self.locationResolvers.get(name,False)
+
+
+class ResolverList:
+    def __init__(self) -> None:
+        self.list: list[SituationResolver] = []
+
+    def add_new_situation(self):
+        self.list.append(SituationResolver())
     
+    def get_situation_id_by_loc_name(self,name):
+        i = 0
+        for sit in self.list:
+            if sit.is_location_in_resolver(name) != False:
+                return i
+            else:
+                i += 1
+        return False
+
+    def add_order_locations(self,order):
+        from room.models.order import Order, Location
+        if type(order) is Order:
+            locations = [order.current_location,order.target_location,
+                         order.reference_unit_current_location,order.reference_unit_new_location]
+            for location in locations:
+                if type(location) is Location:
+                    loc_in_sit = self.get_situation_id_by_loc_name(location.name)
+                    if loc_in_sit != False:
+                        #not equal to false
+                        #will add locations if they don't already exist
+                        self.list[loc_in_sit].add_new_location(location.name)
+                    else:
+                        #brand new situation
+                        self.add_new_situation()
+                        #add location to it
+                        self.list[self.get_situation_id_by_loc_name(location.name)].add_new_location(location.name)
