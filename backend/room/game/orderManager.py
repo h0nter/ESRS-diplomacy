@@ -143,6 +143,31 @@ class OrderManager(models.Manager):
             # for each sitatution there is a start point, we find the start pt we can resolve everything
             locations = situation.locationResolvers
 
+            # let direct (non-convoyed) attacks cut supports
+
+            # STEPS 4 AND 5. DETERMINE CONVOY DISRUPTIONS
+            # STEP 4. CUT SUPPORTS MADE BY (non-maybe) CONVOYED ATTACKS
+            # STEP 5. LOCATE NOW-DEFINITE CONVOY DISRUPTIONS, VOID SUPPORTS
+            #       THESE CONVOYERS WERE GIVEN, AND ALLOW CONVOYING UNITS TO CUT SUPPORT
+
+            # STEPS 6-8. MARK BOUNCERS
+            # STEP 9. MARK SUPPORTS CUT BY DISLODGES
+            # STEP 10. MARK DISLODGEMENTS AND UNBOUNCE ALL MOVES THAT LEAD TO DISLODGING UNITS
+
+
+            #need to check situations for:
+            # disruptions - to convoy
+            # -> check paradox - infinite loop?
+
+
+            # unit bounce - 2 vs 2
+            # handle these bounced units    
+
+            # cut support
+            # remove units of no affect i.e out of combat
+            # unbounce units now at 2 vs 1
+
+
             if len(locations) == 1:
                 #hold unrelated to others passes
                 pass
@@ -155,6 +180,7 @@ class OrderManager(models.Manager):
 
             else:
                 #all other lengths
+                pass
 
             # needs some sort of dfs to work out end of trees
             # i.e. which locations can be resolved easily
