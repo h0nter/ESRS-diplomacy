@@ -35,7 +35,7 @@ class OrderManager(models.Manager):
                 if(order.instruction == 'MVE'):
                     # if not valid
                     if(not order.target_unit.validate_move(order)):
-                        current_outcome.validation = False
+                        current_outcome.validation = Outcome.OutcomeType.VOID
                     else:
                         # valid and needs convoy
                         if(order.current_location.is_coast and order.target_location.is_coast):
@@ -47,17 +47,17 @@ class OrderManager(models.Manager):
                 elif(order.instruction == 'SPT'):
                     # if not valid
                     if(not order.target_unit.validate_support(order,turn)):
-                        current_outcome.validation = False
+                        current_outcome.validation = Outcome.OutcomeType.VOID
                 # check convoy
                 elif(order.instruction == 'CVY'):
                     # if not valid
                     if(not order.target_unit.validate_convoy(order,turn) or not order.target_unit.can_float):
-                        current_outcome.validation = False
+                        current_outcome.validation = Outcome.OutcomeType.VOID
                 # Hold auto pass
                 else:
                     pass
             else:
-                current_outcome.validation = False
+                current_outcome.validation = Outcome.OutcomeType.VOID
 
         # check convoys can actually happen, if not invalidate all involved
         # do dfs convoy here
@@ -83,9 +83,9 @@ class OrderManager(models.Manager):
                 if(not self.convoy_dfs(outcome.order_reference.current_location.pk,
                                        outcome.order_reference.target_location.pk,graph)):
                     #if convoy didn't work
-                    outcome.validation = False
+                    outcome.validation = Outcome.OutcomeType.VOID
                     for convoy in related_convoys:
-                        convoy.validation = False
+                        convoy.validation = Outcome.OutcomeType.VOID
 
     # calculate tallies 
     def calculate_moves(self,turn):
@@ -96,7 +96,7 @@ class OrderManager(models.Manager):
         from room.models.order import Outcome
         resolverList: ResolverList = ResolverList()
 
-        for legit_order in Outcome.objects.filter(validation=True).filter(order_reference__turn=turn):
+        for legit_order in Outcome.objects.filter(validation=Outcome.OutcomeType.MAYBE).filter(order_reference__turn=turn):
             
             resolverList.add_order_locations(legit_order)
             # shorten names
@@ -143,7 +143,7 @@ class OrderManager(models.Manager):
             # for each sitatution there is a start point, we find the start pt we can resolve everything
             locations = situation.locationResolvers
 
-            # let direct (non-convoyed) attacks cut supports
+            # 3. let direct (non-convoyed) attacks cut supports
 
             # STEPS 4 AND 5. DETERMINE CONVOY DISRUPTIONS
             # STEP 4. CUT SUPPORTS MADE BY (non-maybe) CONVOYED ATTACKS

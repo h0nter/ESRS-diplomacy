@@ -47,8 +47,18 @@ class Order(models.Model):
     
 class Outcome(models.Model):
     # copy of Orders - show the orders that actually happened
+    class OutcomeType(models.TextChoices):
+        MAYBE = 'MYBE', _('Order Not Evaluated')
+        PASS = 'PASS', _('Order Passed')
+        VOID = 'VOID' , _('Order Failed')
+        CUT = 'CUT', _('Order Cut')
+        BOUNCE = 'BNCE', _('Order Bounced with another')
+        DISLODGED = 'DLGE', _('Order Unit Dislodged')
+        DISRUPTED = 'DRPT', _('Convoy Order Distrupted')
+        DISBAND = 'DBAN', _('Order Unit needs to Disband')
+        
     order_reference = models.ForeignKey(Order,on_delete=models.DO_NOTHING,related_name='order_reference')
-    validation = models.BooleanField()
+    validation = models.CharField(max_length=4,choices=OutcomeType.choices,default=OutcomeType.MAYBE) # Not null
     class Meta:
         # proxy = True
         verbose_name_plural = 'Outcomes'
