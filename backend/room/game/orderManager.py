@@ -3,19 +3,19 @@ from django.db import models
 
 class OrderManager(models.Manager):
     def validate_order_table(self,turn):
-        self.legitamise_orders(turn)
+        self._legitamise_orders(turn)
         self.evaluate_orders(turn)
         self.perform_move_operations(turn)
 
     # should be static but how to reference inside
     # also don't know where to put this
-    def convoy_dfs(self, node, target, graph, visited=set()):
+    def _convoy_dfs(self, node, target, graph, visited=set()):
         visited.add(node)
         if node == target:
             return True
         for child in graph[node]:
             if child not in visited:  # Check whether the node is visited or not
-                result = self.convoy_dfs(child, target, graph, visited)  # Call the dfs recursively
+                result = self._convoy_dfs(child, target, graph, visited)  # Call the dfs recursively
                 
                 if result is True:
                     return True
@@ -23,42 +23,52 @@ class OrderManager(models.Manager):
         return False
 
     # remove orders that are theoritcally impossible
-    def legitamise_orders(self,turn):
+    def _legitamise_orders(self,turn):
         from room.models.locations import Next_to, Location
         from room.models.order import Order,Outcome
         all_moves_requiring_convoys = []
         for order in Order.objects.filter(turn=turn):
-            current_outcome = Outcome.objects.create(order_reference=order,validation=True)
-            # check current_location is same as actual
-            if(order.current_location == order.target_unit.location):
-                # check moves
-                if(order.instruction == 'MVE'):
-                    # if not valid
-                    if(not order.target_unit.validate_move(order)):
-                        current_outcome.validation = Outcome.OutcomeType.VOID
-                    else:
-                        # valid and needs convoy
-                        if(order.current_location.is_coast and order.target_location.is_coast):
-                            next_to = Next_to.objects.filter(location=order.current_location)\
-                                        .filter(next_to=order.target_location)
-                            if(len(next_to) != 1):
-                                all_moves_requiring_convoys.append(current_outcome)
-                # check supports
-                elif(order.instruction == 'SPT'):
-                    # if not valid
-                    if(not order.target_unit.validate_support(order,turn)):
-                        current_outcome.validation = Outcome.OutcomeType.VOID
-                # check convoy
-                elif(order.instruction == 'CVY'):
-                    # if not valid
-                    if(not order.target_unit.validate_convoy(order,turn) or not order.target_unit.can_float):
-                        current_outcome.validation = Outcome.OutcomeType.VOID
-                # Hold auto pass
-                else:
+            if type(order) is not Order: continue
+            current_outcome = Outcome.objects.create(order_reference=order)
+            current_outcome.save() # save init
+            if order.instruction == Order.MoveType.HOLD:
+                #auto pass, checks done when submitted to Order originally
+                pass
+            elif order.instruction == Order.MoveType.MOVE:
+                #auto pass, checks done when submitted to Order originally
+                pass
+            elif order.instruction == Order.MoveType.SUPPORT:
+                reference_unit_order = Order.objects.filter(turn=turn)\
+                .filter(target_unit=order.reference_unit)\
+                .filter(current_location=order.reference_unit_current_location)\
+                .filter(target_location=order.reference_unit_new_location)\
+                .filter(instruction=Order.MoveType.MOVE)
+                if(len(reference_unit_order) == 1):
+                    # check move exists
                     pass
-            else:
-                current_outcome.validation = Outcome.OutcomeType.VOID
+                else:
+                    # spt void but unit acts like hld
+                    current_outcome.validation = Outcome.OutcomeType.VOID
+                    current_outcome.save()
+                    pass
+            elif order.instruction == Order.MoveType.CONVOY:
+                reference_unit_order = Order.objects.filter(turn=turn)\
+                .filter(target_unit=order.reference_unit)\
+                .filter(current_location=order.reference_unit_current_location)\
+                .filter(target_location=order.reference_unit_new_location)\
+                .filter(instruction=Order.MoveType.MOVE)
+                if(len(reference_unit_order) == 1):
+                    # check moves exists
+                    # can add to defending here but need to check overall convoy
+                    all_moves_requiring_convoys.append(reference_unit_order.first())
+                    pass
+                else:
+                    # cvy void bout unit acts like hld
+                    current_outcome.validation = Outcome.OutcomeType.VOID
+                    current_outcome.save()
 
+        #remove duplicate mve orders
+        all_moves_requiring_convoys = list(dict.fromkeys(all_moves_requiring_convoys))
         # check convoys can actually happen, if not invalidate all involved
         # do dfs convoy here
         for outcome in all_moves_requiring_convoys:
@@ -66,7 +76,7 @@ class OrderManager(models.Manager):
                 # get convoys relating to move
                 related_convoys = Outcome.objects.filter(validation=True)\
                                     .filter(order_reference__turn=turn)\
-                                    .filter(order_reference__instruction='CVY')\
+                                    .filter(order_reference__instruction=Order.MoveType.CONVOY)\
                                     .filter(order_reference__reference_unit=outcome.order_reference.target_unit)
                 graph = {}
                 # add current and last locations
@@ -80,12 +90,17 @@ class OrderManager(models.Manager):
                     graph[convoy.order_reference.current_location.pk] = \
                         Next_to.objects.filter(location=convoy.order_reference.current_location).values_list('pk',flat=True)
                 
-                if(not self.convoy_dfs(outcome.order_reference.current_location.pk,
+                if(not self._convoy_dfs(outcome.order_reference.current_location.pk,
                                        outcome.order_reference.target_location.pk,graph)):
                     #if convoy didn't work
                     outcome.validation = Outcome.OutcomeType.VOID
+                    outcome.save()
                     for convoy in related_convoys:
                         convoy.validation = Outcome.OutcomeType.VOID
+                        convoy.save()
+                else:
+                    #convoy success, add mve to attacking
+                    
 
     # calculate tallies 
     def calculate_moves(self,turn):
