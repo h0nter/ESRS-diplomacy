@@ -84,3 +84,51 @@ class ResolverList:
                         self.add_new_situation()
                         #add location to it
                         self.list[self.get_situation_id_by_loc_name(location.name)].add_new_location(location.name)
+
+
+
+# REFERENCE
+
+# calculate tallies 
+# def calculate_moves(self,turn):
+    # # move/support
+    # # each location added to list and tallied
+    # from locationResolver import LocationResolver, SituationResolver, ResolverList
+    # from room.models.locations import Location
+    # from room.models.order import Outcome
+    # resolverList: ResolverList = ResolverList()
+
+    # for legit_order in Outcome.objects.filter(validation=OutcomeType.MAYBE).filter(order_reference__turn=turn):
+        
+    #     resolverList.add_order_locations(legit_order)
+    #     # shorten names
+    #     current_location = legit_order.order_reference.current_location
+    #     target_location = legit_order.order_reference.target_location
+    #     reference_unit_current_location = legit_order.order_reference.reference_unit_current_location
+    #     reference_unit_new_location = legit_order.order_reference.reference_unit_new_location
+    #     #get resolver_id for one as it same for the rest
+    #     resolver_id = resolverList.get_situation_id_by_loc_name(current_location.name)
+    #     location = resolverList.list[resolver_id].locationResolvers
+
+    #     # defending - current location
+    #     location[current_location.name].add_to_defence(legit_order.order_reference)
+    #     # is the current unit in location
+    #     location[current_location.name].current_unit_order = legit_order.order_reference
+
+    #     #SPT
+    #     if(legit_order.order_reference.instruction == 'SPT' and reference_unit_current_location):
+    #         if(reference_unit_new_location is None ):
+    #             # supporting defending unit - this could be a HLD OR CVY
+    #             location[reference_unit_current_location.name].add_to_defence(legit_order.order_reference)
+    #         elif(reference_unit_new_location and legit_order.order_reference.reference_unit):
+    #             # supporting a MVE
+    #             location[reference_unit_new_location.name].add_to_attacking(legit_order.order_reference.reference_unit,legit_order.order_reference)
+    #     #MVE
+    #     elif(legit_order.order_reference.instruction == 'MVE' and target_location):
+    #         location[target_location.name].add_to_attacking(legit_order.order_reference.target_unit,legit_order.order_reference)
+    #         location[current_location.name].current_unit_moved = True
+    #     else:
+    #         # 'HLD' or 'CVY' don't affect other moves already covered with defence
+    #         pass
+
+    # return resolverList

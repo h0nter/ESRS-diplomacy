@@ -1,4 +1,5 @@
-from .orderManager import OrderManager
+from room.game.legitamiseOrders import LegitamiseOrders
+from room.game.resolveOrders import ResolveOrders
 from host.models import Room
 from django.core.management import call_command
 
@@ -37,7 +38,11 @@ class Step:
 
     @classmethod
     def checking(cls) -> None: # need to update the status to room app
-        OrderManager.validate_order_table(cls.turn)
+        # legitamise the submitted orders
+        LegitamiseOrders(turn=cls.turn)
+        # resolve orders 
+        ResolveOrders(turn=cls.turn)
+
         if cls.isFinished():
             cls.room.update(room_status='end')
         else:
