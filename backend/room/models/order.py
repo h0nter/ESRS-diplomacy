@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from room.models.locations import Location
+from room.models.locations import Location, Next_to
 from room.game.unitTypes import Unit
 from room.game.orderManager import OrderManager
 
@@ -41,6 +41,67 @@ class Order(models.Model):
     reference_unit = models.ForeignKey(Unit,blank=True,null=True,on_delete=models.DO_NOTHING,related_name='reference_unit')
     reference_unit_current_location = models.ForeignKey(Location,blank=True,null=True,on_delete=models.DO_NOTHING,related_name='reference_unit_current_location')
     reference_unit_new_location = models.ForeignKey(Location,blank=True,null=True,on_delete=models.DO_NOTHING,related_name='reference_unit_new_location')
+
+
+    # will check moves are valid by themselves when submitted by player
+    def _valid_order_given_no_others(self) -> bool:
+        if type(self.current_location) is Location and type(self.target_unit) is Unit and \
+            self.target_unit.location == self.current_location:
+            if self.instruction == self.MoveType.HOLD:
+                if self.target_location is None and \
+                    self.reference_unit is None and \
+                    self.reference_unit_current_location is None and \
+                    self.reference_unit_new_location is None:
+                    return True
+            elif self.instruction == self.MoveType.MOVE:
+                if type(self.target_location) is Location and \
+                    self.reference_unit is None and \
+                    self.reference_unit_current_location is None and \
+                    self.reference_unit_new_location is None and \
+                    ((self.target_unit.can_float and 
+                        (self.target_location.is_coast or self.target_location.is_sea)) or \
+                     (not self.target_unit.can_float and 
+                        (self.target_location.is_coast or not self.target_location.is_sea))) and \
+                    len(Next_to.objects.filter(location=self.current_location)\
+                        .filter(next_to=self.target_location)) == 1:
+                        return True
+                     
+            elif self.instruction == self.MoveType.SUPPORT:
+                if self.target_location is None and \
+                    type(self.reference_unit) is Unit and \
+                    type(self.reference_unit_current_location) is Location and \
+                    type(self.reference_unit_new_location) is Location and \
+                    ((self.target_unit.can_float and 
+                        (self.reference_unit_new_location.is_coast or self.reference_unit_new_location.is_sea)) or \
+                     (not self.target_unit.can_float and 
+                        (self.reference_unit_new_location.is_coast or not self.reference_unit_new_location.is_sea))
+                     ) and \
+                    len(Next_to.objects.filter(location=self.current_location)\
+                        .filter(next_to=self.target_location)) == 1:
+                    # don't need to check if reference unit's move is valid at this stage
+                    # just check the spt is for a location next to current
+                    return True
+            elif self.instruction == self.MoveType.CONVOY:
+                if self.target_location is None and \
+                    self.target_unit.can_float and \
+                    self.current_location.is_sea and \
+                    type(self.reference_unit) is Unit and \
+                    not self.reference_unit.can_float and \
+                    type(self.reference_unit_current_location) is Location and \
+                    type(self.reference_unit_new_location) is Location:
+                    # don't need to check if reference unit's move is valid at this stage
+                    return True
+        return False
+
+    def save(self, *args, **kwargs):
+        # only if the order is basic possible is it saved 
+        # allows us to only save orders that would be valid 
+        # given no other Orders
+        if not self._valid_order_given_no_others():
+            return # don't save!
+        else:
+            # save!
+            super(Order,self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.pk)
