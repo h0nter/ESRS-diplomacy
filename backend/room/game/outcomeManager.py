@@ -25,6 +25,13 @@ class OutcomeManager(models.Manager):
             .filter(order_reference__instruction=MoveType.SUPPORT)\
             .filter(order_reference__reference_unit_new_location=location)
     
+    def grab_related_spt_orders(self,order,turn):
+        from room.models.order import Turn, Order
+        if type(turn) is Turn and type(order) is Order:
+            return self._grab_spt_attacking_orders(order.target_location,turn)
+        else:
+            raise TypeError('turn Type should be Turn and order Type should be Order')
+    
     def _grab_mve_attacking_orders(self,location,turn):
         from room.models.order import MoveType
         # we grab the moves that reference this location
@@ -133,7 +140,7 @@ class OutcomeManager(models.Manager):
                              ' and order Type should be Order')
         
     def grab_all_cvy_mve_orders(self,turn,add_marked=False):
-        from room.models.order import Turn, MoveType, OutcomeType
+        from room.models.order import Turn, MoveType, OutcomeType, Order
         if type(turn) is Turn:
             moves = self._grab_this_turn_maybe_orders(turn) \
                 .filter(order_reference__instruction=MoveType.MOVE)
@@ -143,6 +150,10 @@ class OutcomeManager(models.Manager):
                     .filter(order_reference__instruction=MoveType.MOVE).union(moves)
                
             # work out a filter to remove all but cvy mves
-            return moves    
+            ref_units = Order.objects.filter(instruction=MoveType.CONVOY)\
+                .values_list('reference_unit',flat=True)
+
+            # filter to just convoy units
+            return moves.filter(models.Q(target_unit__in = ref_units))
         else:
             raise TypeError('Type should be Turn')

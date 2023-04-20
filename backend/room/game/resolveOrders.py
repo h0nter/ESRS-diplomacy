@@ -35,14 +35,18 @@ class ResolveOrders():
                 # 2.4 - VOID SPTs to these Disrupted CVY MVEs
                 if outcome.validation == OutcomeType.NO_CONVOY:
                     # grab all SPTs referencing this MVE
-                    pass
+                    for support_outcome in Outcome.objects.grab_related_spt_orders(outcome.order_reference,self.turn):
+                        if type(support_outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
+                        outcome.validation = OutcomeType.NO_CONVOY
+                        outcome.save()
                 elif outcome.validation == OutcomeType.MARK:
+                    # 2.5 - ALLOW the other Successful CVY MVEs to CUT SPT
                     # cut SPTs for marked MVEs
-                    pass
-                # 2.5 - ALLOW the other Successful CVY MVEs to CUT SPT
-
-
-
+                    outcome.validation = OutcomeType.MAYBE
+                    outcome.save()
+                    self._cut_support(outcome)
+                    cutters.append(outcome.pk)
+                    cut = 1
 
         # 3 - MARK BOUNCERS
         # 4 - MARK SUPPORTS CUT BY DISLODGES
@@ -81,6 +85,7 @@ class ResolveOrders():
                 support_to_cut.save()
 
     def _check_disruptions(self,mve_order_result,cvy_order_result):
+        # determines convoy disruptions
         pass
 
 
