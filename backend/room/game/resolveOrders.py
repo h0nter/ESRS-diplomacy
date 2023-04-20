@@ -9,7 +9,7 @@ class ResolveOrders():
 
     # if MVE attacks SPT unit cut it
     def _cut_supports_direct(self,turn):
-        from room.models.order import Outcome, MoveType
+        from room.models.order import Outcome, MoveType, OutcomeType
         for outcome in Outcome.objects.grab_all_mve_orders(turn):
             if type(outcome) is not Outcome: continue
             support_to_cut = Outcome.objects.grab_order_current_location(outcome.order_reference.target_location,turn).first()
@@ -22,12 +22,19 @@ class ResolveOrders():
                     (# EXCEPTION B: CANNOT CUT SUPPORT FOR A MOVE AGAINST YOUR LOCATION
                     support_to_cut.order_reference.reference_unit_new_location != \
                     outcome.order_reference.current_location
-                    ):
-                    # EXCEPTION C: OR SUPPORT FOR A MOVE (IF CONVOYED) FOR OR AGAINST ANY CONVOYING FLEET
-                    # p.g. 17 for reference to diagram of this
-                    # EXCEPTION TO EXCEPTION C: IF THERE IS A ALTERNATIVE CONVOY ROUTE
-
-
+                    ) and \
+                    ((# EXCEPTION C: OR SUPPORT FOR A MOVE (IF CONVOYED) FOR OR AGAINST ANY CONVOYING FLEET
+                     # p.g. 17 for reference to diagram of this
+                    len(Outcome.objects.grab_order_current_location(turn=turn, location=
+                        support_to_cut.order_reference.reference_unit_new_location)\
+                            .filter(order_reference__instruction=MoveType.CONVOY)) == 0) or \
+                    (# EXCEPTION TO EXCEPTION C: IF THERE IS A ALTERNATIVE CONVOY ROUTE      
+                    Outcome.objects.is_alternative_convoy_route(turn,outcome.order_reference,
+                        support_to_cut.order_reference.reference_unit_new_location))): 
+                    # support is cut
+                    support_to_cut.validation = OutcomeType.CUT
+                    support_to_cut.save()
+                   
     def evaluate_orders(self,turn):
         from locationResolver import LocationResolver, SituationResolver, ResolverList
         #resolverList: ResolverList = self.calculate_moves(turn)

@@ -74,7 +74,7 @@ class LegitamiseOrders():
         for outcome in all_moves_requiring_convoys:
             if type(outcome) is Outcome and type(outcome.order_reference.target_location) is Location:
                 # get convoys relating to move
-                related_convoys = Outcome.objects.filter(validation=True)\
+                related_convoys = Outcome.objects.filter(validation=OutcomeType.MAYBE)\
                                     .filter(order_reference__turn=turn)\
                                     .filter(order_reference__instruction=MoveType.CONVOY)\
                                     .filter(order_reference__reference_unit=outcome.order_reference.target_unit)
