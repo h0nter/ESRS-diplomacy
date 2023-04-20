@@ -109,6 +109,8 @@ class Order(models.Model):
 
 class OutcomeType(models.TextChoices):
         MAYBE = 'MYBE', _('Order Not Evaluated')
+        MARK = 'MARK', _('Order Marked for future Evaluation')
+        NO_CONVOY = 'NCVY', _('Move Order has No Convoy')
         PASS = 'PASS', _('Order Passed')
         VOID = 'VOID' , _('Order Failed')
         CUT = 'CUT', _('Order Cut')

@@ -80,11 +80,15 @@ class OutcomeManager(models.Manager):
             raise TypeError('Type should be Turn')
         
 
-    def _grab_convoy_orders(self,turn,unit):
+    def grab_convoy_orders_for_order(self,turn,order):
         from room.models.order import MoveType
-        return self._grab_this_turn_maybe_orders(turn) \
-            .filter(order_reference__instruction=MoveType.CONVOY) \
-            .filter(order_reference__reference_unit=unit)
+        from room.models.order import Turn, Order
+        if type(turn) is Turn and type(order) is Order:
+            return self._grab_this_turn_maybe_orders(turn) \
+                .filter(order_reference__instruction=MoveType.CONVOY) \
+                .filter(order_reference__reference_unit=order.target_unit)
+        else:
+            raise TypeError('turn Type should be Turn and order Type should be Order')
     
     # private as only needed for working out if alternative route
     def _convoy_dfs(self, node, target, graph, visited=set()):
@@ -105,7 +109,7 @@ class OutcomeManager(models.Manager):
         from room.models.locations import Location, Next_to
         from room.models.order import Turn, Order
         if type(location) is Location and type(turn) is Turn and type(order) is Order:
-            related_convoys = self._grab_convoy_orders(turn,order.target_unit)\
+            related_convoys = self.grab_convoy_orders_for_order(turn,order)\
                 .exclude(order_reference__current_location=location) #remove node to avoid
             graph = {}
             # add current and last locations
@@ -127,3 +131,18 @@ class OutcomeManager(models.Manager):
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn' +
                              ' and order Type should be Order')
+        
+    def grab_all_cvy_mve_orders(self,turn,add_marked=False):
+        from room.models.order import Turn, MoveType, OutcomeType
+        if type(turn) is Turn:
+            moves = self._grab_this_turn_maybe_orders(turn) \
+                .filter(order_reference__instruction=MoveType.MOVE)
+            if add_marked:
+                moves = self.get_queryset().filter(order_reference__turn=turn) \
+                    .filter(validation=OutcomeType.MARK) \
+                    .filter(order_reference__instruction=MoveType.MOVE).union(moves)
+               
+            # work out a filter to remove all but cvy mves
+            return moves    
+        else:
+            raise TypeError('Type should be Turn')
