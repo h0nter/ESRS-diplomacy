@@ -28,7 +28,7 @@ class ResolveOrders():
             if cut:
                 continue
             # 2.3 - Locate definite CVY disruptions - uses already Marked as well as all CVY MVEs
-            self._check_disruptions(OutcomeType.VOID,OutcomeType.DISRUPTED) 
+            self._check_disruptions(OutcomeType.NO_CONVOY,OutcomeType.DISRUPTED) 
             
             for outcome in Outcome.objects.grab_all_cvy_mve_orders(self.turn,add_marked=True):
                 if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
@@ -86,7 +86,66 @@ class ResolveOrders():
 
     def _check_disruptions(self,mve_order_result,cvy_order_result):
         # determines convoy disruptions
-        pass
+        from room.models.order import Outcome, Next_to
+        for outcome in Outcome.objects.grab_all_cvy_mve_orders(self.turn,add_marked=True):
+            if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
+            # grab unit destination order
+            order_at_start = outcome.order_reference
+            order_at_dest = Outcome.objects.grab_order_current_location(outcome.order_reference.target_location,self.turn).first()
+            if type(order_at_dest) is not Outcome: raise TypeError('order_at_dest should be of type Outcome')
+
+            # for each convoying unit
+            for convoy in Outcome.objects.grab_convoy_orders_for_order(self.turn,outcome.order_reference):
+                if type(convoy) is not Outcome: raise TypeError('convoy should be of type Outcome')
+                # check if being attacked
+                attack_orders = Outcome.objects.grab_all_attacking_orders(convoy.order_reference.current_location,self.turn)
+                defence_orders = Outcome.objects.grab_all_defence_orders(convoy.order_reference.current_location,self.turn)
+                if len(attack_orders) == 0:
+                    #convoy not under attack
+                    continue
+
+                # Paradox Detection #1 - diagram 30
+                # A convoyed Army doesn’t cut the support of a unit supporting
+                # an attack against one of the Fleets necessary for the Army to convoy. 
+                paradox = False
+                if order_at_dest.order_reference.reference_unit_new_location == \
+                    convoy.order_reference.current_location:
+                    paradox = True
+                
+                # check convoy can withstand attack and there is no paradox
+                if len(defence_orders) >= len(attack_orders) and not paradox:
+                    continue
+
+                # check destination is not attacking or supporting an attack against convoy
+                if len(attack_orders) >= 2 and not paradox:
+                    if order_at_dest not in attack_orders:
+                        continue
+
+
+                # Paradox Detection #2 - Can convoyed unit use land route to cut support necessary to attack convoy
+                # if mve is along coast
+                paradox = False
+                next_to = Next_to.objects.filter(location=order_at_start.current_location)\
+                        .filter(next_to=order_at_start.target_location)
+                if len(next_to) == 1 and \
+                    order_at_dest.order_reference.reference_unit_new_location == \
+                        convoy.order_reference.current_location:
+                    paradox = True
+
+                # Setting the result if there is no convoy paths left, and
+                #   1) there is no land route (or there is a paradox through the land route)
+                #   or 2) the unit specified 'VIA' and doesn't want to try the land route (4.A.3) - doesn't apply
+                if(Outcome.objects.is_alternative_convoy_route(
+                    self.turn,outcome,convoy.order_reference.current_location)) and \
+                   (paradox or not len(next_to) == 1):
+                    outcome.validation = mve_order_result
+                    outcome.save()
+
+
+                # Setting the result for a would-be dislodged fleet
+                convoy.validation = cvy_order_result
+                convoy.save()
+
 
 
 
