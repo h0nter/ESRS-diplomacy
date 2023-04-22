@@ -26,28 +26,36 @@ class OutcomeManager(models.Manager):
             .filter(order_reference__reference_unit_new_location=location)
     
     def grab_related_spt_orders(self,order,turn):
-        from room.models.order import Turn, Order
+        from room.models.order import Turn, Order, MoveType
         if type(turn) is Turn and type(order) is Order:
-            return self._grab_spt_attacking_orders(order.target_location,turn)
+            return self._grab_this_turn_maybe_orders(turn)\
+            .filter(order_reference__instruction=MoveType.SUPPORT)\
+            .filter(order_reference_reference_unit=order.target_unit)\
+            .filter(order_reference__reference_unit_current_location=order.current_location)\
+            .filter(order_reference__reference_unit_new_location=order.target_location)
         else:
             raise TypeError('turn Type should be Turn and order Type should be Order')
     
-    def _grab_mve_attacking_orders(self,location,turn):
+    def grab_mve_attacking_orders(self,location,turn):
         from room.models.order import MoveType
-        # we grab the moves that reference this location
-        return self._grab_this_turn_maybe_orders(turn)\
-            .filter(order_reference__instruction=MoveType.MOVE)\
-            .filter(order_reference__target_location=location)
-
-    # grabs all attacking orders that reference the location specified
-    def grab_all_attacking_orders(self,location,turn):
         from room.models.locations import Location
-        from room.models.order import Turn
-        if type(location) is Location and type(turn) is Turn:
-            return self._grab_mve_attacking_orders(location,turn).union(
-                self._grab_spt_attacking_orders(location,turn))
+        # we grab the moves that reference this location
+        if type(location) is Location:
+            return self._grab_this_turn_maybe_orders(turn)\
+                .filter(order_reference__instruction=MoveType.MOVE)\
+                .filter(order_reference__target_location=location)
         else:
-            raise TypeError('location Type should be Location and turn Type should be Turn')
+            raise TypeError('location Type should be Location')
+        
+    # grabs all attacking orders that reference the location specified
+    def grab_attacking_strength_of_order(self,order,turn):
+        from room.models.order import Turn, Order
+        if type(turn) is Turn and type(order) is Order:
+            return self._grab_this_turn_maybe_orders(turn) \
+                .filter(order_reference__target_unit = order.target_unit)\
+                .union(self.grab_related_spt_orders(order,turn))
+        else:
+            raise TypeError('turn Type should be Turn and order Type should be Order')
         
     def grab_order_current_location(self,location,turn):
         # we grab the orders that reference this location as current
@@ -157,3 +165,10 @@ class OutcomeManager(models.Manager):
             return moves.filter(models.Q(target_unit__in = ref_units))
         else:
             raise TypeError('Type should be Turn')
+        
+    def grab_all_non_cvy_mve_orders(self,turn):
+        from room.models.order import Turn,Outcome
+        if type(turn) is Turn:
+            cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('target_unit',flat=True)
+            all_mve_orders: models.QuerySet[Outcome] = self.grab_all_mve_orders(turn)
+            return all_mve_orders.exclude(target_unit__in = cvy_mves)

@@ -1,3 +1,6 @@
+from django.db import models
+
+
 class ResolveOrders():
     # this class resolves all legitamite orders
     # call the class LegitamiseOrders before this!
@@ -48,8 +51,17 @@ class ResolveOrders():
                     cutters.append(outcome.pk)
                     cut = 1
 
-        # 3 - MARK BOUNCERS
-        # 4 - MARK SUPPORTS CUT BY DISLODGES
+
+        dislodged,cut = {},1
+        while cut:
+            # 3 - MARK BOUNCERS
+            self._bounce()
+
+            # 4 - MARK SUPPORTS CUT BY DISLODGES
+            cut = 0
+
+
+
         # 5 - MARK DISLODGEMENTS AND UNBOUNCE ALL MOVES THAT LEAD TO DISLODGING UNITS
 
 
@@ -98,7 +110,7 @@ class ResolveOrders():
             for convoy in Outcome.objects.grab_convoy_orders_for_order(self.turn,outcome.order_reference):
                 if type(convoy) is not Outcome: raise TypeError('convoy should be of type Outcome')
                 # check if being attacked
-                attack_orders = Outcome.objects.grab_all_attacking_orders(convoy.order_reference.current_location,self.turn)
+                attack_orders = Outcome.objects.grab_mve_attacking_orders(convoy.order_reference.current_location,self.turn)
                 defence_orders = Outcome.objects.grab_all_defence_orders(convoy.order_reference.current_location,self.turn)
                 if len(attack_orders) == 0:
                     #convoy not under attack
@@ -146,8 +158,57 @@ class ResolveOrders():
                 convoy.validation = cvy_order_result
                 convoy.save()
 
+    def _bounce(self):
+        from room.models.order import Outcome, OutcomeType, MoveType
+        # marks all units that can't get where they are going as bounced
+        # loops to handle bounce chains
+        bounced = 1
+        while bounced:
+            bounced = 0
+
+             # 3.1 - VOID (non-convoyed) PLACE-SWAP BOUNCERS
+            mve_outcomes = Outcome.objects.grab_all_non_cvy_mve_orders(self.turn)
+            if type(mve_outcomes) is models.QuerySet[Outcome]:
+                # only do for loop if there are moves involving no cvys
+                for mve_outcome in mve_outcomes:
+                    outcome_at_destination = Outcome.objects.grab_order_current_location(
+                        mve_outcome.order_reference.target_location,self.turn).first()
+                    if type(outcome_at_destination) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
+                    # order not evaled yet and of type move i.e also attacking us - i.e. swapping
+                    if outcome_at_destination.validation == OutcomeType.MAYBE and \
+                        outcome_at_destination.order_reference.instruction == MoveType.MOVE:
+                        # if same owner boing
+                        same_owner = mve_outcome.order_reference.target_unit.owner == \
+                            outcome_at_destination.order_reference.target_unit.owner
+                        attacking_mve_outcome = len(Outcome.objects.grab_attacking_strength_of_order(mve_outcome.order_reference,self.turn))
+                        defending_mve_outcome = len(Outcome.objects.grab_all_defence_orders(mve_outcome.order_reference.current_location,self.turn))
+                        attacking_outcome_at_destination = len(Outcome.objects.grab_attacking_strength_of_order(outcome_at_destination.order_reference,self.turn))
+                        defending_outcome_at_destination = len(Outcome.objects.grab_all_defence_orders(outcome_at_destination.order_reference.current_location,self.turn))
+                        # mve_outcome <= outcome_at_dest
+                        if same_owner or attacking_mve_outcome >= defending_mve_outcome:
+                            # mve_outcome failed - bounced
+                            mve_outcome.validation = OutcomeType.BOUNCE
+                        # outcome_at_dest >= mve_outcome
+                        if same_owner or attacking_outcome_at_destination >= defending_outcome_at_destination:
+                            outcome_at_destination.validation = OutcomeType.BOUNCE
+
+                        for mve_outcome_support in Outcome.objects.grab_related_spt_orders(mve_outcome,self.turn):
+                            if type(mve_outcome_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
+                            mve_outcome_support.validation = OutcomeType.BOUNCE
+
+                        for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome_at_destination,self.turn):
+                            if type(outcome_at_destination_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
+                            outcome_at_destination_support.validation = OutcomeType.BOUNCE
+                        bounced = 1
+                if bounced:
+                    continue
+                # No (more) swap-bouncers
+
+            # 3.2 - MARK OUTGUNNED BOUNCERS
 
 
+
+            # 3.3 - MARK SELF-DISLODGE BOUNCERS
 
 
     # NOTES
