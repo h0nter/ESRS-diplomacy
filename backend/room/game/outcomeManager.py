@@ -36,26 +36,57 @@ class OutcomeManager(models.Manager):
         else:
             raise TypeError('turn Type should be Turn and order Type should be Order')
     
-    def grab_mve_attacking_orders(self,location,turn):
-        from room.models.order import MoveType
+    def grab_mve_attacking_orders(self,location,turn,include_bounce=False):
+        from room.models.order import MoveType, OutcomeType
         from room.models.locations import Location
         # we grab the moves that reference this location
         if type(location) is Location:
-            return self._grab_this_turn_maybe_orders(turn)\
-                .filter(order_reference__instruction=MoveType.MOVE)\
+            orders = self._grab_this_turn_maybe_orders(turn)
+            if include_bounce:
+                orders = self.get_queryset().filter(order_reference__turn=turn)\
+                    .filter(validation=OutcomeType.BOUNCE).union(orders)
+            return orders.filter(order_reference__instruction=MoveType.MOVE)\
                 .filter(order_reference__target_location=location)
         else:
             raise TypeError('location Type should be Location')
         
     # grabs all attacking orders that reference the location specified
-    def grab_attacking_strength_of_order(self,order,turn):
-        from room.models.order import Turn, Order
+    def grab_attacking_strength_of_order(self,order,turn,include_bounce=False):
+        from room.models.order import Turn, Order, OutcomeType
         if type(turn) is Turn and type(order) is Order:
-            return self._grab_this_turn_maybe_orders(turn) \
-                .filter(order_reference__target_unit = order.target_unit)\
-                .union(self.grab_related_spt_orders(order,turn))
+            if not include_bounce:
+                outcome = self._grab_this_turn_maybe_orders(turn) \
+                    .filter(order_reference__target_unit = order.target_unit)
+            else:
+                outcome = self.get_queryset().filter(order_reference__turn=turn)\
+                    .filter(validation=OutcomeType.BOUNCE) \
+                    .filter(order_reference__target_unit = order.target_unit)
+            return outcome.union(self.grab_related_spt_orders(order,turn))
         else:
             raise TypeError('turn Type should be Turn and order Type should be Order')
+        
+    def grab_highest_attacking_mve(self,location,turn,include_bounce=False):
+        from room.models.locations import Location
+        from room.models.order import Turn, OutcomeType, MoveType
+        if type(location) is Location and type(turn) is Turn:
+            attacks = self.grab_mve_attacking_orders(location,turn)
+            if include_bounce:
+                attacks = self.get_queryset().filter(order_reference__turn=turn)\
+                    .filter(validation=OutcomeType.BOUNCE)\
+                    .filter(order_reference__instruction=MoveType.MOVE)\
+                    .filter(order_reference__target_location=location).union(attacks)
+            max_attack_strength = 0
+            max_attack = []
+            for attack in attacks:
+                strength = self.grab_attacking_strength_of_order(attack,turn,include_bounce=include_bounce)
+                if len(strength) == max_attack_strength:
+                    max_attack.append(attack)
+                elif len(strength) > max_attack_strength:
+                    max_attack = [attack]
+                    max_attack_strength = len(strength)
+            return max_attack
+        else:
+            raise TypeError('location Type should be Location and turn Type should be Turn')
         
     def grab_order_current_location(self,location,turn):
         # we grab the orders that reference this location as current

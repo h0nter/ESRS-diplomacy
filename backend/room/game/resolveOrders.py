@@ -13,10 +13,33 @@ class ResolveOrders():
         for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
             self._cut_support(outcome,direct=1)
 
-        # 2 - DETERMINE CONVOY DISRUPTIONS - may need to be in WHILE
-        cut,cutters = 1,[]
+        # 2 - DETERMINE CONVOY DISRUPTIONS
+        self._determine_convoy_disruptions()
+
+        cut = True
         while cut:
-            cut = 0
+            # 3 - MARK BOUNCERS
+            self._bounce()
+
+            # 4 - MARK SUPPORTS CUT BY DISLODGES - this being potentially mves 
+            cut = self._cut_supports_from_dislodge()
+            
+        # 5 - MARK DISLODGEMENTS AND UNBOUNCE ALL MOVES THAT LEAD TO DISLODGING UNITS
+        for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
+            if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
+            self._determine_dislodgement(outcome)
+            outcome_location = outcome.order_reference.target_location
+            self._unbounce(outcome_location)
+
+        # Note: 
+        # all dislodged units will need to grab move orders from player
+        # these then need to be validated
+        
+    def _determine_convoy_disruptions(self):
+        from room.models.order import Outcome, OutcomeType
+        cut,cutters = True,[]
+        while cut:
+            cut = False
 
             # 2.1 - First mark units if the convoy fleet would be disrupted
             self._check_disruptions(OutcomeType.MARK,OutcomeType.MAYBE) 
@@ -27,7 +50,7 @@ class ResolveOrders():
                     continue
                 self._cut_support(outcome)
                 cutters.append(outcome.pk)
-                cut = 1
+                cut = True
             if cut:
                 continue
             # 2.3 - Locate definite CVY disruptions - uses already Marked as well as all CVY MVEs
@@ -49,43 +72,8 @@ class ResolveOrders():
                     outcome.save()
                     self._cut_support(outcome)
                     cutters.append(outcome.pk)
-                    cut = 1
+                    cut = True
 
-
-        cut = 1
-        while cut:
-            # 3 - MARK BOUNCERS
-            self._bounce()
-
-            # 4 - MARK SUPPORTS CUT BY DISLODGES - this being potentially mves 
-            cut = 0
-            # ones that are marked as bounced -> already evaled
-            for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
-                if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
-                order_at_target_location = Outcome.objects.grab_order_current_location(
-                    outcome.order_reference.target_location,self.turn).first()
-                # if there is no order at location skip
-                if type(order_at_target_location) is not Outcome: continue
-                # if there it is not spt then it cannot be cut
-                if order_at_target_location.order_reference.instruction != MoveType.SUPPORT: continue
-                # if already been evaluated 
-                if order_at_target_location.validation != OutcomeType.MAYBE: continue
-
-                # This next line is the key. Convoyed attacks can dislodge, but even when doing so, they cannot cut
-                # supports offered for or against a convoying fleet
-                # (They can cut supports directed against the original position of the army, though.)    
-
-                IMPLEMENT!!!
-                # if cvy attack and spt is directed at cvy fleet: continue
-
-                order_at_target_location.validation = OutcomeType.CUT
-                order_at_target_location.save()
-                cut = 1
-
-        # 5 - MARK DISLODGEMENTS AND UNBOUNCE ALL MOVES THAT LEAD TO DISLODGING UNITS
-
-
-        
     # if MVE attacks SPT unit cut it
     def _cut_support(self,outcome,direct=0):
         from room.models.order import Outcome, MoveType, OutcomeType
@@ -277,33 +265,87 @@ class ResolveOrders():
                             outcome_at_destination_support.validation = OutcomeType.BOUNCE
                             outcome_at_destination_support.save()
 
-    # NOTES
+    def _cut_supports_from_dislodge(self) -> bool:
+        from room.models.order import Outcome, OutcomeType, MoveType
+        cut = False
+        # ones that are marked as bounced -> already evaled
+        for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
+                if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
+                order_at_target_location = Outcome.objects.grab_order_current_location(
+                    outcome.order_reference.target_location,self.turn).first()
+                # if there is no order at location skip
+                if type(order_at_target_location) is not Outcome: continue
+                # if there it is not spt then it cannot be cut
+                if order_at_target_location.order_reference.instruction != MoveType.SUPPORT: continue
+                # if already been evaluated 
+                if order_at_target_location.validation != OutcomeType.MAYBE: continue
 
-    #need to check situations for:
-    # disruptions - to convoy
-    # -> check paradox - infinite loop?
+                # This next line is the key. Convoyed attacks can dislodge, but even when doing so, they cannot cut
+                # supports offered for or against a convoying fleet
+                # (They can cut supports directed against the original position of the army, though.)    
 
+                # if cvy attack and spt is directed at cvy fleet: continue
+                is_convoy = len(Outcome.objects.grab_all_cvy_mve_orders(self.turn)\
+                                .filter(order_reference=outcome.order_reference))==1
+                spt_target = Outcome.objects.grab_order_current_location(
+                    order_at_target_location.order_reference.reference_unit_new_location,self.turn).first()
+                if type(spt_target) is not Outcome: continue
+                spt_target_is_convoy = spt_target.order_reference.instruction == MoveType.CONVOY
+                if is_convoy and spt_target_is_convoy:
+                    continue
 
-    # unit bounce - 2 vs 2
-    # handle these bounced units    
-
-    # cut support
-    # remove units of no affect i.e out of combat
-    # unbounce units now at 2 vs 1
-
-
-    # needs some sort of dfs to work out end of trees
-    # i.e. which locations can be resolved easily
-
-    # or 
-
-    # do the ones that can be resolved instantly
-    # keep going until all are done (iterative)
-    # remove from dict as you go?
-
-
-    # the ones that can be resolved instantly are ones that don't depend on outside sources
+                # cut support
+                order_at_target_location.validation = OutcomeType.CUT
+                order_at_target_location.save()
+                cut = True
+        return cut
     
+    def _determine_dislodgement(self,outcome):
+        from room.models.order import Outcome, OutcomeType, MoveType
+        if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
+        outcome_location = outcome.order_reference.target_location
+        loser = Outcome.objects.grab_order_current_location(outcome_location,self.turn).first()
+        # if there is no unit, or unit is already moving don't dislodge it
+        if type(loser) is Outcome and loser.order_reference.instruction != MoveType.MOVE:
+            loser.validation = OutcomeType.DISLODGED
+            loser.save()
 
-    # orrr we do a first pass, only looking at indiviual tiles?
+            # DOES THIS NEED TO BE DONE?
+            # Check for a dislodged swapper (attacker and dislodged units must not be convoyed.)
+            # If found, remove the swapper from the combat list of the attacker's space
 
+            # mark support for self-dislodgement as void
+            for supporting_unit in Outcome.objects._grab_spt_attacking_orders(
+                outcome_location,self.turn).filter(
+                order_reference__reference_unit = outcome.order_reference.target_unit):
+                if type(supporting_unit) is not Outcome: raise TypeError('outcome should be of type Outcome')
+                supporting_unit.validation = OutcomeType.VOID
+                supporting_unit.save()
+
+    def _unbounce(self,outcome_location):
+        # unbounce any powerful-enough move that can now take the spot being vacated by the dislodger
+        from room.models.order import Outcome, OutcomeType, MoveType
+        from room.models.locations import Location
+        # Detecting if there is only one attack winning at site
+        if type(outcome_location) is not Location: raise TypeError('outcome_location should be of type Location')
+        highest_attack_mve = Outcome.objects.grab_highest_attacking_mve(outcome_location,self.turn,include_bounce=True)
+        # if still bounce return
+        if len(highest_attack_mve) > 1:
+            return
+        # remove list
+        highest_attack_mve = highest_attack_mve[0]
+        if type(highest_attack_mve) is not Outcome: raise TypeError('outcome should be of type Outcome')
+        # if highest attack still bounce
+        if highest_attack_mve.validation == OutcomeType.BOUNCE:
+            # pass attack
+            highest_attack_mve.validation = OutcomeType.PASS
+            highest_attack_mve.save()
+        
+            #PROBLEM currently difficulty is determining which sites still need resolving        
+            # unbounce site highest_attack is on
+            next_site = Outcome.objects.grab_mve_attacking_orders(
+                highest_attack_mve.order_reference.current_location,self.turn,include_bounce=True)
+            if len(next_site) > 1:
+                # potentially still needs unbouncing
+                self._unbounce(highest_attack_mve.order_reference.current_location)
+        return 
