@@ -5,7 +5,7 @@ class ResolveOrders():
     # this class resolves all legitamite orders
     # call the class LegitamiseOrders before this!
     def __init__(self,turn) -> None:
-        from room.models.order import Turn, Outcome, OutcomeType
+        from room.models.order import Turn, Outcome, OutcomeType, MoveType
         if type(turn) is not Turn: raise TypeError('Type should be Turn')
         self.turn = turn
 
@@ -52,15 +52,35 @@ class ResolveOrders():
                     cut = 1
 
 
-        dislodged,cut = {},1
+        cut = 1
         while cut:
             # 3 - MARK BOUNCERS
             self._bounce()
 
-            # 4 - MARK SUPPORTS CUT BY DISLODGES
+            # 4 - MARK SUPPORTS CUT BY DISLODGES - this being potentially mves 
             cut = 0
+            # ones that are marked as bounced -> already evaled
+            for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
+                if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
+                order_at_target_location = Outcome.objects.grab_order_current_location(
+                    outcome.order_reference.target_location,self.turn).first()
+                # if there is no order at location skip
+                if type(order_at_target_location) is not Outcome: continue
+                # if there it is not spt then it cannot be cut
+                if order_at_target_location.order_reference.instruction != MoveType.SUPPORT: continue
+                # if already been evaluated 
+                if order_at_target_location.validation != OutcomeType.MAYBE: continue
 
+                # This next line is the key. Convoyed attacks can dislodge, but even when doing so, they cannot cut
+                # supports offered for or against a convoying fleet
+                # (They can cut supports directed against the original position of the army, though.)    
 
+                IMPLEMENT!!!
+                # if cvy attack and spt is directed at cvy fleet: continue
+
+                order_at_target_location.validation = OutcomeType.CUT
+                order_at_target_location.save()
+                cut = 1
 
         # 5 - MARK DISLODGEMENTS AND UNBOUNCE ALL MOVES THAT LEAD TO DISLODGING UNITS
 
@@ -188,28 +208,74 @@ class ResolveOrders():
                         if same_owner or attacking_mve_outcome >= defending_mve_outcome:
                             # mve_outcome failed - bounced
                             mve_outcome.validation = OutcomeType.BOUNCE
+                            mve_outcome.save()
                         # outcome_at_dest >= mve_outcome
                         if same_owner or attacking_outcome_at_destination >= defending_outcome_at_destination:
                             outcome_at_destination.validation = OutcomeType.BOUNCE
+                            outcome_at_destination.save()
 
                         for mve_outcome_support in Outcome.objects.grab_related_spt_orders(mve_outcome,self.turn):
                             if type(mve_outcome_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
                             mve_outcome_support.validation = OutcomeType.BOUNCE
+                            mve_outcome_support.save()
 
                         for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome_at_destination,self.turn):
                             if type(outcome_at_destination_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
                             outcome_at_destination_support.validation = OutcomeType.BOUNCE
+                            outcome_at_destination_support.save()
                         bounced = 1
                 if bounced:
                     continue
                 # No (more) swap-bouncers
 
             # 3.2 - MARK OUTGUNNED BOUNCERS
-
-
+            for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
+                if type(outcome) is not Outcome: raise TypeError('outcome should be Outcome')
+                # check target_location has unit
+                if len(Outcome.objects.grab_order_current_location(
+                    outcome.order_reference.target_location,self.turn)) != 1:
+                    continue
+                # check defence > attack
+                attacking_outcome = len(Outcome.objects.grab_attacking_strength_of_order(outcome.order_reference,self.turn))
+                defending_target_location = len(Outcome.objects.grab_all_defence_orders(outcome.order_reference.target_location,self.turn))
+                if attacking_outcome <= defending_target_location:
+                    # mark attack bounced
+                    outcome.validation = OutcomeType.BOUNCE
+                    outcome.save()
+                    bounced = 1
+                # what about the multiple attackers! - this might not be needed...
+                # other_attacks on same location see if current order bounces with them
+                other_attacks = Outcome.objects.grab_mve_attacking_orders(outcome.order_reference.target_location,self.turn)\
+                    .exclude(order_reference__target_unit=outcome.order_reference.target_unit)
+                for other_attack in other_attacks:
+                    if type(other_attack) is not Outcome: raise TypeError('other_attack should be Outcome')
+                    attacking_other_attack = len(Outcome.objects.grab_attacking_strength_of_order(other_attack.order_reference,self.turn))
+                    if attacking_outcome <= attacking_other_attack:
+                        # attacking outcome will also bounce
+                        outcome.validation = OutcomeType.BOUNCE
+                        outcome.save()
+                        bounced = 1
+            if bounced:
+                continue
 
             # 3.3 - MARK SELF-DISLODGE BOUNCERS
-
+            for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
+                if type(outcome) is not Outcome: raise TypeError('outcome should be Outcome')
+                order_at_location = Outcome.objects.grab_order_current_location(\
+                    outcome.order_reference.target_location,self.turn).first()
+                # if there is no order at location skip
+                if type(order_at_location) is not Outcome: continue
+                # if order has same owner 
+                if order_at_location.order_reference.target_unit.owner ==\
+                    outcome.order_reference.target_unit.owner:
+                    # bounce attack
+                    outcome.validation = OutcomeType.BOUNCE
+                    outcome.save()
+                    # bounce spts
+                    for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome,self.turn):
+                            if type(outcome_at_destination_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
+                            outcome_at_destination_support.validation = OutcomeType.BOUNCE
+                            outcome_at_destination_support.save()
 
     # NOTES
 
