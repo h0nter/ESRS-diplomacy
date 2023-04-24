@@ -41,7 +41,7 @@ class UpdateOrder(graphene.Mutation):
             order.reference_unit_new_location = Location.objects.get(pk=input.reference_unit_new_location_pk)
             
         print('Do some verify')
-        order.save()
+        result = order.save()
         print('Saved successfully')
 
         return UpdateOrder(ok=True, order=order)

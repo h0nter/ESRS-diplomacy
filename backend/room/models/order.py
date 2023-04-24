@@ -98,10 +98,11 @@ class Order(models.Model):
         # allows us to only save orders that would be valid 
         # given no other Orders
         if not self._valid_order_given_no_others():
-            return # don't save!
+            return False
         else:
             # save!
             super(Order,self).save(*args, **kwargs)
+            return True
 
     def __str__(self):
         return str(self.pk)
