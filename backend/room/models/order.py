@@ -90,8 +90,6 @@ class Order(models.Model):
                     type(self.reference_unit_current_location) is Location and \
                     type(self.reference_unit_new_location) is Location:
                     # don't need to check if reference unit's move is valid at this stage
-                    print('fekfefk')
-                    print(self.target_unit.can_float)
                     return True
         return False
 
