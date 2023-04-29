@@ -1,6 +1,8 @@
 <template>
-  <use v-bind="{'xlink:href' : '#' + type}" :id="'unit-'+unit_id" :style="'fill:' + color" :transform="'translate(' + (positionX + 8) + ', ' + (positionY - 14) + ')'" class="unit" @click="onUnitClick"/>
-  <UnitActionMenu :unit_id="unit_id" :type="type" :positionX="positionX + 8" :positionY="positionY - 14" v-bind:class="[actionMenuOpen ? 'action-menu active' : 'action-menu']"/>
+  <g :id="unitID" >
+    <use v-bind="{'xlink:href' : '#' + type}" :style="'fill:' + color" :transform="'translate(' + (positionX + 8) + ', ' + (positionY - 14) + ')'" class="unit" @click="onUnitClick" />
+    <UnitActionMenu v-show="activeUnit === unitID" :id="unitActionMenuID" :unit_id="unit_id" :type="type" :positionX="positionX + 8" :positionY="positionY - 14" />
+  </g>
 </template>
 
 <script lang="ts" setup>
@@ -13,13 +15,17 @@ const props = defineProps({
   color: String,
   positionX: Number,
   positionY: Number,
+  activeUnit: String,
 });
 
-let actionMenuOpen : Boolean = false;
+const emit = defineEmits(['unitClicked'])
+
+const unitID = 'unit-' + props.unit_id;
+const unitActionMenuID = unitID + '-menu';
+
 const onUnitClick = () => {
   // Toggle the action menu
-  console.log(`Unit $unit_id clicked`)
-  actionMenuOpen = !actionMenuOpen;
+  emit('unitClicked', {unit_id: unitID, unit_menu_id: unitActionMenuID})
 }
 </script>
 

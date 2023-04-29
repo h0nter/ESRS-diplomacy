@@ -1,5 +1,5 @@
 <template>
-  <g class="">
+  <g>
     <use v-bind="{'xlink:href' : '#HoldButton'}" :id="'hold-'+unit_id" :transform="'translate(' + (positionX - 68) + ', ' + (positionY - 15) + ')'" class="action-button"/>
     <use v-bind="{'xlink:href' : '#SupportButton'}" :id="'support-'+unit_id" :transform="'translate(' + (positionX - 30) + ', ' + (positionY - 50) + ')'" class="action-button"/>
     <use v-bind="{'xlink:href' : '#MoveButton'}" :id="'move-'+unit_id" :transform="'translate(' + (positionX + 25) + ', ' + (positionY - 15) + ')'" class="action-button"/>
@@ -17,6 +17,8 @@ const props = defineProps({
   positionX: Number,
   positionY: Number
 });
+
+
 </script>
 
 <style scoped>
