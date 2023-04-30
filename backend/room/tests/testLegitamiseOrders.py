@@ -17,6 +17,7 @@ class room_app_test_legitamise_orders(TestCase):
         cls.locationB = Location.objects.create(name="location B",map=cls.map, is_coast=True,is_sea=True)
         cls.locationC = Location.objects.create(name='location C',map=cls.map,is_coast=True,is_sea=True)
         cls.locationD = Location.objects.create(name='location D',map=cls.map,is_coast=True,is_sea=True)
+        cls.locationE = Location.objects.create(name='location E',map=cls.map,is_sea=True)
         cls.nextToAB = Next_to.objects.create(location=cls.locationA, next_to=cls.locationB)
         cls.nextToBA = Next_to.objects.create(location=cls.locationB, next_to=cls.locationA)
         cls.nextToCB = Next_to.objects.create(location=cls.locationC, next_to=cls.locationB)
@@ -25,10 +26,13 @@ class room_app_test_legitamise_orders(TestCase):
         cls.nextToAC = Next_to.objects.create(location=cls.locationA, next_to=cls.locationC)
         cls.nextToCD = Next_to.objects.create(location=cls.locationC, next_to=cls.locationD)
         cls.nextToDC = Next_to.objects.create(location=cls.locationD, next_to=cls.locationC)
+        cls.nextToED = Next_to.objects.create(location=cls.locationE, next_to=cls.locationD)
+        cls.nextToDE = Next_to.objects.create(location=cls.locationD, next_to=cls.locationE)
         cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)        
         cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationC)
         cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB,can_float=True)
         cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationD)
+        cls.unitE = Unit.objects.create(owner=cls.countryA,location=cls.locationE)
 
         
 
@@ -44,6 +48,16 @@ class room_app_test_legitamise_orders(TestCase):
                                      target_unit=self.unitA,current_location='locationA')
         except Exception as e:
             self.assertRaisesMessage(ValueError,str(e))
+
+    def test_invalid_hold2(self):
+        hold = Order(instruction=MoveType.HOLD,turn=self.turn,
+                                     target_unit=self.unitA,current_location=self.locationE)
+        self.assertFalse(hold.save())
+
+    def test_invalid_hold3(self):
+        hold = Order(instruction=MoveType.HOLD,turn=self.turn,
+                                     target_unit=self.unitE,current_location=self.locationE)
+        self.assertFalse(hold.save())
     
     def test_valid_mve(self):
         mve = Order(instruction=MoveType.MOVE,turn=self.turn,
@@ -60,6 +74,13 @@ class room_app_test_legitamise_orders(TestCase):
                                     target_location='locationB')
         except Exception as e:
             self.assertRaisesMessage(ValueError,str(e))
+
+    def test_invalid_mve2(self):
+        mve = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                    target_unit=self.unitD,
+                                    current_location=self.locationD,
+                                    target_location=self.locationE)
+        self.assertFalse(mve.save())
 
     def test_valid_spt(self):
         spt = Order(instruction=MoveType.SUPPORT,turn=self.turn,

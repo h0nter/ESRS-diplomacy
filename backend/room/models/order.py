@@ -51,7 +51,9 @@ class Order(models.Model):
                 if self.target_location is None and \
                     self.reference_unit is None and \
                     self.reference_unit_current_location is None and \
-                    self.reference_unit_new_location is None:
+                    self.reference_unit_new_location is None and \
+                    ((self.target_unit.can_float and (self.current_location.is_sea or self.current_location.is_coast)) or \
+                    (not self.target_unit.can_float and (not self.current_location.is_sea or self.current_location.is_coast))):
                     return True
             elif self.instruction == MoveType.MOVE:
                 if type(self.target_location) is Location and \
@@ -59,11 +61,16 @@ class Order(models.Model):
                     self.reference_unit_current_location is None and \
                     self.reference_unit_new_location is None and \
                     ((self.target_unit.can_float and 
-                        (self.target_location.is_coast or self.target_location.is_sea)) or \
-                     (not self.target_unit.can_float and 
-                        (self.target_location.is_coast or not self.target_location.is_sea))) and \
-                    len(Next_to.objects.filter(location=self.current_location)\
-                        .filter(next_to=self.target_location)) == 1:
+                        (self.target_location.is_coast or self.target_location.is_sea) and 
+                        len(Next_to.objects.filter(location=self.current_location)\
+                        .filter(next_to=self.target_location)) == 1
+                     ) or \
+                     (not self.target_unit.can_float and \
+                      ((self.current_location.is_coast and self.target_location.is_coast) or \
+                       ((not self.target_location.is_sea or (self.target_location.is_sea and self.target_location.is_coast)) and \
+                        len(Next_to.objects.filter(location=self.current_location)\
+                        .filter(next_to=self.target_location)) == 1))
+                    )):
                         return True
                      
             elif self.instruction == MoveType.SUPPORT:
