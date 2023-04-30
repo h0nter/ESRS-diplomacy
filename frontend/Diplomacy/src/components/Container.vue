@@ -1,11 +1,11 @@
 <template>
   <div class="container lg:max-w-screen-lg px-5 py-5">
-      <slot />
-    </div>
+    <slot />
+  </div>
 </template>
 
 <style scoped>
-  .container{
+  .container {
     display: flex;
     flex-direction: column;
     justify-content: center;

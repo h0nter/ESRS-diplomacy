@@ -1,7 +1,28 @@
-.Austria	{fill:#FF0000; stroke:black}
-.England	{fill:#0000FF; stroke:black}
-.France 	{fill:#00FFFF; stroke:black}
-.Germany	{fill:#808080; stroke:black}
-.Italy  	{fill:#00FF00; stroke:black}
-.Russia 	{fill:#008000; stroke:black}
-.Turkey 	{fill:#FFFF00; stroke:black}
+.Austria {
+  fill: #ff0000;
+  stroke: black;
+}
+.England {
+  fill: #0000ff;
+  stroke: black;
+}
+.France {
+  fill: #00ffff;
+  stroke: black;
+}
+.Germany {
+  fill: #808080;
+  stroke: black;
+}
+.Italy {
+  fill: #00ff00;
+  stroke: black;
+}
+.Russia {
+  fill: #008000;
+  stroke: black;
+}
+.Turkey {
+  fill: #ffff00;
+  stroke: black;
+}

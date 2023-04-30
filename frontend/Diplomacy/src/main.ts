@@ -1,7 +1,7 @@
-import {createApp, h, provide} from "vue";
+import { createApp, h, provide } from "vue";
 
-import { DefaultApolloClient } from '@vue/apollo-composable';
-import { apolloClient} from "@/apollo-config";
+import { DefaultApolloClient } from "@vue/apollo-composable";
+import { apolloClient } from "@/apollo-config";
 
 import App from "./App.vue";
 import router from "./router";

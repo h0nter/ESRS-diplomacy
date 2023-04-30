@@ -1,6 +1,6 @@
 <template>
-  <Header title="ESRS Diplomacy"/>
-  <ButtonRouterLink url="/game" text="Start"/>
+  <Header title="ESRS Diplomacy" />
+  <ButtonRouterLink url="/game" text="Start" />
 </template>
 
 <script setup>
@@ -8,6 +8,4 @@
   import ButtonRouterLink from "@/components/ButtonRouterLink.vue";
 </script>
 
-<style>
-
-</style>
+<style></style>
