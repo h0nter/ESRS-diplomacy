@@ -8,6 +8,7 @@
 <script lang="ts" setup>
 import {defineProps, PropType} from "vue";
 import UnitActionMenu from "@/components/UnitActionMenu.vue";
+import type {UnitClickObject} from "@/models/UnitClickObject";
 
 const props = defineProps({
   unit_id: String,
@@ -25,7 +26,7 @@ const unitActionMenuID = unitID + '-menu';
 
 const onUnitClick = () => {
   // Toggle the action menu
-  emit('unitClicked', {unit_id: unitID, unit_menu_id: unitActionMenuID})
+  emit('unitClicked', <UnitClickObject>({unit_id: unitID, unit_menu_id: unitActionMenuID}));
 }
 </script>
 

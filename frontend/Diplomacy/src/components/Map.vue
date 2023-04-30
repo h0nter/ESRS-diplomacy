@@ -7,12 +7,16 @@
       Loading...
     </p>
     <svg v-else viewBox="-0.5 -0.5 610 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- Instantiate a single unit and action menu, then 'use' tag will clone them -->
       <UnitsSetup />
       <UnitActonMenuSetup/>
+      <!-- Create territories, and use-tag for hover mechanics -->
       <Territory v-for="territory in territories" :key="territory.id" :name="territory.name" :polygons="territory.polygons" :text="territory.abbreviation" :textX="territory.textPosX" :textY="territory.textPosY" :units="units" @territoryHovered="onTerritoryHovered" />
       <use id="territoryOnTop" :href="currentlyHoveredTerritory" />
+      <!-- Create units, and use-tag for click mechanics -->
       <Unit v-for="unit in units" :key="unit.id" :unit_id="unit.id" :type="[unit.canFloat ? 'F' : 'A']" :color="unit.owner.colour" :positionX="unit.location.textPosX" :positionY="unit.location.textPosY" :activeUnit="activeUnitName" @unitClicked="onUnitClick"/>
       <use id="activeUnit" :href="activeUnit" />
+      <!-- Ensure that the active menu is rendered in front of units and territories -->
       <use id="activeUnitMenu" :href="activeUnitMenu" />
     </svg>
   </div>
@@ -31,24 +35,35 @@
   import type {LocationType, UnitType} from "@/gql/graphql";
   import UnitActonMenuSetup from "@/components/UnitActonMenuSetup.vue";
   import UnitActionMenu from "@/components/UnitActionMenu.vue";
+  import type {UnitClickObject} from "@/models/UnitClickObject";
 
   const currentlyHoveredTerritory = ref("#");
-
-  const activeUnit = ref("#");
-  const activeUnitMenu = ref("#");
-  let activeUnitName : string = "";
 
   function onTerritoryHovered(name:string) {
     currentlyHoveredTerritory.value = "#" + name;
   }
 
-  // TODO: Create a type for those args, cause it's also defined in Unit.vue
-  const onUnitClick = (args : {unit_id:string,unit_menu_id:string}) => {
+  // Begin active unit and action menu logic
+
+  // Set up the refs and name vars,
+  // why not set them up together in an object? Because it doesn't work.
+  const activeUnit = ref("#");
+  const activeUnitMenu = ref("#");
+  let activeUnitName : string = "";
+
+ /*
+  * Triggered by the Unit component when a unit is clicked.
+  * Update the state of the active unit and menu, pass the state to all units to toggle the menu on/off.
+  * It has to be done outside the Unit component, to order the rendering of those correctly.
+  */
+  const onUnitClick = (args : UnitClickObject) => {
+    // If the active unit is clicked again, close the menu
     if (args.unit_id === activeUnitName) {
       activeUnitName = "#";
-    }else{
+    }else{ // Otherwise, open the menu (only one open at a time)
       activeUnitName = args.unit_id;
     }
+    // This here is a stupid hack to force the re-rendering/drawing of the active unit and menu.
     activeUnit.value = "#" + args.unit_id;
     activeUnit.value = "#";
     activeUnitMenu.value = "#" + args.unit_menu_id;
