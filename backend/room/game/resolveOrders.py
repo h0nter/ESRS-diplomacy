@@ -112,7 +112,6 @@ class ResolveOrders():
             # grab unit destination order
             order_at_start = outcome.order_reference
             order_at_dest = Outcome.objects.grab_order_current_location(outcome.order_reference.target_location,self.turn).first()
-            if type(order_at_dest) is not Outcome: raise TypeError('order_at_dest should be of type Outcome')
 
             # for each convoying unit
             for convoy in Outcome.objects.grab_convoy_orders_for_order(self.turn,outcome.order_reference):
@@ -128,29 +127,32 @@ class ResolveOrders():
                 # A convoyed Army doesn’t cut the support of a unit supporting
                 # an attack against one of the Fleets necessary for the Army to convoy. 
                 paradox = False
-                if order_at_dest.order_reference.reference_unit_new_location == \
-                    convoy.order_reference.current_location:
-                    paradox = True
+                if type(order_at_dest) is Outcome:
+                    if order_at_dest.order_reference.reference_unit_new_location == \
+                        convoy.order_reference.current_location:
+                        paradox = True
                 
                 # check convoy can withstand attack and there is no paradox
                 if len(defence_orders) >= len(attack_orders) and not paradox:
                     continue
 
                 # check destination is not attacking or supporting an attack against convoy
-                if len(attack_orders) >= 2 and not paradox:
-                    if order_at_dest not in attack_orders:
-                        continue
+                if type(order_at_dest) is Outcome:
+                    if len(attack_orders) >= 2 and not paradox:
+                        if order_at_dest not in attack_orders:
+                            continue
 
 
                 # Paradox Detection #2 - Can convoyed unit use land route to cut support necessary to attack convoy
                 # if mve is along coast
                 paradox = False
                 next_to = Next_to.objects.filter(location=order_at_start.current_location)\
-                        .filter(next_to=order_at_start.target_location)
-                if len(next_to) == 1 and \
-                    order_at_dest.order_reference.reference_unit_new_location == \
-                        convoy.order_reference.current_location:
-                    paradox = True
+                            .filter(next_to=order_at_start.target_location)
+                if type(order_at_dest) is Outcome:
+                    if len(next_to) == 1 and \
+                        order_at_dest.order_reference.reference_unit_new_location == \
+                            convoy.order_reference.current_location:
+                        paradox = True
 
                 # Setting the result if there is no convoy paths left, and
                 #   1) there is no land route (or there is a paradox through the land route)
@@ -181,7 +183,9 @@ class ResolveOrders():
                 for mve_outcome in mve_outcomes:
                     outcome_at_destination = Outcome.objects.grab_order_current_location(
                         mve_outcome.order_reference.target_location,self.turn).first()
-                    if type(outcome_at_destination) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
+                    # no outcome at destination, skip as no bounce
+                    if type(outcome_at_destination) is not Outcome: continue
+                        #raise TypeError('outcome_at_destination should be Outcome')
                     # order not evaled yet and of type move i.e also attacking us - i.e. swapping
                     if outcome_at_destination.validation == OutcomeType.MAYBE and \
                         outcome_at_destination.order_reference.instruction == MoveType.MOVE:
@@ -202,12 +206,12 @@ class ResolveOrders():
                             outcome_at_destination.validation = OutcomeType.BOUNCE
                             outcome_at_destination.save()
 
-                        for mve_outcome_support in Outcome.objects.grab_related_spt_orders(mve_outcome,self.turn):
+                        for mve_outcome_support in Outcome.objects.grab_related_spt_orders(mve_outcome.order_reference,self.turn):
                             if type(mve_outcome_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
                             mve_outcome_support.validation = OutcomeType.BOUNCE
                             mve_outcome_support.save()
 
-                        for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome_at_destination,self.turn):
+                        for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome_at_destination.order_reference,self.turn):
                             if type(outcome_at_destination_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
                             outcome_at_destination_support.validation = OutcomeType.BOUNCE
                             outcome_at_destination_support.save()

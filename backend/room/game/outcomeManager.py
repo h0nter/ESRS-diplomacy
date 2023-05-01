@@ -25,60 +25,73 @@ class OutcomeManager(models.Manager):
             .filter(order_reference__instruction=MoveType.SUPPORT)\
             .filter(order_reference__reference_unit_new_location=location)
     
+    def _grab_related_spt_orders(self,order,turn):
+        from room.models.order import MoveType, OutcomeType
+        return (models.Q(order_reference__turn=turn) & models.Q(validation=OutcomeType.MAYBE)
+                    & models.Q(order_reference__instruction=MoveType.SUPPORT)
+                    & models.Q(order_reference__reference_unit=order.target_unit)
+                    & models.Q(order_reference__reference_unit_current_location=order.current_location)
+                    & models.Q(order_reference__reference_unit_new_location=order.target_location)
+                )
+        
     def grab_related_spt_orders(self,order,turn):
-        from room.models.order import Turn, Order, MoveType
+        from room.models.order import Turn, Order
         if type(turn) is Turn and type(order) is Order:
-            return self._grab_this_turn_maybe_orders(turn)\
-            .filter(order_reference__instruction=MoveType.SUPPORT)\
-            .filter(order_reference_reference_unit=order.target_unit)\
-            .filter(order_reference__reference_unit_current_location=order.current_location)\
-            .filter(order_reference__reference_unit_new_location=order.target_location)
+            return self.get_queryset().filter(self._grab_related_spt_orders(order,turn))
         else:
             raise TypeError('turn Type should be Turn and order Type should be Order')
+
     
-    def grab_mve_attacking_orders(self,location,turn,include_bounce=False):
+    def _grab_mve_attacking_orders(self,location,turn,include_bounce=False):
         from room.models.order import MoveType, OutcomeType
         from room.models.locations import Location
         # we grab the moves that reference this location
         if type(location) is Location:
-            orders = self._grab_this_turn_maybe_orders(turn)
             if include_bounce:
-                orders = self.get_queryset().filter(order_reference__turn=turn)\
-                    .filter(validation=OutcomeType.BOUNCE).union(orders)
-            return orders.filter(order_reference__instruction=MoveType.MOVE)\
-                .filter(order_reference__target_location=location)
+                query = (models.Q(order_reference__turn=turn) & 
+                         (models.Q(validation=OutcomeType.BOUNCE) | models.Q(validation=OutcomeType.MAYBE)))
+            else:
+                query = (models.Q(order_reference__turn=turn) & models.Q(validation=OutcomeType.MAYBE))
+
+            return (query & models.Q(order_reference__instruction=MoveType.MOVE) & 
+                     models.Q(order_reference__target_location=location))
         else:
             raise TypeError('location Type should be Location')
+        
+    def grab_mve_attacking_orders(self,location,turn,include_bounce=False):
+        from room.models.order import Turn
+        from room.models.locations import Location
+        if type(turn) is Turn and type(location) is Location:
+            return self.get_queryset().filter(
+                self._grab_mve_attacking_orders(location,turn,include_bounce=include_bounce))
+        else:
+            raise TypeError('turn Type should be Turn and location Type should be Location')
         
     # grabs all attacking orders that reference the location specified
     def grab_attacking_strength_of_order(self,order,turn,include_bounce=False):
         from room.models.order import Turn, Order, OutcomeType
         if type(turn) is Turn and type(order) is Order:
             if not include_bounce:
-                outcome = self._grab_this_turn_maybe_orders(turn) \
-                    .filter(order_reference__target_unit = order.target_unit)
+                outcome_query = (models.Q(order_reference__turn=turn) & 
+                                 models.Q(validation=OutcomeType.MAYBE) &
+                                 models.Q(order_reference__target_unit = order.target_unit))
             else:
-                outcome = self.get_queryset().filter(order_reference__turn=turn)\
-                    .filter(validation=OutcomeType.BOUNCE) \
-                    .filter(order_reference__target_unit = order.target_unit)
-            return outcome.union(self.grab_related_spt_orders(order,turn))
+                outcome_query = (models.Q(order_reference__turn=turn) & 
+                                 models.Q(validation=OutcomeType.BOUNCE) &
+                                 models.Q(order_reference__target_unit = order.target_unit))
+            return self.get_queryset().filter(outcome_query | self._grab_related_spt_orders(order,turn))
         else:
-            raise TypeError('turn Type should be Turn and order Type should be Order')
+            raise TypeError('turn Type should be Turn and order Type ({}) should be Order'.format(type(order)))
         
     def grab_highest_attacking_mve(self,location,turn,include_bounce=False):
         from room.models.locations import Location
         from room.models.order import Turn, OutcomeType, MoveType
         if type(location) is Location and type(turn) is Turn:
-            attacks = self.grab_mve_attacking_orders(location,turn)
-            if include_bounce:
-                attacks = self.get_queryset().filter(order_reference__turn=turn)\
-                    .filter(validation=OutcomeType.BOUNCE)\
-                    .filter(order_reference__instruction=MoveType.MOVE)\
-                    .filter(order_reference__target_location=location).union(attacks)
+            attacks = self._grab_mve_attacking_orders(location,turn,include_bounce=include_bounce)
             max_attack_strength = 0
             max_attack = []
-            for attack in attacks:
-                strength = self.grab_attacking_strength_of_order(attack,turn,include_bounce=include_bounce)
+            for attack in self.get_queryset().filter(attacks):
+                strength = self.grab_attacking_strength_of_order(attack.order_reference,turn,include_bounce=include_bounce)
                 if len(strength) == max_attack_strength:
                     max_attack.append(attack)
                 elif len(strength) > max_attack_strength:
@@ -88,32 +101,40 @@ class OutcomeManager(models.Manager):
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
-    def grab_order_current_location(self,location,turn):
+    def _grab_order_current_location(self,location,turn):
         # we grab the orders that reference this location as current
         from room.models.locations import Location
         from room.models.order import Turn
         if type(location) is Location and type(turn) is Turn:
             # doesn't matter if it is void or not
-            return self.get_queryset().filter(order_reference__turn=turn)\
-                .filter(order_reference__current_location=location)
+            return (models.Q(order_reference__turn=turn) & 
+                     models.Q(order_reference__current_location=location))
+        else:
+            raise TypeError('location Type should be Location and turn Type should be Turn')
+        
+    def grab_order_current_location(self,location,turn):
+        from room.models.locations import Location
+        from room.models.order import Turn
+        if type(location) is Location and type(turn) is Turn:
+            return self.get_queryset().filter(self._grab_order_current_location(location,turn))
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
     def _grab_spt_defence_orders(self,location,turn):
-        from room.models.order import MoveType
+        from room.models.order import MoveType, OutcomeType
         # we grab the support moves that reference this as current location
         # this means the referenced unit is staying at this location
-        return self._grab_this_turn_maybe_orders(turn)\
-            .filter(order_reference__instruction=MoveType.SUPPORT)\
-            .filter(order_reference__reference_unit_current_location=location)\
-            .filter(order_reference__reference_unit_new_location=None)
+        return (models.Q(order_reference__turn=turn) & models.Q(validation=OutcomeType.MAYBE) &
+                models.Q(order_reference__instruction=MoveType.SUPPORT) &
+                models.Q(order_reference__reference_unit_current_location=location) &
+                models.Q(order_reference__reference_unit_new_location=None))
     
     def grab_all_defence_orders(self,location,turn):
         from room.models.locations import Location
         from room.models.order import Turn
         if type(location) is Location and type(turn) is Turn:
-            return self._grab_spt_defence_orders(location,turn).union(
-                self.grab_order_current_location(location,turn))
+            return self.get_queryset().filter(self._grab_spt_defence_orders(location,turn) |
+                self._grab_order_current_location(location,turn))
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
@@ -181,25 +202,26 @@ class OutcomeManager(models.Manager):
     def grab_all_cvy_mve_orders(self,turn,add_marked=False):
         from room.models.order import Turn, MoveType, OutcomeType, Order
         if type(turn) is Turn:
-            moves = self._grab_this_turn_maybe_orders(turn) \
-                .filter(order_reference__instruction=MoveType.MOVE)
-            if add_marked:
-                moves = self.get_queryset().filter(order_reference__turn=turn) \
-                    .filter(validation=OutcomeType.MARK) \
-                    .filter(order_reference__instruction=MoveType.MOVE).union(moves)
-               
+            moves = (models.Q(order_reference__turn=turn) & 
+                     models.Q(order_reference__instruction=MoveType.MOVE))
+            if add_marked: 
+                moves = (moves & (models.Q(validation=OutcomeType.MAYBE) | 
+                                  models.Q(validation=OutcomeType.MARK)))
+            else:
+                moves = (moves & models.Q(validation=OutcomeType.MAYBE))
+                               
             # work out a filter to remove all but cvy mves
             ref_units = Order.objects.filter(instruction=MoveType.CONVOY)\
                 .values_list('reference_unit',flat=True)
 
             # filter to just convoy units
-            return moves.filter(models.Q(target_unit__in = ref_units))
+            return self.get_queryset().filter(moves).filter(models.Q(order_reference__target_unit__in = ref_units))
         else:
             raise TypeError('Type should be Turn')
         
     def grab_all_non_cvy_mve_orders(self,turn):
         from room.models.order import Turn,Outcome
         if type(turn) is Turn:
-            cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('target_unit',flat=True)
+            cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('order_reference__target_unit',flat=True)
             all_mve_orders: models.QuerySet[Outcome] = self.grab_all_mve_orders(turn)
-            return all_mve_orders.exclude(target_unit__in = cvy_mves)
+            return all_mve_orders.exclude(order_reference__target_unit__in = cvy_mves)

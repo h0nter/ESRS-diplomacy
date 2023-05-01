@@ -104,5 +104,5 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
         ResolveOrders(self.turn)
         for outcome in Outcome.objects.filter(order_reference__turn=self.turn):
             if type(outcome) is Outcome:
-                print('{0} {1}'.format(outcome.order_reference.target_unit.location,outcome.validation))
+                #print('{0} {1}'.format(outcome.order_reference.target_unit.location,outcome.validation))
                 self.assertEqual(outcome.validation,OutcomeType.MAYBE) 
