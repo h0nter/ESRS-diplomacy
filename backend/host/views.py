@@ -1,3 +1,4 @@
+from django.middleware.csrf import get_token
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from .models.room import Room
@@ -13,3 +14,13 @@ def launch_room(request):
 
 def index(request):
     return HttpResponse('index')
+
+
+def get_csrf(request):
+    if request.method == 'GET':
+        return JsonResponse({'csrftoken':get_token(request),'sessionid': request.COOKIES.get('sessionid')})
+    
+
+
+
+    # request.COOKIES.get('logged_in_status') 
