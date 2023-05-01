@@ -39,7 +39,7 @@ class OutcomeManager(models.Manager):
         if type(turn) is Turn and type(order) is Order:
             return self.get_queryset().filter(self._grab_related_spt_orders(order,turn))
         else:
-            raise TypeError('turn Type should be Turn and order Type should be Order')
+            raise TypeError('turn Type: {} should be Turn and order Type: {} should be Order'.format(type(turn),type(order)))
 
     
     def _grab_mve_attacking_orders(self,location,turn,include_bounce=False):
@@ -120,6 +120,22 @@ class OutcomeManager(models.Manager):
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
+    def _grab_defender_current_location(self,location,turn):
+        from room.models.order import MoveType, OutcomeType
+        # if the order is moving away from spot, it is no longer defending
+        return (models.Q(order_reference__turn=turn) & 
+                     models.Q(order_reference__current_location=location) & 
+                     ~(models.Q(order_reference__instruction=MoveType.MOVE) & 
+                      models.Q(validation=OutcomeType.MAYBE)))
+        
+    def grab_defender_current_location(self,location,turn):
+        from room.models.locations import Location
+        from room.models.order import Turn
+        if type(location) is Location and type(turn) is Turn:
+            return self.get_queryset().filter(self._grab_defender_current_location(location,turn))
+        else:
+            raise TypeError('location Type should be Location and turn Type should be Turn')
+        
     def _grab_spt_defence_orders(self,location,turn):
         from room.models.order import MoveType, OutcomeType
         # we grab the support moves that reference this as current location
@@ -131,10 +147,10 @@ class OutcomeManager(models.Manager):
     
     def grab_all_defence_orders(self,location,turn):
         from room.models.locations import Location
-        from room.models.order import Turn
+        from room.models.order import Turn, MoveType, OutcomeType
         if type(location) is Location and type(turn) is Turn:
             return self.get_queryset().filter(self._grab_spt_defence_orders(location,turn) |
-                self._grab_order_current_location(location,turn))
+                    self._grab_defender_current_location(location,turn))
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         

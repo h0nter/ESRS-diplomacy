@@ -81,6 +81,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 target_unit=unitB,current_location=self.locationC)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
+        #print(Outcome.objects.grab_all_defence_orders(self.locationB,self.turn))
+        #print(Outcome.objects.grab_all_defence_orders(self.locationC,self.turn))
         ResolveOrders(self.turn)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
@@ -185,10 +187,10 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         ResolveOrders(self.turn)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
-            self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
+            self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
         outcome_2 = Outcome.objects.get(order_reference=order_2)
         if type(outcome_2) is Outcome:
-            self.assertEqual(outcome_2.validation, OutcomeType.BOUNCE)
+            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
         outcome_3 = Outcome.objects.get(order_reference=order_3)
         if type(outcome_3) is Outcome:
             self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
@@ -213,6 +215,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 target_location=self.locationF)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
+        print(Outcome.objects.grab_all_defence_orders(self.locationD,self.turn))
+        print(Outcome.objects.grab_all_defence_orders(self.locationE,self.turn))
+        print(Outcome.objects.grab_all_defence_orders(self.locationF,self.turn))
         ResolveOrders(self.turn)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:

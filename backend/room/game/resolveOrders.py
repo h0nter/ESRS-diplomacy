@@ -181,14 +181,21 @@ class ResolveOrders():
             if type(mve_outcomes) is models.QuerySet[Outcome]:
                 # only do for loop if there are moves involving no cvys
                 for mve_outcome in mve_outcomes:
-                    outcome_at_destination = Outcome.objects.grab_order_current_location(
+                    outcome_at_destination = Outcome.objects.grab_defender_current_location(
                         mve_outcome.order_reference.target_location,self.turn).first()
+                    print(outcome_at_destination)
                     # no outcome at destination, skip as no bounce
                     if type(outcome_at_destination) is not Outcome: continue
                         #raise TypeError('outcome_at_destination should be Outcome')
                     # order not evaled yet and of type move i.e also attacking us - i.e. swapping
                     if outcome_at_destination.validation == OutcomeType.MAYBE and \
                         outcome_at_destination.order_reference.instruction == MoveType.MOVE:
+                        # if looking at each other boing
+                        # check move is not convoying and they are both looking at each other
+                        # trading_places = 
+                        #     outcome_at_destination in mve_outcomes and \
+                        #     mve_outcome.order_reference.current_location == outcome_at_destination.order_reference.target_location and \
+                        #     outcome_at_destination.order_reference.current_location == mve_outcome.order_reference.target_location
                         # if same owner boing
                         same_owner = mve_outcome.order_reference.target_unit.owner == \
                             outcome_at_destination.order_reference.target_unit.owner
@@ -198,11 +205,13 @@ class ResolveOrders():
                         defending_outcome_at_destination = len(Outcome.objects.grab_all_defence_orders(outcome_at_destination.order_reference.current_location,self.turn))
                         # mve_outcome <= outcome_at_dest
                         if same_owner or attacking_mve_outcome >= defending_mve_outcome:
-                            # mve_outcome failed - bounced
+                            # mve_outcome failed - bounced#
+                            print('mve_outcome <= outcome_at_dest',attacking_mve_outcome,defending_mve_outcome,same_owner)
                             mve_outcome.validation = OutcomeType.BOUNCE
                             mve_outcome.save()
                         # outcome_at_dest >= mve_outcome
                         if same_owner or attacking_outcome_at_destination >= defending_outcome_at_destination:
+                            print('outcome_at_dest >= mve_outcome',attacking_outcome_at_destination,defending_outcome_at_destination,same_owner)
                             outcome_at_destination.validation = OutcomeType.BOUNCE
                             outcome_at_destination.save()
 
@@ -264,7 +273,7 @@ class ResolveOrders():
                     outcome.validation = OutcomeType.BOUNCE
                     outcome.save()
                     # bounce spts
-                    for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome,self.turn):
+                    for outcome_at_destination_support in Outcome.objects.grab_related_spt_orders(outcome.order_reference,self.turn):
                             if type(outcome_at_destination_support) is not Outcome: raise TypeError('outcome_at_destination should be Outcome')
                             outcome_at_destination_support.validation = OutcomeType.BOUNCE
                             outcome_at_destination_support.save()
@@ -333,6 +342,7 @@ class ResolveOrders():
         # Detecting if there is only one attack winning at site
         if type(outcome_location) is not Location: raise TypeError('outcome_location should be of type Location')
         highest_attack_mve = Outcome.objects.grab_highest_attacking_mve(outcome_location,self.turn,include_bounce=True)
+        #print(outcome_location.name,highest_attack_mve)
         # if still bounce return
         if len(highest_attack_mve) > 1:
             return
