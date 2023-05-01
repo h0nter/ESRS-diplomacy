@@ -16,6 +16,7 @@ class Room(models.Model):
         Closed = 'Closed', _('Closed')
 
     room_name = models.CharField(max_length=30, primary_key=True)
+    id = models.IntegerField(null=True)
     code = models.CharField(max_length=6, default='')
     room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Initial)
     current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
@@ -29,6 +30,7 @@ class Room(models.Model):
         return str(self.pk)
 
     def initial_room(self):
+        self.id = hash(self.room_name)[:8]
         self.players.add(self.hoster)
         self.current_turn = Turn.objects.create(year=1901)
         self.code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))

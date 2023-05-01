@@ -1,9 +1,9 @@
 import graphene
 from .table_type import RoomType
-from host.models.room import Room
+from host.models.room import Room, User
 
 
-class CreateRoom(graphene.Mutation):
+class CreateRoomMutation(graphene.Mutation):
     # reference from class OrderInput
     class Arguments:
         hoster = graphene.ID()
@@ -15,11 +15,7 @@ class CreateRoom(graphene.Mutation):
     # Mutation to update a unit 
     @classmethod
     def mutate(cls, root, info, hoster, room_name):
-        room = Room.objects.create(room_name=room_name, hoster=hoster)
+        room = Room.objects.create(hoster=User.objects.get(pk=hoster), room_name=room_name)
+        room.save()
 
-            
-        # print('Do some verify')
-        # room.save()
-        # print('Saved successfully')
-
-        return CreateRoom(ok=True, room=room)
+        return CreateRoomMutation(ok=True)

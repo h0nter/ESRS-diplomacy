@@ -1,10 +1,12 @@
 import graphene
-from room.models.locations import Map, Country, Location
+from .items.table_type import *
+from .items.order_mutation import UpdateOrder
 from django.contrib.auth.models import User
+from room.models.locations import Map, Country, Location
 from room.models.order import Turn, Order, Outcome
 from room.game.unitTypes import Unit
 from host.models.player import Player
-from .table_type import *
+
 
 
 class Query(graphene.ObjectType):
@@ -17,13 +19,13 @@ class Query(graphene.ObjectType):
     country = graphene.List(CountryType)
     map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
-    player = graphene.List(PlayerType)
-    user = graphene.List(UserType)
+
     """
     A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
     Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data.
     """
+    
     def resolve_turns(root, info, **kwargs):
         return Turn.objects.all()
     
@@ -57,6 +59,8 @@ class Query(graphene.ObjectType):
     def resolve_user(root, info, **kwargs):
         return User.objects.all()
 
-
+class Mutation(graphene.ObjectType):
+    
+    update_order = UpdateOrder.Field()
 
 schema = graphene.Schema(query=Query)
