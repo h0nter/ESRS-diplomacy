@@ -3,6 +3,16 @@ from .table_type import RoomType
 from host.models.room import Room, User
 
 
+from time import sleep
+from threading import Thread
+ 
+# a custom function that blocks for a moment
+def task():
+    for i in range(5):
+        print('this is round: ', i)
+        sleep(3)
+ 
+
 class CreateRoomMutation(graphene.Mutation):
     # reference from class OrderInput
     class Arguments:
@@ -17,5 +27,9 @@ class CreateRoomMutation(graphene.Mutation):
     def mutate(cls, root, info, hoster, room_name):
         room = Room.objects.create(hoster=User.objects.get(pk=hoster), room_name=room_name)
         room.save()
+        # create a thread
+        thread = Thread(target=task)
+        # run the thread
+        thread.start()
         return CreateRoomMutation(ok=True, room=room)
     

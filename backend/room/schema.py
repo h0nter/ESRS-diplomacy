@@ -53,11 +53,6 @@ class Query(graphene.ObjectType):
     def resolve_country(root, info, **kwargs):
         return Country.objects.all()
     
-    def resolve_player(root, info, **kwargs):
-        return Player.objects.all()
-    
-    def resolve_user(root, info, **kwargs):
-        return User.objects.all()
 
 class Mutation(graphene.ObjectType):
     

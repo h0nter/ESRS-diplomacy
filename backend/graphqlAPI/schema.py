@@ -17,10 +17,15 @@ class Query(room_query, graphene.ObjectType):
     A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
     Resolvers are lazily executed, so if a field is not included in a query, its resolver will not be executed.
     Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data.
-    """
-    def resolve_rooms(root, info, **kwargs):
+    # """
+    def resolve_room(root, info, **kwargs):
         return Room.objects.all()
-
+    
+    def resolve_player(root, info, **kwargs):
+        return Player.objects.all()
+    
+    def resolve_user(root, info, **kwargs):
+        return User.objects.all()
 
 
 class Mutation(room_mutation, graphene.ObjectType):
