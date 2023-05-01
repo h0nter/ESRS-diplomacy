@@ -20,16 +20,19 @@ class CreateRoomMutation(graphene.Mutation):
         room_name = graphene.String()
     
     ok = graphene.Boolean() 
-    room = graphene.Field(RoomType)
+    # room = graphene.Field(RoomType)
     
     # Mutation to update a unit 
     @classmethod
     def mutate(cls, root, info, hoster, room_name):
-        room = Room.objects.create(hoster=User.objects.get(pk=hoster), room_name=room_name)
-        room.save()
+        # room = Room.objects.create(hoster=User.objects.get(pk=hoster), room_name=room_name)
+        # room.save()
+        
+        from room.game.main import Game
         # create a thread
-        thread = Thread(target=task)
+        thread = Thread(target=Game(room_name).start)
         # run the thread
         thread.start()
-        return CreateRoomMutation(ok=True, room=room)
+
+        return CreateRoomMutation(ok=True)
     

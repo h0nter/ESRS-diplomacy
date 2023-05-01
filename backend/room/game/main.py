@@ -2,11 +2,11 @@ from .steps import Step
 
 
 class Game(Step):
-    def __init__(cls, room_ID: int):
-        super().__init__(room_ID)
+    def __init__(cls, room_name: str):
+        super().__init__(room_name)
 
     @classmethod
-    def what_up(cls) -> None:        
+    def start(cls) -> None:        
         # while cls.status != 'Closed': # while the game is not closed, execute the following step
         
         #     if cls.status == 'Opening': # open the room and wait for player to join in
@@ -22,4 +22,5 @@ class Game(Step):
         #         cls.ending()
 
         # cls.closed()
-        print(__class__.__name__, ' had called.')
+        print('class',__class__.__name__,'had called.')
+

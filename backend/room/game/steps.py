@@ -3,12 +3,10 @@ from host.models.room import Room
 from django.core.management import call_command
 
 class Step:
-    def __init__(cls, room_ID:int):
-            cls.room = Room.objects.filter(pk=room_ID)
-            cls.status = cls.room.room_status
-            cls.currrent_turn = cls.room.turn
-            cls.last_turn
-            cls.initialize()
+    def __init__(cls, room_name:int):
+            cls.room = Room.objects.get(room_name=room_name)
+            cls.status = cls.room.room_name
+
     
     @classmethod
     def room_factory(cls, room_id):
