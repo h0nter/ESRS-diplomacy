@@ -17,5 +17,5 @@ class CreateRoomMutation(graphene.Mutation):
     def mutate(cls, root, info, hoster, room_name):
         room = Room.objects.create(hoster=User.objects.get(pk=hoster), room_name=room_name)
         room.save()
-
-        return CreateRoomMutation(ok=True)
+        return CreateRoomMutation(ok=True, room=room)
+    
