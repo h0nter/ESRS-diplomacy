@@ -1,5 +1,6 @@
 from django.middleware.csrf import get_token
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse, HttpResponse
 from .models.room import Room
 from room.game.main import Game
@@ -21,6 +22,11 @@ def get_csrf(request):
         return JsonResponse({'csrftoken':get_token(request),'sessionid': request.COOKIES.get('sessionid')})
     
 
-
-
-    # request.COOKIES.get('logged_in_status') 
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'csrftoken':get_token(request),'sessionid': request.COOKIES.get('sessionid')})
