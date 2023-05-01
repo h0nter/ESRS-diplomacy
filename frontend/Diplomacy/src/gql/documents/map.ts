@@ -29,6 +29,8 @@ export const INITIAL_MAP_SETUP = gql`
       }
       location {
         name
+        isSea
+        isCoast
         textPosX
         textPosY
       }

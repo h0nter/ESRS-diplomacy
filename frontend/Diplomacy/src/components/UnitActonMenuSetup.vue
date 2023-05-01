@@ -15,6 +15,10 @@
     <rect width="54" height="26" ry="12" rx="12" />
     <text x="27" y="14">Convoy</text>
   </g>
+  <g id="ViaConvoyButton">
+    <rect width="60" height="26" ry="12" rx="12" />
+    <text x="30" y="14">Via Convoy</text>
+  </g>
 </template>
 
 <script setup lang="ts">

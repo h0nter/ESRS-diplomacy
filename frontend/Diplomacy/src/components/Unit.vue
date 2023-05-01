@@ -14,6 +14,8 @@
       :id="unitActionMenuID"
       :unit_id="unit_id"
       :type="type"
+      :locationIsSea="locationIsSea"
+      :locationIsCoast="locationIsCoast"
       :positionX="positionX + 8"
       :positionY="positionY - 14"
     />
@@ -29,6 +31,8 @@
     unit_id: String,
     type: String,
     color: String,
+    locationIsSea: Boolean,
+    locationIsCoast: Boolean,
     positionX: Number,
     positionY: Number,
     activeUnit: String,
