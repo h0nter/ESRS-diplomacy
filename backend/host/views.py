@@ -29,4 +29,4 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'csrftoken':get_token(request),'sessionid': request.COOKIES.get('sessionid')})
+            return JsonResponse({'csrftoken':get_token(request),'user_id': request.user.id})
