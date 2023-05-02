@@ -101,7 +101,7 @@ class OutcomeManager(models.Manager):
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
-    def _grab_order_current_location(self,location,turn):
+    def _grab_outcome_current_location(self,location,turn):
         # we grab the orders that reference this location as current
         from room.models.locations import Location
         from room.models.order import Turn
@@ -112,11 +112,11 @@ class OutcomeManager(models.Manager):
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
-    def grab_order_current_location(self,location,turn):
+    def grab_outcome_current_location(self,location,turn):
         from room.models.locations import Location
         from room.models.order import Turn
         if type(location) is Location and type(turn) is Turn:
-            return self.get_queryset().filter(self._grab_order_current_location(location,turn))
+            return self.get_queryset().filter(self._grab_outcome_current_location(location,turn))
         else:
             raise TypeError('location Type should be Location and turn Type should be Turn')
         

@@ -80,7 +80,7 @@ class ResolveOrders():
         if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
         # don't cut for convoy moves if direct
         if direct and len(Outcome.objects.grab_convoy_orders_for_order(self.turn,outcome.order_reference)) > 0: return
-        support_to_cut = Outcome.objects.grab_order_current_location(outcome.order_reference.target_location,self.turn).first()
+        support_to_cut = Outcome.objects.grab_outcome_current_location(outcome.order_reference.target_location,self.turn).first()
         # could be none i.e. no order, and check if it is support
         if type(support_to_cut) is Outcome and support_to_cut.validation != OutcomeType.CUT and \
                 support_to_cut.validation != OutcomeType.VOID and \
@@ -94,7 +94,7 @@ class ResolveOrders():
                     ) and \
                     ((# EXCEPTION C: OR SUPPORT FOR A MOVE (IF CONVOYED) FOR OR AGAINST ANY CONVOYING FLEET
                     # p.g. 17 for reference to diagram of this
-                    len(Outcome.objects.grab_order_current_location(turn=self.turn, location=
+                    len(Outcome.objects.grab_outcome_current_location(turn=self.turn, location=
                     support_to_cut.order_reference.reference_unit_new_location)\
                         .filter(order_reference__instruction=MoveType.CONVOY)) == 0) or \
                     (# EXCEPTION TO EXCEPTION C: IF THERE IS A ALTERNATIVE CONVOY ROUTE      
@@ -111,7 +111,7 @@ class ResolveOrders():
             if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
             # grab unit destination order
             order_at_start = outcome.order_reference
-            order_at_dest = Outcome.objects.grab_order_current_location(outcome.order_reference.target_location,self.turn).first()
+            order_at_dest = Outcome.objects.grab_outcome_current_location(outcome.order_reference.target_location,self.turn).first()
 
             # for each convoying unit
             for convoy in Outcome.objects.grab_convoy_orders_for_order(self.turn,outcome.order_reference):
@@ -170,6 +170,7 @@ class ResolveOrders():
 
     def _bounce(self):
         from room.models.order import Outcome, OutcomeType, MoveType
+        from room.models.locations import Location
         # marks all units that can't get where they are going as bounced
         # loops to handle bounce chains
         bounced = 1
@@ -183,7 +184,14 @@ class ResolveOrders():
                 for mve_outcome in mve_outcomes:
                     outcome_at_destination = Outcome.objects.grab_defender_current_location(
                         mve_outcome.order_reference.target_location,self.turn).first()
-                    print(outcome_at_destination)
+                    check_destination_facing_mve_outcome = Outcome.objects.grab_outcome_current_location(
+                        mve_outcome.order_reference.target_location,self.turn).first()
+                    if type(check_destination_facing_mve_outcome) is Outcome: 
+                        if check_destination_facing_mve_outcome.order_reference.target_location == \
+                              mve_outcome.order_reference.current_location and \
+                                check_destination_facing_mve_outcome in mve_outcomes:
+                            outcome_at_destination = check_destination_facing_mve_outcome
+                    #print(outcome_at_destination)
                     # no outcome at destination, skip as no bounce
                     if type(outcome_at_destination) is not Outcome: continue
                         #raise TypeError('outcome_at_destination should be Outcome')
@@ -191,11 +199,6 @@ class ResolveOrders():
                     if outcome_at_destination.validation == OutcomeType.MAYBE and \
                         outcome_at_destination.order_reference.instruction == MoveType.MOVE:
                         # if looking at each other boing
-                        # check move is not convoying and they are both looking at each other
-                        # trading_places = 
-                        #     outcome_at_destination in mve_outcomes and \
-                        #     mve_outcome.order_reference.current_location == outcome_at_destination.order_reference.target_location and \
-                        #     outcome_at_destination.order_reference.current_location == mve_outcome.order_reference.target_location
                         # if same owner boing
                         same_owner = mve_outcome.order_reference.target_unit.owner == \
                             outcome_at_destination.order_reference.target_unit.owner
@@ -206,12 +209,12 @@ class ResolveOrders():
                         # mve_outcome <= outcome_at_dest
                         if same_owner or attacking_mve_outcome >= defending_mve_outcome:
                             # mve_outcome failed - bounced#
-                            print('mve_outcome <= outcome_at_dest',attacking_mve_outcome,defending_mve_outcome,same_owner)
+                            #print('mve_outcome <= outcome_at_dest',mve_outcome.order_reference.target_location,attacking_mve_outcome,defending_mve_outcome,same_owner)
                             mve_outcome.validation = OutcomeType.BOUNCE
                             mve_outcome.save()
                         # outcome_at_dest >= mve_outcome
                         if same_owner or attacking_outcome_at_destination >= defending_outcome_at_destination:
-                            print('outcome_at_dest >= mve_outcome',attacking_outcome_at_destination,defending_outcome_at_destination,same_owner)
+                            #print('outcome_at_dest >= mve_outcome',mve_outcome.order_reference.target_location,attacking_outcome_at_destination,defending_outcome_at_destination,same_owner)
                             outcome_at_destination.validation = OutcomeType.BOUNCE
                             outcome_at_destination.save()
 
@@ -233,7 +236,7 @@ class ResolveOrders():
             for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
                 if type(outcome) is not Outcome: raise TypeError('outcome should be Outcome')
                 # check target_location has unit
-                if len(Outcome.objects.grab_order_current_location(
+                if len(Outcome.objects.grab_outcome_current_location(
                     outcome.order_reference.target_location,self.turn)) != 1:
                     continue
                 # check defence > attack
@@ -241,10 +244,10 @@ class ResolveOrders():
                 defending_target_location = len(Outcome.objects.grab_all_defence_orders(outcome.order_reference.target_location,self.turn))
                 if attacking_outcome <= defending_target_location:
                     # mark attack bounced
+                    #print('mark atk bounce', outcome.order_reference.target_location)
                     outcome.validation = OutcomeType.BOUNCE
                     outcome.save()
                     bounced = 1
-                # what about the multiple attackers! - this might not be needed...
                 # other_attacks on same location see if current order bounces with them
                 other_attacks = Outcome.objects.grab_mve_attacking_orders(outcome.order_reference.target_location,self.turn)\
                     .exclude(order_reference__target_unit=outcome.order_reference.target_unit)
@@ -253,16 +256,37 @@ class ResolveOrders():
                     attacking_other_attack = len(Outcome.objects.grab_attacking_strength_of_order(other_attack.order_reference,self.turn))
                     if attacking_outcome <= attacking_other_attack:
                         # attacking outcome will also bounce
+                        #print('mark other atk bounce', other_attack.order_reference.target_location)
                         outcome.validation = OutcomeType.BOUNCE
                         outcome.save()
                         bounced = 1
             if bounced:
                 continue
 
-            # 3.3 - MARK SELF-DISLODGE BOUNCERS
+            # 3.3 - MARK MULTIPLE ATTACKS 
+            # - attacking strength of them > defender (already calc) 
+            # - check two attacks are same and bounce
+            for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
+                if type(outcome) is not Outcome: continue
+                outcome_location = outcome.order_reference.target_location
+                if type(outcome_location) is not Location: continue
+                highest_attack_mve = Outcome.objects.grab_highest_attacking_mve(outcome_location,self.turn,include_bounce=True)
+                #print('high',outcome_location.name,highest_attack_mve[0].validation,highest_attack_mve[1].validation)
+                # if still bounce return
+                if len(highest_attack_mve) > 1:
+                    for outcome_mve in highest_attack_mve:
+                        if type(outcome_mve) is not Outcome: continue
+                        outcome_mve.validation = OutcomeType.BOUNCE
+                        outcome_mve.save()
+                        bounced = 1
+
+            if bounced:
+                continue
+
+            # 3.4 - MARK SELF-DISLODGE BOUNCERS
             for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
                 if type(outcome) is not Outcome: raise TypeError('outcome should be Outcome')
-                order_at_location = Outcome.objects.grab_order_current_location(\
+                order_at_location = Outcome.objects.grab_outcome_current_location(\
                     outcome.order_reference.target_location,self.turn).first()
                 # if there is no order at location skip
                 if type(order_at_location) is not Outcome: continue
@@ -284,7 +308,7 @@ class ResolveOrders():
         # ones that are marked as bounced -> already evaled
         for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
                 if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
-                order_at_target_location = Outcome.objects.grab_order_current_location(
+                order_at_target_location = Outcome.objects.grab_outcome_current_location(
                     outcome.order_reference.target_location,self.turn).first()
                 # if there is no order at location skip
                 if type(order_at_target_location) is not Outcome: continue
@@ -300,7 +324,7 @@ class ResolveOrders():
                 # if cvy attack and spt is directed at cvy fleet: continue
                 is_convoy = len(Outcome.objects.grab_all_cvy_mve_orders(self.turn)\
                                 .filter(order_reference=outcome.order_reference))==1
-                spt_target = Outcome.objects.grab_order_current_location(
+                spt_target = Outcome.objects.grab_outcome_current_location(
                     order_at_target_location.order_reference.reference_unit_new_location,self.turn).first()
                 if type(spt_target) is not Outcome: continue
                 spt_target_is_convoy = spt_target.order_reference.instruction == MoveType.CONVOY
@@ -317,7 +341,7 @@ class ResolveOrders():
         from room.models.order import Outcome, OutcomeType, MoveType
         if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
         outcome_location = outcome.order_reference.target_location
-        loser = Outcome.objects.grab_order_current_location(outcome_location,self.turn).first()
+        loser = Outcome.objects.grab_outcome_current_location(outcome_location,self.turn).first()
         # if there is no unit, or unit is already moving don't dislodge it
         if type(loser) is Outcome and loser.order_reference.instruction != MoveType.MOVE:
             loser.validation = OutcomeType.DISLODGED
@@ -342,7 +366,7 @@ class ResolveOrders():
         # Detecting if there is only one attack winning at site
         if type(outcome_location) is not Location: raise TypeError('outcome_location should be of type Location')
         highest_attack_mve = Outcome.objects.grab_highest_attacking_mve(outcome_location,self.turn,include_bounce=True)
-        #print(outcome_location.name,highest_attack_mve)
+        #print('high',outcome_location.name,highest_attack_mve)
         # if still bounce return
         if len(highest_attack_mve) > 1:
             return

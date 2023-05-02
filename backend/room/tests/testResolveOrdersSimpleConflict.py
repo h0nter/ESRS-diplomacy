@@ -27,6 +27,7 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         cls.locationG = Location.objects.create(name='location G',map=cls.map,is_coast=True)
         cls.locationH = Location.objects.create(name='location H',map=cls.map,is_sea=True)
         cls.locationJ = Location.objects.create(name='location J',map=cls.map,is_coast=True)
+        cls.locationK = Location.objects.create(name='location J',map=cls.map,is_coast=True)
         
         # Next To
         cls.nextToCB = Next_to.objects.create(location=cls.locationC, next_to=cls.locationB)
@@ -43,6 +44,10 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         cls.nextToHG = Next_to.objects.create(location=cls.locationH, next_to=cls.locationG)
         cls.nextToHJ = Next_to.objects.create(location=cls.locationH, next_to=cls.locationJ)
         cls.nextToJH = Next_to.objects.create(location=cls.locationJ, next_to=cls.locationH)
+        cls.nextToKJ = Next_to.objects.create(location=cls.locationK, next_to=cls.locationJ)
+        cls.nextToJK = Next_to.objects.create(location=cls.locationJ, next_to=cls.locationK)
+        cls.nextToHK = Next_to.objects.create(location=cls.locationH, next_to=cls.locationK)
+        cls.nextToKH = Next_to.objects.create(location=cls.locationK, next_to=cls.locationH)
 
         # Country
         cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
@@ -81,8 +86,6 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 target_unit=unitB,current_location=self.locationC)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
-        #print(Outcome.objects.grab_all_defence_orders(self.locationB,self.turn))
-        #print(Outcome.objects.grab_all_defence_orders(self.locationC,self.turn))
         ResolveOrders(self.turn)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
@@ -126,6 +129,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 target_location=self.locationE)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
+        #print(Outcome.objects.grab_mve_attacking_orders(self.locationE,self.turn))
+        #print(Outcome.objects.grab_highest_attacking_mve(self.locationE,self.turn))
         ResolveOrders(self.turn)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
@@ -190,10 +195,10 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
         outcome_2 = Outcome.objects.get(order_reference=order_2)
         if type(outcome_2) is Outcome:
-            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
+            self.assertEqual(outcome_2.validation, OutcomeType.VOID)
         outcome_3 = Outcome.objects.get(order_reference=order_3)
         if type(outcome_3) is Outcome:
-            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+            self.assertEqual(outcome_3.validation, OutcomeType.DISLODGED)
 
     def test_check_three_locations_all_mve_clockwise(self):
         # D -> E
@@ -215,13 +220,105 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 target_location=self.locationF)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
-        print(Outcome.objects.grab_all_defence_orders(self.locationD,self.turn))
-        print(Outcome.objects.grab_all_defence_orders(self.locationE,self.turn))
-        print(Outcome.objects.grab_all_defence_orders(self.locationF,self.turn))
         ResolveOrders(self.turn)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+
+    def test_check_three_locations_chain_bounce(self):
+        # D -> E - bounce
+        # E -> F - bounce
+        # F Hold - maybe
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationE)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationF)
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationD,
+                                target_location=self.locationE)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationE,
+                                target_location=self.locationF)
+        self.assertTrue(order_2.save())
+        order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationF)
+        self.assertTrue(order_3.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.BOUNCE)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+
+    def test_check_three_locations_invalid_cut_support(self):
+        # D -> E - maybe
+        # F SPT D -> E - maybe
+        # E -> F - void/bounce
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationD,
+                                target_location=self.locationE)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationF,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationD,
+                                reference_unit_new_location=self.locationE)
+        self.assertTrue(order_2.save())
+        order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationE,
+                                target_location=self.locationF)
+        self.assertTrue(order_3.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.BOUNCE)
+
+    def test_check_three_locations_cvy_bounce(self):
+        # D -> E - bounce
+        # E -> F - bounce
+        # F Hold - maybe
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationG)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationH,can_float=True)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationJ)
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationG,
+                                target_location=self.locationJ)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationH,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationG,
+                                reference_unit_new_location=self.locationJ)
+        self.assertTrue(order_2.save())
+        order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationJ)
+        self.assertTrue(order_3.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
         outcome_2 = Outcome.objects.get(order_reference=order_2)
         if type(outcome_2) is Outcome:
             self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
