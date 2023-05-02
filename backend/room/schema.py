@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from room.models.locations import Map, Country, Location
 from room.models.order import Turn, Order, Outcome
 from room.game.unitTypes import Unit
+# add Room to query
 
 
 

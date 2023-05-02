@@ -1,9 +1,9 @@
+import secrets
+import string
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
-import secrets
-import string
-
+from room.models.broadcast import Room
 
 # status for each room
 class Host(models.Model):
@@ -15,8 +15,7 @@ class Host(models.Model):
         Ending = 'End', _('Ending')
         Closed = 'Closed', _('Closed')
 
-    room_name = models.CharField(max_length=30, primary_key=True)
-    id = models.IntegerField(null=True)
+    room_name = models.CharField(max_length=30)
     room_code = models.CharField(max_length=6, default='')
     room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Opening)
     hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
@@ -29,8 +28,8 @@ class Host(models.Model):
         return str(self.pk)
 
     def open_room(self):
-        self.id = hash(self.room_name)
         self.players.add(self.hoster.pk)
         self.room_code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))
         self.save()
+        Room.objects.create(room_name=self.room_name).save()
 

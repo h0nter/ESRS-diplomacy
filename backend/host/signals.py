@@ -1,13 +1,19 @@
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
-# from django.contrib.auth.models import User
-# from .models.player import Player
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from host.models.host import Host
+from room.models.broadcast import Room
+
+@receiver(post_save, sender=Room)
+def post_save_receiver(sender, instance, created, **kwargs):
+    if not created:
+#         # Room object updated
+        user_obj = instance
+        pass
+    
 
 # @receiver(post_save, sender=User)
-# def post_save_receiver(sender, instance, created, **kwargs):
-#     # Your code logic here
-#     if created:
-#         Player.objects.create(user=instance, pk=instance.pk)
-#     else:
-#         print(instance, ' was not created!')
-    
+# def do_something_when_user_updated(sender, instance, created, **kwargs):
+#     if not created:
+#         # User object updated
+#         user_obj = instance
+#         pass
