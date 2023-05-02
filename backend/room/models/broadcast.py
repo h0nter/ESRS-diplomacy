@@ -24,11 +24,12 @@ class Room(models.Model):
         self.room_status = 'Init'
         self.save()
         self.current_turn = Turn.objects.create(year=1901)
+        self.set_close_time()
         self.room_status = 'Wait'
         self.save()
 
      # set the close_time while save, automatactly add 2 hours
-    def set_close_time(self, *args, **kwargs):
-        self.build_time = datetime.now()
+    def set_close_time(self):
+        self.build_time = datetime.datetime.now()
         self.close_time = self.build_time + datetime.timedelta(hours=2)
         self.save()
