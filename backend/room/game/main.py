@@ -1,18 +1,22 @@
 from .steps import Step
+from ..models.broadcast import Room
 
 
 class Game(Step):
-    def __init__(cls, room_name: str):
-        super().__init__(room_name)
+    def __init__(cls, room_name:str):
+            cls.room = Room.objects.get(room_name=room_name)
+            cls.status = cls.room.room_status
+    
+    @classmethod
+    def factory(cls, room_name):
+        return cls(room_name)
 
     @classmethod
-    def start(cls) -> None:        
+    def start(cls) -> None:
+
         # while cls.status != 'Closed': # while the game is not closed, execute the following step
-        
-        #     if cls.status == 'Opening': # open the room and wait for player to join in
-        #         cls.opening()
                 
-        #     elif cls.status == 'Waiting': # wait for user to commit their order
+        #     if cls.status == 'Waiting': # wait for user to commit their order
         #         cls.waiting()
 
         #     elif cls.status == 'Checking': # Check the closeing conditions

@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
-from host.models.room import Room
-from host.models.player import Player
+from host.models.host import Host
+# from host.models.player import Player
 
 
 
 # allow access overall parameters
-class RoomType(DjangoObjectType):
+class HostType(DjangoObjectType):
     class Meta: 
-        model = Room
+        model = Host
         fields = "__all__"
 
 class UserType(DjangoObjectType):
@@ -16,7 +16,7 @@ class UserType(DjangoObjectType):
         model = User
         fields = ["username", "id", "is_staff"]
 
-class PlayerType(DjangoObjectType):
-    class Meta: 
-        model = Player
-        fields = "__all__"
+# class PlayerType(DjangoObjectType):
+#     class Meta: 
+#         model = Player
+#         fields = "__all__"

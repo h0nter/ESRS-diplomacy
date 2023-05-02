@@ -1,6 +1,6 @@
 import graphene
-from .table_type import RoomType
-from host.models.room import Room, User
+from .table_type import HostType
+from host.models.host import Host
 
 
 from time import sleep
@@ -13,14 +13,14 @@ def task():
         sleep(3)
  
 
-class CreateRoomMutation(graphene.Mutation):
+class CreateHostMutation(graphene.Mutation):
     # reference from class OrderInput
     class Arguments:
         hoster = graphene.ID()
         room_name = graphene.String()
     
     ok = graphene.Boolean() 
-    # room = graphene.Field(RoomType)
+    # room = graphene.Field(HostType)
     
     # Mutation to update a unit 
     @classmethod
@@ -34,5 +34,5 @@ class CreateRoomMutation(graphene.Mutation):
         # run the thread
         thread.start()
 
-        return CreateRoomMutation(ok=True)
+        return CreateHostMutation(ok=True)
     
