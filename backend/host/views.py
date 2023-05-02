@@ -18,7 +18,7 @@ def launch_room(request):
 
 def index(request):
     return HttpResponse('index')
-    
+
 @csrf_exempt
 def get_login(request):
     if request.method == 'POST':
@@ -39,7 +39,6 @@ def create_room(request):
             return HttpResponse('room name exist')
         room = Host.objects.create(hoster=request.user, room_name=room_name)
         room.open_room()
-        room.save()
         return HttpResponse(room.room_code)
 
 @csrf_exempt
@@ -76,3 +75,7 @@ def check_room_status(request):
         room_name = request.POST['room_name']
         room = Host.objects.get(pk=room_name)
         return HttpResponse(room.room_status)
+    
+
+def get_room_pks(request):
+    pass

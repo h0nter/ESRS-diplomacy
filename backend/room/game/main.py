@@ -14,16 +14,18 @@ class Game(Step):
     @classmethod
     def start(cls) -> None:
 
-        # while cls.status != 'Closed': # while the game is not closed, execute the following step
-                
-        #     if cls.status == 'Waiting': # wait for user to commit their order
-        #         cls.waiting()
+        while cls.status != 'Closed': # while the game is not closed, execute the following step
+            if cls.status == 'initial': # wait for user to commit their order
+                cls.initialize()
+           
+            elif cls.status == 'Waiting': # wait for user to commit their order
+                cls.waiting()
 
-        #     elif cls.status == 'Checking': # Check the closeing conditions
-        #         cls.checking()
+            elif cls.status == 'Checking': # Check the closeing conditions
+                cls.checking()
 
-        #     elif cls.status == 'ending':  # the status before the room are totaly closed.
-        #         cls.ending()
+            elif cls.status == 'ending':  # the status before the room are totaly closed.
+                cls.ending()
 
         # cls.closed()
         print('class',__class__.__name__,'had called.')
