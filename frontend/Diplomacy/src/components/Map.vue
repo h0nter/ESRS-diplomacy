@@ -156,19 +156,19 @@
 
     switch (args.actionType) {
       case RoomOrderInstructionChoices.Hld:
-        holdHandler(args);
+        holdHandler(args.unitID);
         break;
       case RoomOrderInstructionChoices.Spt:
-        supportHandler(args);
+        supportHandler(args.unitID);
         break;
       case RoomOrderInstructionChoices.Mve:
-        moveHandler(args);
+        moveHandler(args.unitID);
         break;
       case RoomOrderInstructionChoices.Cvy:
-        convoyHandler(args);
+        convoyHandler(args.unitID);
         break;
       case "VCV":
-        moveViaConvoyHandler(args);
+        moveViaConvoyHandler(args.unitID);
         break;
     }
   };
