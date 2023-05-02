@@ -27,7 +27,6 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         cls.locationG = Location.objects.create(name='location G',map=cls.map,is_coast=True)
         cls.locationH = Location.objects.create(name='location H',map=cls.map,is_sea=True)
         cls.locationJ = Location.objects.create(name='location J',map=cls.map,is_coast=True)
-        cls.locationK = Location.objects.create(name='location J',map=cls.map,is_coast=True)
         
         # Next To
         cls.nextToCB = Next_to.objects.create(location=cls.locationC, next_to=cls.locationB)
@@ -44,10 +43,6 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         cls.nextToHG = Next_to.objects.create(location=cls.locationH, next_to=cls.locationG)
         cls.nextToHJ = Next_to.objects.create(location=cls.locationH, next_to=cls.locationJ)
         cls.nextToJH = Next_to.objects.create(location=cls.locationJ, next_to=cls.locationH)
-        cls.nextToKJ = Next_to.objects.create(location=cls.locationK, next_to=cls.locationJ)
-        cls.nextToJK = Next_to.objects.create(location=cls.locationJ, next_to=cls.locationK)
-        cls.nextToHK = Next_to.objects.create(location=cls.locationH, next_to=cls.locationK)
-        cls.nextToKH = Next_to.objects.create(location=cls.locationK, next_to=cls.locationH)
 
         # Country
         cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
