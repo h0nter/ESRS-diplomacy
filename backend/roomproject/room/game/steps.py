@@ -1,0 +1,38 @@
+from .orderManager import OrderManager
+from django.core.management import call_command
+
+class Step:
+
+    @classmethod
+    def isFinished(cls) -> bool:
+         pass
+    
+    @staticmethod
+    def create_turn(cls):
+        pass
+
+    @classmethod
+    def initialize(cls) -> None: # format the room database
+        call_command('loaddata', 'room/fixtures/*json')
+        cls.room.update(room_status='Open')
+        return 'success'
+        
+    @classmethod
+    def waiting(cls) -> None: # wait for user to make a decision
+        cls.room.update(room_status='Check')
+
+    @classmethod
+    def checking(cls) -> None: # need to update the status to room app
+        OrderManager.validate_order_table(cls.turn)
+        if cls.isFinished():
+            cls.room.update(room_status='end')
+        else:
+            cls.room.update(room_status='Wait')
+
+    @classmethod
+    def ending(cls) -> None: # the status before the room are totaly closed.
+        cls.room.update(room_status='close')
+    
+    @classmethod
+    def closed(cls) -> None: # will only change the status to be 'closed'
+        cls.room.update(room_status='closed')
