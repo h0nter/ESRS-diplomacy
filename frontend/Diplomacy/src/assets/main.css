@@ -21,11 +21,6 @@ a,
   }
 }
 
-@media (min-width: 1024px) {
-
-  #app {
-    /*display: grid;*/
-    /*grid-template-columns: 1fr 1fr;*/
-    padding: 0;
-  }
+body{
+  @apply bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50;
 }

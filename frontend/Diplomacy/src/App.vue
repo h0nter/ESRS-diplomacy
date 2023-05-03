@@ -11,16 +11,14 @@ import HomeView from "@/views/HomeView.vue";
 <template>
   <Wrapper>
     <DarkModeSwitch />
-    <Container>
+    <Container class="app-container">
       <RouterView/>
     </Container>
   </Wrapper>
 </template>
 
-<style>
-
-  body{
-    @apply bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50;
+<style scoped>
+  .app-container{
+    height: 100%;
   }
-
 </style>
