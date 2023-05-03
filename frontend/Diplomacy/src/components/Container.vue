@@ -6,7 +6,6 @@
 
 <style scoped>
   .container{
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
