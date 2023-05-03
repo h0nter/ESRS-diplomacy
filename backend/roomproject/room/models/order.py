@@ -7,8 +7,6 @@ from room.game.orderManager import OrderManager
 class Turn(models.Model):
     year = models.IntegerField()
     is_autumn = models.BooleanField(default=False)
-    #build_time = models.DateTimeField(auto_now_add=True)
-    #close_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
 
     def __str__(self):
         return str(self.pk)
