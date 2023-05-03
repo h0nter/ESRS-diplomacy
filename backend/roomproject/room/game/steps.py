@@ -1,8 +1,19 @@
 from .orderManager import OrderManager
+from host.models import Room
 from django.core.management import call_command
 
 class Step:
-
+    def __init__(cls, room_ID:int):
+            cls.room = Room.objects.filter(pk=room_ID)
+            cls.status = cls.room.room_status
+            cls.currrent_turn = cls.room.turn
+            cls.last_turn
+            cls.initialize()
+    
+    @classmethod
+    def room_factory(cls, room_id):
+        return cls(room_id)
+            
     @classmethod
     def isFinished(cls) -> bool:
          pass
@@ -15,7 +26,10 @@ class Step:
     def initialize(cls) -> None: # format the room database
         call_command('loaddata', 'room/fixtures/*json')
         cls.room.update(room_status='Open')
-        return 'success'
+
+    @classmethod
+    def opening(cls) -> None: # wait for user to login the game.
+        cls.room.update(room_status='Wait')
         
     @classmethod
     def waiting(cls) -> None: # wait for user to make a decision
