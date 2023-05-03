@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
 
 class Map(models.Model):
     name = models.CharField(max_length=30)
@@ -12,7 +11,7 @@ class Map(models.Model):
     
 class Country(models.Model):
     # will have user ID assoiated with it??
-    name = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='player')
+    name = models.CharField(max_length=10)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
     colour = models.CharField(max_length=10)
     def __str__(self):

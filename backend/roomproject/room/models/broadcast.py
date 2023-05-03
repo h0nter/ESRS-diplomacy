@@ -12,15 +12,11 @@ class Player(models.Model):
     is_alive = models.BooleanField(default=True)
     is_finished = models.BooleanField(default=True)
 
-
-
-
 class Room(models.Model):
     room_name = models.CharField(max_length=30)
     current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
     status = models.CharField(max_length=6, default='Open')
     close_time = models.DateTimeField(null=True)
-    # players = models.ManyToManyField(Player)
     
     def initial_room(self):
         self.room_status = 'Init'
@@ -35,6 +31,12 @@ class Room(models.Model):
         self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
         self.save()
 
-# class PlayerRoom(models.Model):
-#     player = models.ForeignKey(Player)
-#     room = models.ForeignKey(Room)
+class PlayerRoom(models.Model):
+    # relate the player and the room together
+    player = models.ForeignKey(Player,on_delete=models.CASCADE)
+    room = models.ForeignKey(Room,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.pk)
+    class Meta:
+        verbose_name_plural = 'PlayersRooms'
