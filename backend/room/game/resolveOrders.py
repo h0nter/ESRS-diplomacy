@@ -158,7 +158,7 @@ class ResolveOrders():
                 #   1) there is no land route (or there is a paradox through the land route)
                 #   or 2) the unit specified 'VIA' and doesn't want to try the land route (4.A.3) - doesn't apply
                 if(Outcome.objects.is_alternative_convoy_route(
-                    self.turn,outcome,convoy.order_reference.current_location)) and \
+                    self.turn,outcome.order_reference,convoy.order_reference.current_location)) and \
                    (paradox or not len(next_to) == 1):
                     outcome.validation = mve_order_result
                     outcome.save()

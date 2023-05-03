@@ -62,6 +62,179 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         cls.nextToNapApu = Next_to.objects.create(location=cls.locationNap, next_to=cls.locationApu)
 
         # Country
-        cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
-        cls.countryB = Country.objects.create(name="country B", map=cls.map,colour='blue')
-        cls.countryC = Country.objects.create(name="country C", map=cls.map,colour='green')
+        cls.france = Country.objects.create(name="country A", map=cls.map,colour='red')
+        cls.italy = Country.objects.create(name="country B", map=cls.map,colour='black')
+        cls.germany = Country.objects.create(name="country C", map=cls.map,colour='grey')
+
+
+    def test_convoy_diagram_30(self):
+        # A Tun–Nap - bounce/fail
+        # F Tyn C A Tun–Nap - ncvy
+        # F Ion–Tyn - maybe
+        # F Nap S F Ion–Tyn - maybe 
+        unitA = Unit.objects.create(owner=self.france,location=self.locationTun)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True)
+        unitC = Unit.objects.create(owner=self.italy,location=self.locationIon,can_float=True)
+        unitD = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
+
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationTun,
+                                target_location=self.locationNap)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationTyn,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationTun,
+                                reference_unit_new_location=self.locationNap)
+        self.assertTrue(order_2.save())
+
+        order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationIon,
+                                target_location=self.locationTyn)
+        self.assertTrue(order_3.save())
+        order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitD,current_location=self.locationNap,
+                                reference_unit=unitC,
+                                reference_unit_current_location=self.locationIon,
+                                reference_unit_new_location=self.locationTyn)
+        self.assertTrue(order_4.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.NO_CONVOY)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+        outcome_4 = Outcome.objects.get(order_reference=order_4)
+        if type(outcome_4) is Outcome:
+            self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
+
+    def test_convoy_diagram_31(self):
+        # A Tun–Nap - bounce
+        # F Tyn C A Tun–Nap - no_cvy 
+        # F Ion C A Tun–Nap - maybe 
+        # F Rom–Tyn - bounce
+        # F Nap S F Rom–Tyn - cut
+        unitA = Unit.objects.create(owner=self.france,location=self.locationTun)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True)
+        unitC = Unit.objects.create(owner=self.france,location=self.locationIon,can_float=True)
+        unitD = Unit.objects.create(owner=self.italy,location=self.locationRom,can_float=True)
+        unitE = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
+
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationTun,
+                                target_location=self.locationNap)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationTyn,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationTun,
+                                reference_unit_new_location=self.locationNap)
+        self.assertTrue(order_2.save())
+        order_3 = Order(instruction=MoveType.CONVOY,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationIon,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationTun,
+                                reference_unit_new_location=self.locationNap)
+        self.assertTrue(order_3.save())
+
+        order_4 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitD,current_location=self.locationRom,
+                                target_location=self.locationTyn)
+        self.assertTrue(order_4.save())
+        order_5 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitE,current_location=self.locationNap,
+                                reference_unit=unitD,
+                                reference_unit_current_location=self.locationRom,
+                                reference_unit_new_location=self.locationTyn)
+        self.assertTrue(order_5.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.NO_CONVOY)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+        outcome_4 = Outcome.objects.get(order_reference=order_4)
+        if type(outcome_4) is Outcome:
+            self.assertEqual(outcome_4.validation, OutcomeType.BOUNCE)
+        outcome_5 = Outcome.objects.get(order_reference=order_5)
+        if type(outcome_5) is Outcome:
+            self.assertEqual(outcome_5.validation, OutcomeType.CUT)
+    
+    def test_convoy_diagram_32(self):
+        # A Tun–Nap - mayb
+        # F Tyn C A Tun–Nap - no_cvy? 
+        # F Ion C A Tun–Nap - maybe?
+        # A Apu S A Tun–Nap - maybe
+        # F Rom–Tyn - bounce
+        # F Nap S F Rom–Tyn - cut then dislodge
+        unitA = Unit.objects.create(owner=self.france,location=self.locationTun)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True)
+        unitC = Unit.objects.create(owner=self.france,location=self.locationIon,can_float=True)
+        unitD = Unit.objects.create(owner=self.france,location=self.locationApu)
+        unitE = Unit.objects.create(owner=self.italy,location=self.locationRom,can_float=True)
+        unitF = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
+
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationTun,
+                                target_location=self.locationNap)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationTyn,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationTun,
+                                reference_unit_new_location=self.locationNap)
+        self.assertTrue(order_2.save())
+        order_3 = Order(instruction=MoveType.CONVOY,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationIon,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationTun,
+                                reference_unit_new_location=self.locationNap)
+        self.assertTrue(order_3.save())
+        order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitD,current_location=self.locationApu,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationTun,
+                                reference_unit_new_location=self.locationNap)
+        self.assertTrue(order_4.save())
+    
+
+        order_5 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitE,current_location=self.locationRom,
+                                target_location=self.locationTyn)
+        self.assertTrue(order_5.save())
+        order_6 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitF,current_location=self.locationNap,
+                                reference_unit=unitE,
+                                reference_unit_current_location=self.locationRom,
+                                reference_unit_new_location=self.locationTyn)
+        self.assertTrue(order_6.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.NO_CONVOY)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+        outcome_4 = Outcome.objects.get(order_reference=order_4)
+        if type(outcome_4) is Outcome:
+            self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
+        outcome_5 = Outcome.objects.get(order_reference=order_5)
+        if type(outcome_5) is Outcome:
+            self.assertEqual(outcome_5.validation, OutcomeType.BOUNCE)
+        outcome_6 = Outcome.objects.get(order_reference=order_6)
+        if type(outcome_6) is Outcome:
+            self.assertEqual(outcome_6.validation, OutcomeType.DISLODGED)
