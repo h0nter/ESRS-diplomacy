@@ -27,9 +27,15 @@ class Host(models.Model):
     def __str__(self):
         return str(self.pk)
 
-    def open_room(self):
+    
+    def create(self):
+        self.save()
         self.players.add(self.hoster.pk)
         self.room_code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))
         self.save()
         Room.objects.create(room_name=self.room_name).save()
 
+
+# class UserHost(models.Model):
+#     user = models.ForeignKey(User)
+#     room = models.ForeignKey(Room)

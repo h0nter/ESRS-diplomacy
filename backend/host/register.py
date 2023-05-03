@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate
 from .forms import CustomUserCreationForm
 from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 
@@ -26,3 +27,16 @@ def registration(request):
 def my_view(request):
     if request.method == 'POST':
         return JsonResponse({'csrfmiddlewaretoken': get_token(request)})
+
+
+@csrf_exempt
+def get_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'user_id': request.user.id})
+        else:
+            return HttpResponse('not authenticate')

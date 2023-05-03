@@ -6,12 +6,13 @@ import datetime
 
 
 class Player(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    country = models.ForeignKey(Country,on_delete=models.DO_NOTHING,null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name='player_user')
+    country = models.ForeignKey(Country,on_delete=models.DO_NOTHING,null=True, related_name='player_country')
     # conditions for closing the game
     is_alive = models.BooleanField(default=True)
     is_finished = models.BooleanField(default=True)
-    units = models.ManyToManyField(Unit)
+
+
 
 
 class Room(models.Model):
@@ -19,7 +20,7 @@ class Room(models.Model):
     current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
     status = models.CharField(max_length=6, default='Open')
     close_time = models.DateTimeField(null=True)
-    players = models.ManyToManyField(Player)
+    # players = models.ManyToManyField(Player)
     
     def initial_room(self):
         self.room_status = 'Init'
@@ -33,3 +34,7 @@ class Room(models.Model):
     def set_close_time(self):
         self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
         self.save()
+
+# class PlayerRoom(models.Model):
+#     player = models.ForeignKey(Player)
+#     room = models.ForeignKey(Room)

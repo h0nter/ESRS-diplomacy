@@ -1,53 +1,34 @@
 from threading import Thread
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login
 from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.models import User
 from .models.host import Host
 from room.game.main import Game
 from room.models.broadcast import Player
 
 
-
-@login_required
-def launch_room(request):
-    room = Host.objects.create(hoster=request.user)
-    Game.initialize(room.pk)
-    return JsonResponse({'room number': room.room_code})
-
-
 def index(request):
     return HttpResponse('index')
 
-@csrf_exempt
-def get_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'user_id': request.user.id})
-        else:
-            return HttpResponse('not authenticate')
 
 @csrf_exempt
 def create_room(request):
     if request.method == 'POST':
         room_name = request.POST['room_name']
+        user_id = request.POST['user_id']
         if  Host.objects.filter(room_name=room_name):
             return HttpResponse('room name exist')
-        room = Host.objects.create(hoster=request.user, room_name=room_name)
-        room.open_room()
-        return HttpResponse(room.room_code)
+        room = Host.objects.create(hoster=User.objects.get(pk=user_id), room_name=room_name)
+        room.create()
+        return HttpResponse(room.room_name)
 
 @csrf_exempt
 def join_room(request):
     if request.method == 'POST':
         room_code = request.POST['room_code']
+        user_id = request.POST['user_id']
         room = Host.objects.get(room_code=room_code)
-        room.players.add(request.user)
-        Player.objects.create(user=request.user)
+        room.players.add(User.objects.get(pk=user_id))
         return JsonResponse({'players': [x.username for x in room.players.all()]})
 
 @csrf_exempt
@@ -65,7 +46,6 @@ def start_game(request):
         game = Game.factory(room_name)
         # create a thread
         thread = Thread(target=game.start)
-        # run the thread
         thread.start()
         return HttpResponse('game start')
 
@@ -73,9 +53,13 @@ def start_game(request):
 def check_room_status(request):
     if request.method == 'POST':
         room_name = request.POST['room_name']
-        room = Host.objects.get(pk=room_name)
+        room = Host.objects.get(room_name=room_name)
         return HttpResponse(room.room_status)
     
-
-def get_room_pks(request):
-    pass
+# allow user find those joining room names 
+@csrf_exempt
+def get_user_room_pk(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        user = User.objects.get(pk=user_id)
+        return HttpResponse([x for x in user.host_set.all()])
