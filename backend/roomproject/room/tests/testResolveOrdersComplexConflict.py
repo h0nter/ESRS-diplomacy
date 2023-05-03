@@ -15,12 +15,13 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         cls.map = Map.objects.create(name="A test map", max_countries=7)
 
         # Locations
-        cls.locationA = Location.objects.create(name="location A",map=cls.map)
-        cls.locationB = Location.objects.create(name="location B",map=cls.map)
-        cls.locationC = Location.objects.create(name="location C",map=cls.map)
-        cls.locationD = Location.objects.create(name='location D',map=cls.map)
-        cls.locationE = Location.objects.create(name='location E',map=cls.map)
-        cls.locationF = Location.objects.create(name='location F',map=cls.map)
+        cls.locationBer = Location.objects.create(name="location Ber",map=cls.map)
+        cls.locationPru = Location.objects.create(name="location Pru",map=cls.map)
+        cls.locationWar = Location.objects.create(name="location War",map=cls.map)
+        cls.locationSil = Location.objects.create(name="location Sil",map=cls.map)
+        cls.locationBoh = Location.objects.create(name="location Boh",map=cls.map)
+        cls.locationTyr = Location.objects.create(name="location Tyr",map=cls.map)
+        cls.locationMun = Location.objects.create(name="location Mun",map=cls.map)
 
         cls.locationTun = Location.objects.create(name='location Tun',map=cls.map,is_coast=True)
         cls.locationTyn = Location.objects.create(name='location Tyn',map=cls.map,is_sea=True)
@@ -30,15 +31,28 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         cls.locationApu = Location.objects.create(name='location Ion',map=cls.map,is_coast=True)
 
         # Next To
-        cls.nextToCB = Next_to.objects.create(location=cls.locationC, next_to=cls.locationB)
-        cls.nextToBC = Next_to.objects.create(location=cls.locationB, next_to=cls.locationC)
-
-        cls.nextToDE = Next_to.objects.create(location=cls.locationD, next_to=cls.locationE)
-        cls.nextToED = Next_to.objects.create(location=cls.locationE, next_to=cls.locationD)
-        cls.nextToFE = Next_to.objects.create(location=cls.locationF, next_to=cls.locationE)
-        cls.nextToEF = Next_to.objects.create(location=cls.locationE, next_to=cls.locationF)
-        cls.nextToFD = Next_to.objects.create(location=cls.locationF, next_to=cls.locationD)
-        cls.nextToDF = Next_to.objects.create(location=cls.locationD, next_to=cls.locationF)
+        cls.nextToBerPru = Next_to.objects.create(location=cls.locationBer, next_to=cls.locationPru)
+        cls.nextToPruBer = Next_to.objects.create(location=cls.locationPru, next_to=cls.locationBer)
+        cls.nextToBerSil = Next_to.objects.create(location=cls.locationBer, next_to=cls.locationSil)
+        cls.nextToSilBer = Next_to.objects.create(location=cls.locationSil, next_to=cls.locationBer)
+        cls.nextToBerMun = Next_to.objects.create(location=cls.locationBer, next_to=cls.locationMun)
+        cls.nextToMunBer = Next_to.objects.create(location=cls.locationMun, next_to=cls.locationBer)
+        cls.nextToTyrMun = Next_to.objects.create(location=cls.locationTyr, next_to=cls.locationMun)
+        cls.nextToMunTyr = Next_to.objects.create(location=cls.locationMun, next_to=cls.locationTyr)
+        cls.nextToBohMun = Next_to.objects.create(location=cls.locationBoh, next_to=cls.locationMun)
+        cls.nextToMunBoh = Next_to.objects.create(location=cls.locationMun, next_to=cls.locationBoh)
+        cls.nextToSilMun = Next_to.objects.create(location=cls.locationSil, next_to=cls.locationMun)
+        cls.nextToMunSil = Next_to.objects.create(location=cls.locationMun, next_to=cls.locationSil)
+        cls.nextToTyrBoh = Next_to.objects.create(location=cls.locationTyr, next_to=cls.locationBoh)
+        cls.nextToBohTyr = Next_to.objects.create(location=cls.locationBoh, next_to=cls.locationTyr)
+        cls.nextToBohSil = Next_to.objects.create(location=cls.locationBoh, next_to=cls.locationSil)
+        cls.nextToSilBoh = Next_to.objects.create(location=cls.locationSil, next_to=cls.locationBoh)
+        cls.nextToWarSil = Next_to.objects.create(location=cls.locationWar, next_to=cls.locationSil)
+        cls.nextToSilWar = Next_to.objects.create(location=cls.locationSil, next_to=cls.locationWar)
+        cls.nextToWarPru = Next_to.objects.create(location=cls.locationWar, next_to=cls.locationPru)
+        cls.nextToPruWar = Next_to.objects.create(location=cls.locationPru, next_to=cls.locationWar)
+        cls.nextToSilPru = Next_to.objects.create(location=cls.locationSil, next_to=cls.locationPru)
+        cls.nextToPruSil = Next_to.objects.create(location=cls.locationPru, next_to=cls.locationSil)
 
         cls.nextToTunTyn = Next_to.objects.create(location=cls.locationTun, next_to=cls.locationTyn)
         cls.nextToTynTun = Next_to.objects.create(location=cls.locationTyn, next_to=cls.locationTun)
@@ -238,3 +252,182 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         outcome_6 = Outcome.objects.get(order_reference=order_6)
         if type(outcome_6) is Outcome:
             self.assertEqual(outcome_6.validation, OutcomeType.DISLODGED)
+
+    def test_convoy_diagram_12(self):
+        # A Boh–Mun; - maybe
+        # A Tyr S A Boh–Mun - maybe
+        # A Mun–Sil; - bounce then dislodge
+        # A Ber S A Mun–Si - maybe
+        # A War–Sil; - bounce
+        # A Pru S A War–Sil - maybe
+        unitA = Unit.objects.create(owner=self.france,location=self.locationBoh)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyr)
+        unitC = Unit.objects.create(owner=self.germany,location=self.locationMun)
+        unitD = Unit.objects.create(owner=self.germany,location=self.locationBer)
+        unitE = Unit.objects.create(owner=self.italy,location=self.locationWar)
+        unitF = Unit.objects.create(owner=self.italy,location=self.locationPru)
+
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationBoh,
+                                target_location=self.locationMun)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationTyr,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationBoh,
+                                reference_unit_new_location=self.locationMun)
+        self.assertTrue(order_2.save())
+
+        order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationMun,
+                                target_location=self.locationSil)
+        self.assertTrue(order_3.save())
+        order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitD,current_location=self.locationBer,
+                                reference_unit=unitC,
+                                reference_unit_current_location=self.locationMun,
+                                reference_unit_new_location=self.locationSil)
+        self.assertTrue(order_4.save())
+
+        order_5 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitE,current_location=self.locationWar,
+                                target_location=self.locationSil)
+        self.assertTrue(order_5.save())
+        order_6 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitF,current_location=self.locationPru,
+                                reference_unit=unitE,
+                                reference_unit_current_location=self.locationWar,
+                                reference_unit_new_location=self.locationSil)
+        self.assertTrue(order_6.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.DISLODGED)
+        outcome_4 = Outcome.objects.get(order_reference=order_4)
+        if type(outcome_4) is Outcome:
+            self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
+        outcome_5 = Outcome.objects.get(order_reference=order_5)
+        if type(outcome_5) is Outcome:
+            self.assertEqual(outcome_5.validation, OutcomeType.BOUNCE)
+        outcome_6 = Outcome.objects.get(order_reference=order_6)
+        if type(outcome_6) is Outcome:
+            self.assertEqual(outcome_6.validation, OutcomeType.MAYBE)
+
+    def test_convoy_diagram_13(self):
+        # A Bul–Rum ->         A Mun-Sil
+        # A Rum–Bul ->         A Sil-Mun
+        # A Ser S A Rum–Bul -> A Boh S A Sil-Mun
+        # A Sev–Rum ->         A War-Sil
+        unitA = Unit.objects.create(owner=self.france,location=self.locationMun)
+        unitB = Unit.objects.create(owner=self.germany,location=self.locationSil)
+        unitC = Unit.objects.create(owner=self.germany,location=self.locationBoh)
+        unitD = Unit.objects.create(owner=self.germany,location=self.locationWar)
+
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationMun,
+                                target_location=self.locationSil)
+        self.assertTrue(order_1.save())
+
+        order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationSil,
+                                target_location=self.locationMun)
+        self.assertTrue(order_2.save())
+        order_3 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationBoh,
+                                reference_unit=unitB,
+                                reference_unit_current_location=self.locationSil,
+                                reference_unit_new_location=self.locationMun)
+        self.assertTrue(order_3.save())
+        order_4 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitD,current_location=self.locationWar,
+                                target_location=self.locationSil)
+        self.assertTrue(order_4.save())
+
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.DISLODGED)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+        outcome_4 = Outcome.objects.get(order_reference=order_4)
+        if type(outcome_4) is Outcome:
+            self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
+
+    # def test_convoy_diagram_14(self):
+    #     # A Boh–Mun; - maybe
+    #     # A Tyr S A Boh–Mun - maybe
+    #     # A Mun–Sil; - bounce then dislodge
+    #     # A Ber S A Mun–Si - maybe
+    #     # A War–Sil; - bounce
+    #     # A Pru S A War–Sil - maybe
+    #     unitA = Unit.objects.create(owner=self.france,location=self.locationBoh)
+    #     unitB = Unit.objects.create(owner=self.france,location=self.locationTyr)
+    #     unitC = Unit.objects.create(owner=self.germany,location=self.locationMun)
+    #     unitD = Unit.objects.create(owner=self.germany,location=self.locationBer)
+    #     unitE = Unit.objects.create(owner=self.italy,location=self.locationWar)
+    #     unitF = Unit.objects.create(owner=self.italy,location=self.locationPru)
+
+    #     order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+    #                             target_unit=unitA,current_location=self.locationBoh,
+    #                             target_location=self.locationMun)
+    #     self.assertTrue(order_1.save())
+    #     order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+    #                             target_unit=unitB,current_location=self.locationTyr,
+    #                             reference_unit=unitA,
+    #                             reference_unit_current_location=self.locationBoh,
+    #                             reference_unit_new_location=self.locationMun)
+    #     self.assertTrue(order_2.save())
+
+    #     order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
+    #                             target_unit=unitC,current_location=self.locationMun,
+    #                             target_location=self.locationSil)
+    #     self.assertTrue(order_3.save())
+    #     order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+    #                             target_unit=unitD,current_location=self.locationBer,
+    #                             reference_unit=unitC,
+    #                             reference_unit_current_location=self.locationMun,
+    #                             reference_unit_new_location=self.locationSil)
+    #     self.assertTrue(order_4.save())
+
+    #     order_5 = Order(instruction=MoveType.MOVE,turn=self.turn,
+    #                             target_unit=unitE,current_location=self.locationWar,
+    #                             target_location=self.locationSil)
+    #     self.assertTrue(order_5.save())
+    #     order_6 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+    #                             target_unit=unitF,current_location=self.locationPru,
+    #                             reference_unit=unitE,
+    #                             reference_unit_current_location=self.locationWar,
+    #                             reference_unit_new_location=self.locationSil)
+    #     self.assertTrue(order_6.save())
+    #     LegitamiseOrders(self.turn)
+    #     ResolveOrders(self.turn)
+    #     outcome_1 = Outcome.objects.get(order_reference=order_1)
+    #     if type(outcome_1) is Outcome:
+    #         self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
+    #     outcome_2 = Outcome.objects.get(order_reference=order_2)
+    #     if type(outcome_2) is Outcome:
+    #         self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
+    #     outcome_3 = Outcome.objects.get(order_reference=order_3)
+    #     if type(outcome_3) is Outcome:
+    #         self.assertEqual(outcome_3.validation, OutcomeType.DISLODGED)
+    #     outcome_4 = Outcome.objects.get(order_reference=order_4)
+    #     if type(outcome_4) is Outcome:
+    #         self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
+    #     outcome_5 = Outcome.objects.get(order_reference=order_5)
+    #     if type(outcome_5) is Outcome:
+    #         self.assertEqual(outcome_5.validation, OutcomeType.BOUNCE)
+    #     outcome_6 = Outcome.objects.get(order_reference=order_6)
+    #     if type(outcome_6) is Outcome:
+    #         self.assertEqual(outcome_6.validation, OutcomeType.MAYBE)
