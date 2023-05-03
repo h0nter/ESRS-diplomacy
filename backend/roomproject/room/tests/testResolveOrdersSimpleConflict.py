@@ -322,5 +322,36 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
             self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
 
     def test_spt_diagram_24(self):
-        # use d e f
-        pass
+        # D -> F - bounce
+        # E SPT D -> F - void
+        # F hold - maybe
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationE)
+        unitC = Unit.objects.create(owner=self.countryB,location=self.locationF)
+
+        order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationF)
+        self.assertTrue(order_3.save())
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationD,
+                                target_location=self.locationF)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationE,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationD,
+                                reference_unit_new_location=self.locationF)
+        self.assertTrue(order_2.save())
+        
+        LegitamiseOrders(self.turn)
+        #print('spt',Outcome.objects.grab_related_spt_orders(order_1,self.turn).first().validation)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.VOID)
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
