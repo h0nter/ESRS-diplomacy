@@ -17,7 +17,7 @@ import HomeView from "@/views/HomeView.vue";
   </Wrapper>
 </template> -->
 
-<template class="bg-slate-800">
+<template>
   <Navigation-Bar />
   <RouterView />
 </template>

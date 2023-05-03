@@ -1,78 +1,52 @@
 <template>
   <div class="h-full w-full flex justify-center items-center">
-    <div id="loginContainer">
-      <h1>Register</h1>
-      <div id="loginInputs">
-        <input type="text" placeholder="Email" />
-        <input type="text" placeholder="Username" />
-        <div id="passwordDiv">
-          <input type="password" placeholder="Password" />
+    <div class="w-1/3 bg-slate-700 p-6 shadow-md rounded-lg">
+      <h1 class="text-4xl font-bold text-center">Register</h1>
+      <div class="flex flex-col gap-6 my-6">
+        <div>
+          <p class="pl-3">Email:</p>
+          <input
+            type="text"
+            placeholder="Email"
+            class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
+          />
         </div>
-        <div id="passwordDiv2">
-          <input type="password" placeholder="Re-enter Password" />
+        <div>
+          <p class="pl-3">Username:</p>
+          <input
+            type="text"
+            placeholder="Username"
+            class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
+          />
         </div>
-        <button class="btn btn-blue">Register</button>
+        <div>
+          <p class="pl-3">Password:</p>
+          <input
+            type="password"
+            placeholder="Password"
+            class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
+          />
+        </div>
+        <div>
+          <p class="pl-3">Re-enter Password:</p>
+          <input
+            type="password"
+            placeholder="Re-enter Password"
+            class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
+          />
+        </div>
+        <button
+          class="p-3 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-bold"
+        >
+          Register
+        </button>
+      </div>
+      <div class="text-center">
+        <p class="inline">Already a member?</p>
+        <router-link class="text-blue-400" to="/login"> Log in</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup></script>
-
-<style scoped>
-#loginContainer {
-  border-radius: 5px;
-  color: black;
-  padding: 25px;
-
-  background-color: #eee;
-}
-
-#loginInputs {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-#passwordDiv,
-#passwordDiv2 {
-  display: flex;
-  flex-direction: column;
-}
-
-h1 {
-  color: black;
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-}
-
-input {
-  border-radius: 5px;
-  padding: 10px;
-}
-
-p {
-  text-align: left;
-}
-
-#registerDiv {
-  text-align: center;
-}
-
-#register {
-  display: inline;
-}
-
-.link {
-  color: #1e90ff;
-}
-
-.btn {
-  @apply font-bold py-2 px-4 rounded;
-}
-.btn-blue {
-  @apply bg-blue-500 text-white;
-}
-</style>
