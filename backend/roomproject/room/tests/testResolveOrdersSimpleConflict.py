@@ -320,3 +320,7 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         outcome_3 = Outcome.objects.get(order_reference=order_3)
         if type(outcome_3) is Outcome:
             self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+
+    def test_spt_diagram_24(self):
+        # use d e f
+        pass

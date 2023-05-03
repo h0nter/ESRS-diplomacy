@@ -253,7 +253,7 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         if type(outcome_6) is Outcome:
             self.assertEqual(outcome_6.validation, OutcomeType.DISLODGED)
 
-    def test_convoy_diagram_12(self):
+    def test_diagram_12(self):
         # A Boh–Mun; - maybe
         # A Tyr S A Boh–Mun - maybe
         # A Mun–Sil; - bounce then dislodge
@@ -320,7 +320,7 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         if type(outcome_6) is Outcome:
             self.assertEqual(outcome_6.validation, OutcomeType.MAYBE)
 
-    def test_convoy_diagram_13(self):
+    def test_diagram_13(self):
         # A Bul–Rum ->         A Mun-Sil
         # A Rum–Bul ->         A Sil-Mun
         # A Ser S A Rum–Bul -> A Boh S A Sil-Mun
@@ -365,69 +365,69 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         if type(outcome_4) is Outcome:
             self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
 
-    # def test_convoy_diagram_14(self):
-    #     # A Boh–Mun; - maybe
-    #     # A Tyr S A Boh–Mun - maybe
-    #     # A Mun–Sil; - bounce then dislodge
-    #     # A Ber S A Mun–Si - maybe
-    #     # A War–Sil; - bounce
-    #     # A Pru S A War–Sil - maybe
-    #     unitA = Unit.objects.create(owner=self.france,location=self.locationBoh)
-    #     unitB = Unit.objects.create(owner=self.france,location=self.locationTyr)
-    #     unitC = Unit.objects.create(owner=self.germany,location=self.locationMun)
-    #     unitD = Unit.objects.create(owner=self.germany,location=self.locationBer)
-    #     unitE = Unit.objects.create(owner=self.italy,location=self.locationWar)
-    #     unitF = Unit.objects.create(owner=self.italy,location=self.locationPru)
+    def test_diagram_14(self):
+        # A Bul–Rum             -> A Boh-Sil - Dislodged
+        # F Bla S A Bul–Rum     -> A War S A Boh-Sil - maybe/void?
+        # A Rum–Bul;            -> A Sil-Boh - maybe
+        # A Gre S A Rum–Bul;    -> A Tyr S A Sil-Boh - maybe
+        # A Ser S A Rum–Bul;    -> A Mun S A Sil-Boh - maybe
+        # A Sev–Rum             -> A Pru-Sil - maybe
 
-    #     order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-    #                             target_unit=unitA,current_location=self.locationBoh,
-    #                             target_location=self.locationMun)
-    #     self.assertTrue(order_1.save())
-    #     order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-    #                             target_unit=unitB,current_location=self.locationTyr,
-    #                             reference_unit=unitA,
-    #                             reference_unit_current_location=self.locationBoh,
-    #                             reference_unit_new_location=self.locationMun)
-    #     self.assertTrue(order_2.save())
+        unitA = Unit.objects.create(owner=self.france,location=self.locationBoh)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationWar)
+        unitC = Unit.objects.create(owner=self.germany,location=self.locationSil)
+        unitD = Unit.objects.create(owner=self.germany,location=self.locationTyr)
+        unitE = Unit.objects.create(owner=self.germany,location=self.locationMun)
+        unitF = Unit.objects.create(owner=self.germany,location=self.locationPru)
 
-    #     order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
-    #                             target_unit=unitC,current_location=self.locationMun,
-    #                             target_location=self.locationSil)
-    #     self.assertTrue(order_3.save())
-    #     order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-    #                             target_unit=unitD,current_location=self.locationBer,
-    #                             reference_unit=unitC,
-    #                             reference_unit_current_location=self.locationMun,
-    #                             reference_unit_new_location=self.locationSil)
-    #     self.assertTrue(order_4.save())
+        order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitA,current_location=self.locationBoh,
+                                target_location=self.locationSil)
+        self.assertTrue(order_1.save())
+        order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitB,current_location=self.locationWar,
+                                reference_unit=unitA,
+                                reference_unit_current_location=self.locationBoh,
+                                reference_unit_new_location=self.locationSil)
+        self.assertTrue(order_2.save())
 
-    #     order_5 = Order(instruction=MoveType.MOVE,turn=self.turn,
-    #                             target_unit=unitE,current_location=self.locationWar,
-    #                             target_location=self.locationSil)
-    #     self.assertTrue(order_5.save())
-    #     order_6 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-    #                             target_unit=unitF,current_location=self.locationPru,
-    #                             reference_unit=unitE,
-    #                             reference_unit_current_location=self.locationWar,
-    #                             reference_unit_new_location=self.locationSil)
-    #     self.assertTrue(order_6.save())
-    #     LegitamiseOrders(self.turn)
-    #     ResolveOrders(self.turn)
-    #     outcome_1 = Outcome.objects.get(order_reference=order_1)
-    #     if type(outcome_1) is Outcome:
-    #         self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
-    #     outcome_2 = Outcome.objects.get(order_reference=order_2)
-    #     if type(outcome_2) is Outcome:
-    #         self.assertEqual(outcome_2.validation, OutcomeType.MAYBE)
-    #     outcome_3 = Outcome.objects.get(order_reference=order_3)
-    #     if type(outcome_3) is Outcome:
-    #         self.assertEqual(outcome_3.validation, OutcomeType.DISLODGED)
-    #     outcome_4 = Outcome.objects.get(order_reference=order_4)
-    #     if type(outcome_4) is Outcome:
-    #         self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
-    #     outcome_5 = Outcome.objects.get(order_reference=order_5)
-    #     if type(outcome_5) is Outcome:
-    #         self.assertEqual(outcome_5.validation, OutcomeType.BOUNCE)
-    #     outcome_6 = Outcome.objects.get(order_reference=order_6)
-    #     if type(outcome_6) is Outcome:
-    #         self.assertEqual(outcome_6.validation, OutcomeType.MAYBE)
+        order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitC,current_location=self.locationSil,
+                                target_location=self.locationBoh)
+        self.assertTrue(order_3.save())
+        order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitD,current_location=self.locationTyr,
+                                reference_unit=unitC,
+                                reference_unit_current_location=self.locationSil,
+                                reference_unit_new_location=self.locationBoh)
+        self.assertTrue(order_4.save())
+        order_5 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
+                                target_unit=unitE,current_location=self.locationMun,
+                                reference_unit=unitC,
+                                reference_unit_current_location=self.locationSil,
+                                reference_unit_new_location=self.locationBoh)
+        self.assertTrue(order_5.save())
+        order_6 = Order(instruction=MoveType.MOVE,turn=self.turn,
+                                target_unit=unitF,current_location=self.locationPru,
+                                target_location=self.locationSil)
+        self.assertTrue(order_6.save())
+        LegitamiseOrders(self.turn)
+        ResolveOrders(self.turn)
+        outcome_1 = Outcome.objects.get(order_reference=order_1)
+        if type(outcome_1) is Outcome:
+            self.assertEqual(outcome_1.validation, OutcomeType.DISLODGED)
+        outcome_2 = Outcome.objects.get(order_reference=order_2)
+        if type(outcome_2) is Outcome:
+            self.assertEqual(outcome_2.validation, OutcomeType.MAYBE) #void?
+        outcome_3 = Outcome.objects.get(order_reference=order_3)
+        if type(outcome_3) is Outcome:
+            self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
+        outcome_4 = Outcome.objects.get(order_reference=order_4)
+        if type(outcome_4) is Outcome:
+            self.assertEqual(outcome_4.validation, OutcomeType.MAYBE)
+        outcome_5 = Outcome.objects.get(order_reference=order_5)
+        if type(outcome_5) is Outcome:
+            self.assertEqual(outcome_5.validation, OutcomeType.MAYBE)
+        outcome_6 = Outcome.objects.get(order_reference=order_6)
+        if type(outcome_6) is Outcome:
+            self.assertEqual(outcome_6.validation, OutcomeType.MAYBE)
