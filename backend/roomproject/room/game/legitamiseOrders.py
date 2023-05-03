@@ -15,12 +15,13 @@ class LegitamiseOrders():
         visited.add(node)
         if node == target:
             return True
-        for child in graph[node]:
-            if child not in visited:  # Check whether the node is visited or not
-                result = self._convoy_dfs(child, target, graph, visited)  # Call the dfs recursively
-                
-                if result is True:
-                    return True
+        elif node in graph:
+            for child in graph[node]:
+                if child not in visited:  # Check whether the node is visited or not
+                    result = self._convoy_dfs(child, target, graph, visited)  # Call the dfs recursively
+                    
+                    if result is True:
+                        return True
                 
         return False
 
@@ -81,14 +82,14 @@ class LegitamiseOrders():
                 graph = {}
                 # add current and last locations
                 graph[outcome.order_reference.current_location.pk] = \
-                        Next_to.objects.filter(location=outcome.order_reference.current_location).values_list('pk',flat=True)
+                        list(Next_to.objects.filter(location=outcome.order_reference.current_location).values_list('next_to__pk',flat=True))
                 graph[outcome.order_reference.target_location.pk] = \
-                        Next_to.objects.filter(location=outcome.order_reference.target_location).values_list('pk',flat=True)
+                        list(Next_to.objects.filter(location=outcome.order_reference.target_location).values_list('next_to__pk',flat=True))
                 # add convoy locations
                 for convoy in related_convoys:
                     # create a graph of pks, similar to '1':['2','3','4']
                     graph[convoy.order_reference.current_location.pk] = \
-                        Next_to.objects.filter(location=convoy.order_reference.current_location).values_list('pk',flat=True)
+                        list(Next_to.objects.filter(location=convoy.order_reference.current_location).values_list('next_to__pk',flat=True))
                 
                 if(not self._convoy_dfs(outcome.order_reference.current_location.pk,
                                        outcome.order_reference.target_location.pk,graph)):

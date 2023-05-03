@@ -175,16 +175,18 @@ class OutcomeManager(models.Manager):
     
     # private as only needed for working out if alternative route
     def _convoy_dfs(self, node, target, graph, visited=set()):
+        #print(node,target,graph)
         visited.add(node)
         if node == target:
             return True
-        for child in graph[node]:
-            if child not in visited:  # Check whether the node is visited or not
-                result = self._convoy_dfs(child, target, graph, visited)  
-                # Call the dfs recursively
-                
-                if result is True:
-                    return True
+        elif node in graph:
+            for child in graph[node]:
+                if child not in visited:  # Check whether the node is visited or not
+                    result = self._convoy_dfs(child, target, graph, visited)  
+                    # Call the dfs recursively
+                    
+                    if result is True:
+                        return True
                 
         return False
 
@@ -197,23 +199,21 @@ class OutcomeManager(models.Manager):
             graph = {}
             # add current and last locations
             graph[order.current_location.pk] = \
-                    Next_to.objects.filter(location=order.current_location).values_list('pk',flat=True)
+                    list(Next_to.objects.filter(location=order.current_location).values_list('next_to__pk',flat=True))
             if order.target_location is None: raise TypeError('order not MVE')
             graph[order.target_location.pk] = \
-                    Next_to.objects.filter(location=order.target_location).values_list('pk',flat=True)
+                    list(Next_to.objects.filter(location=order.target_location).values_list('next_to__pk',flat=True))
             # add convoy locations
             for convoy in related_convoys:
                 # create a graph of pks, similar to '1':['2','3','4']
                 graph[convoy.order_reference.current_location.pk] = \
-                    Next_to.objects.filter(location=convoy.order_reference.current_location).values_list('pk',flat=True)
-            if(self._convoy_dfs(order.current_location.pk,order.target_location.pk,graph)):
-                # convoy success regardless of location, means alternative route
-                return True
-            else:
-                return False
+                    list(Next_to.objects.filter(location=convoy.order_reference.current_location).values_list('next_to__pk',flat=True))
+            #print('graph',graph)
+            # convoy success regardless of location, means alternative route
+            return self._convoy_dfs(order.current_location.pk,order.target_location.pk,graph)
         else:
-            raise TypeError('location Type should be Location and turn Type should be Turn' +
-                             ' and order Type should be Order')
+            raise TypeError('location Type:{} should be Location and turn Type:{} should be Turn' +
+                             ' and order Type{} should be Order'.format(type(location),type(turn),type(order)))
         
     def grab_all_cvy_mve_orders(self,turn,add_marked=False):
         from room.models.order import Turn, MoveType, OutcomeType, Order
