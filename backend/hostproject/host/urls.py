@@ -7,7 +7,7 @@ urlpatterns =[
     path('', views.index, name='index'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('login/', LoginView.as_view(template_name='host/login.html'), name='login'),
-    path('create_room/', views.create_room, name='create_room'),
+    # path('create_room/', views.create_room, name='create_room'),
     path('join_room/', views.join_room, name='join_room'),
     path('check_player/', views.check_player, name='check_player'),
     path('start_game/', views.start_game, name='start_game'),

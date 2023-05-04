@@ -26,11 +26,12 @@ class Host(models.Model):
         return str(self.pk)
 
     def save(self, *args, **kwargs):
-        self.room_code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))
+        if not self.pk:
+            self.room_code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))
         super(Host, self).save(*args, **kwargs)
 
 
-class PlayerJoining(models.Model):
+class PlayerRoom(models.Model):
     player = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='joined_player')
     room = models.ForeignKey(Host, on_delete=models.DO_NOTHING, related_name='joined_room')
 
