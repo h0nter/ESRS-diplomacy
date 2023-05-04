@@ -241,3 +241,13 @@ class OutcomeManager(models.Manager):
             cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('order_reference__target_unit',flat=True)
             all_mve_orders: models.QuerySet[Outcome] = self.grab_all_mve_orders(turn)
             return all_mve_orders.exclude(order_reference__target_unit__in = cvy_mves)
+        else:
+            raise TypeError('Type should be Turn')
+        
+    def get_outcomes_retreat(self,turn):
+        from room.models.order import Turn,OutcomeType
+        if type(turn) is Turn:
+            query = models.Q(order_reference__turn=turn) & models.Q(validation=OutcomeType.DISLODGED)
+            return self.get_queryset().filter(query)
+        else:
+            raise TypeError('Type should be Turn')

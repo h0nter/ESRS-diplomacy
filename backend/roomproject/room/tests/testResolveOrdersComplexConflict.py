@@ -119,7 +119,7 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
         outcome_2 = Outcome.objects.get(order_reference=order_2)
         if type(outcome_2) is Outcome:
-            self.assertEqual(outcome_2.validation, OutcomeType.NO_CONVOY)
+            self.assertEqual(outcome_2.validation, OutcomeType.DISRUPTED)
         outcome_3 = Outcome.objects.get(order_reference=order_3)
         if type(outcome_3) is Outcome:
             self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
@@ -173,7 +173,7 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
         outcome_2 = Outcome.objects.get(order_reference=order_2)
         if type(outcome_2) is Outcome:
-            self.assertEqual(outcome_2.validation, OutcomeType.NO_CONVOY)
+            self.assertEqual(outcome_2.validation, OutcomeType.DISRUPTED)
         outcome_3 = Outcome.objects.get(order_reference=order_3)
         if type(outcome_3) is Outcome:
             self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)
@@ -239,7 +239,7 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
         outcome_2 = Outcome.objects.get(order_reference=order_2)
         if type(outcome_2) is Outcome:
-            self.assertEqual(outcome_2.validation, OutcomeType.NO_CONVOY)
+            self.assertEqual(outcome_2.validation, OutcomeType.DISRUPTED)
         outcome_3 = Outcome.objects.get(order_reference=order_3)
         if type(outcome_3) is Outcome:
             self.assertEqual(outcome_3.validation, OutcomeType.MAYBE)

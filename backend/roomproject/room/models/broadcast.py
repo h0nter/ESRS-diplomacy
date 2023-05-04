@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .locations import Country
 from .order import Turn, Unit
 import datetime
+from django.utils.translation import gettext_lazy as _
 
 
 class Player(models.Model):
@@ -12,10 +13,27 @@ class Player(models.Model):
     is_alive = models.BooleanField(default=True)
     is_finished = models.BooleanField(default=True)
 
+class RoomStatus(models.TextChoices):
+
+    INITIAL = 'INIT', _('Formating the room database')
+    OPEN =  'OPEN', _('Waiting for user to login the game')
+
+    # Loops
+    WAITING = 'WAIT', _('Orders Incoming, Players Debating')
+    RESOLVE = 'RESOLVE', _('Resolving Orders')
+    RETREAT = 'RETREAT', _('Orders Incoming, Only Players Retreating')
+    # Goes back to Resolve, this time just MVEs
+    # Players can only MVE to certain places
+    UPDATE = 'UPDATE', _('Update map with new Unit Positions')
+    RESUPPLY = 'RESUPP', _('Gaining Units After FALL')
+    CHECKING = 'CHECK', _('Check the closing conditions')
+
+    CLOSED = 'CLOSED', _('Will only change the status when room is closed')
+
 class Room(models.Model):
     room_name = models.CharField(max_length=30)
-    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
-    status = models.CharField(max_length=6, default='Open')
+    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn')
+    status = models.CharField(max_length=7, choices=RoomStatus.choices,default=RoomStatus.INITIAL)
     close_time = models.DateTimeField(null=True)
     
     def initial_room(self):
