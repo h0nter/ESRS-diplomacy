@@ -7,7 +7,7 @@
         'translate(' + (positionX - 68) + ', ' + (positionY - 15) + ')'
       "
       class="action-button"
-      @click="actionClickedDispatcher(RoomOrderInstructionChoices.Hld)"
+      @click="mapStore.holdHandler()"
     />
     <use
       v-bind="{ 'xlink:href': '#SupportButton' }"
@@ -16,7 +16,7 @@
         'translate(' + (positionX - 30) + ', ' + (positionY - 50) + ')'
       "
       class="action-button"
-      @click="actionClickedDispatcher(RoomOrderInstructionChoices.Hld)"
+      @click="mapStore.supportHandler()"
     />
     <use
       v-bind="{ 'xlink:href': '#MoveButton' }"
@@ -25,7 +25,7 @@
         'translate(' + (positionX + 25) + ', ' + (positionY - 15) + ')'
       "
       class="action-button"
-      @click="actionClickedDispatcher(RoomOrderInstructionChoices.Hld)"
+      @click="mapStore.moveHandler()"
     />
     <use
       v-if="type === 'F' && locationIsSea"
@@ -35,7 +35,7 @@
         'translate(' + (positionX - 28) + ', ' + (positionY + 20) + ')'
       "
       class="action-button"
-      @click="actionClickedDispatcher(RoomOrderInstructionChoices.Hld)"
+      @click="mapStore.convoyHandler()"
     />
     <use
       v-if="type === 'A' && locationIsCoast"
@@ -45,33 +45,25 @@
         'translate(' + (positionX - 30) + ', ' + (positionY + 20) + ')'
       "
       class="action-button"
-      @click="actionClickedDispatcher('VCV')"
+      @click="mapStore.moveViaConvoyHandler()"
     />
   </g>
 </template>
 
 <script lang="ts" setup>
-import type { ActionClickObject, ExtOrderInstructionChoices } from "@/models/ActionClickObject";
-  import { RoomOrderInstructionChoices } from "@/gql/graphql";
+  import { useMapStore } from "@/stores/MapStore";
 
   const props = defineProps({
     unit_id: String,
     type: String,
+    location_id: String,
     locationIsSea: Boolean,
     locationIsCoast: Boolean,
     positionX: Number,
     positionY: Number,
   });
 
-  const emit = defineEmits(["actionClicked"]);
-
-  // Dispatch the action type + unitID to the map component
-  const actionClickedDispatcher = (action: ExtOrderInstructionChoices) => {
-    emit("actionClicked", <ActionClickObject><unknown>{
-      unitID: props.unit_id,
-      actionType: action
-    });
-  };
+  const mapStore = useMapStore();
 </script>
 
 <style scoped>

@@ -23,9 +23,8 @@
         :textX="territory.textPosX"
         :textY="territory.textPosY"
         :units="units"
-        @territoryHovered="onTerritoryHovered"
       />
-      <use id="territoryOnTop" :href="currentlyHoveredTerritory" />
+      <use id="territoryOnTop" :href="mapStore.territoryHovered" />
       <!-- Create units, and use-tag for click mechanics -->
       <Unit
         v-for="unit in units"
@@ -33,144 +32,90 @@
         :unit_id="unit.id"
         :type="unit.canFloat ? 'F' : 'A'"
         :color="unit.owner.colour"
+        :location_id="unit.location.id"
         :locationIsSea="unit.location.isSea"
         :locationIsCoast="unit.location.isCoast"
         :positionX="unit.location.textPosX"
         :positionY="unit.location.textPosY"
-        :activeUnit="activeUnitName"
-        @unitClicked="onUnitClick"
-        @actionClicked="onActionClicked"
       />
-      <use id="activeUnit" :href="activeUnit" />
+      <use id="activeUnit" :href="mapStore.activeUnit" />
       <!-- Ensure that the active menu is rendered in front of units and territories -->
-      <use id="activeUnitMenu" :href="activeUnitMenu" />
+      <use id="activeUnitMenu" :href="mapStore.activeUnitMenu" />
     </svg>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { INITIAL_MAP_SETUP } from "@/gql/documents/map";
-  import { useQuery } from "@vue/apollo-composable";
+  import {
+    INITIAL_MAP_SETUP,
+    PLAYER_ORDERS,
+    TURNS,
+    UPDATE_ORDER,
+  } from "@/gql/documents/map";
+  import { useQuery, useLazyQuery, useMutation } from "@vue/apollo-composable";
   import { computed, watchEffect } from "vue";
 
   import { ref } from "vue";
   import Territory from "@/components/Territory.vue";
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
-  import type { LocationType, UnitType } from "@/gql/graphql";
+  import type {
+    LocationType,
+    OrderType,
+    TurnType,
+    UnitType,
+  } from "@/gql/graphql";
   import UnitActonMenuSetup from "@/components/UnitActonMenuSetup.vue";
-  import type { UnitClickObject } from "@/models/UnitClickObject";
-  import type { ActionClickObject } from "@/models/ActionClickObject";
   import { RoomOrderInstructionChoices } from "@/gql/graphql";
+  import { useMapStore } from "@/stores/MapStore";
+  import { useGameStore } from "@/stores/GameStore";
 
-  const currentlyHoveredTerritory = ref("#");
+  // Load store for handling territory hover and unit clicks
+  const mapStore = useMapStore();
+  const gameStore = useGameStore();
 
-  function onTerritoryHovered(name: string) {
-    currentlyHoveredTerritory.value = "#" + name;
-  }
+  gameStore.turnStart();
 
-  // Begin active unit and action menu logic
+  const {
+    result: orders_return,
+    error: orders_error,
+    load: orders_load,
+  } = useLazyQuery(PLAYER_ORDERS);
 
-  // Set up the refs and name vars,
-  // why not set them up together in an object? Because it doesn't work.
-  const activeUnit = ref("#");
-  const activeUnitMenu = ref("#");
-  let activeUnitName: String = "";
+  let orders: OrderType[] =
+    computed(() => orders_return.value?.orders).value ?? [];
 
-  /*
-   * Triggered by the Unit component when a unit is clicked.
-   * Update the state of the active unit and menu, pass the state to all units to toggle the menu on/off.
-   * It has to be done outside the Unit component, to order the rendering of those correctly.
-   */
-  const onUnitClick = (args: UnitClickObject) => {
-    // If the active unit is clicked again, close the menu
-    if (args.unit_id === activeUnitName) {
-      activeUnitName = "#";
-    } else {
-      // Otherwise, open the menu (only one open at a time)
-      activeUnitName = args.unit_id;
-    }
-    // This here is a stupid hack to force the re-rendering/drawing of the active unit and menu.
-    activeUnit.value = "#" + args.unit_id;
-    activeUnit.value = "#";
-    activeUnitMenu.value = "#" + args.unit_menu_id;
-  };
+  const {
+    result: turns_return,
+    error: turns_error,
+    loading: turns_load,
+    refetch: turns_refetch,
+  } = useQuery(TURNS);
 
-  const holdHandler = (unitID: Number) => {
+  let turns: TurnType[] = computed(() => turns_return.value?.turns).value ?? [];
+
+  const holdHandler = (unitID: String, currentTerritoryID: String) => {
     // Unit doesn't do anything
     // Update the order for the unit to hold (default)
-    console.log("Support clicked");
-  };
-
-  const supportHandler = (unitID: Number) => {
-    // Unit remains in place/moves one space and supports another unit
-    // Begin support action
-    // 1. Highlight the current territory in stronger color, and supportable units in thicker border (all units for now - verify this later)
-    //    lock clicking on other territories.
-    // 2. Click on the unit to support (cancel by clicking on the territory again)
-    // 3. Click on the territory to direct the support to (any neighbouring territory)
-    // 4. If the unit belongs to the player, update the target unit order to move to the target territory
-    // 5. Draw a support (double) arrow from the supporting unit to the target territory
-    // 6. Update the order for the unit to support the target unit to the target territory
-    console.log("Support clicked");
-  };
-
-  const moveHandler = (unitID: Number) => {
-    // Unit moves one space
-    // Begin move action
-    // 1. Highlight the current territory in stronger color, and neighbouring territories in thicker border
-    //    (data from the backend, should already handle fleets/armies correctly)
-    //    lock clicking on other territories.
-    // 2. Click on the territory to move to (cancel by clicking on the territory again)
-    // 3. Draw move arrow from the unit to the target territory
-    // 4. Update the order for the unit to move to the target territory
-    console.log("Move clicked");
-  };
-
-  const convoyHandler = (unitID: Number) => {
-    // Fleet convoys an army
-    // Begin convoy action
-    // 1. Highlight the current territory in stronger color, and supportable units in thicker border (all units for now - verify this later)
-    //    lock clicking on other territories.
-    // 2. Click on the unit to convoy (cancel by clicking on the territory again)
-    // 3. Draw the convoy (dotted) line from the fleet to the unit's move arrow
-    // 4. Update the order for the unit to convoy the target unit
-    console.log("Convoy clicked");
-  };
-
-  const moveViaConvoyHandler = (unitID: Number) => {
-    // Fleet convoys an army
-    // Begin convoy action
-    // 1. Highlight the current territory in stronger color, and all coastal territories (neighbouring with an army) in thicker border
-    //    lock clicking on other territories.
-    // 2. Click on the territory to move to (cancel by clicking on the territory again)
-    // 3. Draw a move arrow from the unit to the target territory
-    // 4. Update the order for the unit to move to the target territory
-    console.log("Via Convoy clicked");
-  };
-
-  const onActionClicked = (args: ActionClickObject) => {
-    // First, disable the action menu
-    activeUnitName = "#";
-    activeUnit.value = "#";
-
-    switch (args.actionType) {
-      case RoomOrderInstructionChoices.Hld:
-        holdHandler(args.unitID);
-        break;
-      case RoomOrderInstructionChoices.Spt:
-        supportHandler(args.unitID);
-        break;
-      case RoomOrderInstructionChoices.Mve:
-        moveHandler(args.unitID);
-        break;
-      case RoomOrderInstructionChoices.Cvy:
-        convoyHandler(args.unitID);
-        break;
-      case "VCV":
-        moveViaConvoyHandler(args.unitID);
-        break;
-    }
+    console.log("Hold clicked");
+    turns_refetch();
+    orders_load();
+    const currentTurnId: String = turns[length - 1].id;
+    // const orderId: Number = parseInt(
+    //   orders.find(
+    //     (o) =>
+    //       parseInto.targetUnit!.id === unitID &&
+    //       parseInt(o.turn!.id) === currentTurnId
+    //   )!.id
+    // );
+    const { mutate: updateOrder } = useMutation(UPDATE_ORDER, () => ({
+      variables: {
+        unitID: unitID,
+        instruction: RoomOrderInstructionChoices.Mve,
+        turnID: currentTurnId,
+        currentLocation: currentTerritoryID,
+      },
+    }));
   };
 
   const {

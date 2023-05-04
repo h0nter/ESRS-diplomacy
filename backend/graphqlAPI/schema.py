@@ -1,5 +1,5 @@
 import graphene
-from room.models.locations import Map, Country, Location
+from room.models.locations import Map, Map_Polygon, Next_to, Country, Location
 from room.models.order import Turn, Order, Outcome
 from room.game.unitTypes import Unit
 from .items.table_type import *
@@ -9,7 +9,7 @@ from .items.order_mutation import UpdateOrder
 class Query(graphene.ObjectType):
     turns = graphene.List(TurnType)
     units = graphene.List(UnitType)
-    orders = graphene.List(OrderType, order_id=graphene.Int())
+    orders = graphene.List(OrderType, order_id=graphene.Int(), unit_id=graphene.Int())
     outcomes = graphene.List(OutcomeType)
     locations = graphene.List(LocationType)
     map = graphene.List(MapType)
@@ -27,7 +27,14 @@ class Query(graphene.ObjectType):
         return Unit.objects.all()
 
     def resolve_orders(root, info, **kwargs):
+        if kwargs.get('order_id'):
+            return Order.objects.filter(pk=kwargs.get('order_id'))
+        if kwargs.get('unit_id'):
+            return Order.objects.filter(target_unit__pk=kwargs.get('unit_id'), turn__pk=Turn.objects.last().id)
         return Order.objects.all()
+
+    # def resolve_orders_by_unit_id(root, info, unit_id):
+    #     return Order.objects.filter(unit_id=unit_id)
     
     def resolve_outcomes(root, info, **kwargs):
         return Outcome.objects.all()

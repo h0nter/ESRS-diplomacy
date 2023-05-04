@@ -127,6 +127,7 @@ export type Query = {
 
 export type QueryOrdersArgs = {
   orderId?: InputMaybe<Scalars['Int']>;
+  unitId?: InputMaybe<Scalars['Int']>;
 };
 
 /** An enumeration. */

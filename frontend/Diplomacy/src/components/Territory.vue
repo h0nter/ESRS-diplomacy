@@ -3,7 +3,7 @@
     :title="name"
     :id="'territory-' + name"
     :coast="isCoast"
-    @mouseenter="$emit('territoryHovered', name)"
+    @mouseenter="mapStore.territoryHoverHandler(name)"
   >
     <polygon
       v-for="polygon in polygons"
@@ -21,6 +21,7 @@
   import { PropType, ref, Ref, watchEffect } from "vue";
   import type { Map_PolygonType, UnitType } from "@/gql/graphql";
   import { RoomMap_PolygonColourChoices } from "@/gql/graphql";
+  import { useMapStore } from "@/stores/MapStore";
 
   const props = defineProps({
     name: String,
@@ -31,6 +32,8 @@
     textX: Number,
     textY: Number,
   });
+
+  const mapStore = useMapStore();
 
   const PolygonColourChoices: any = RoomMap_PolygonColourChoices;
 </script>

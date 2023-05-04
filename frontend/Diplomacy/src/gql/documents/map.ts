@@ -28,6 +28,7 @@ export const INITIAL_MAP_SETUP = gql`
         colour
       }
       location {
+        id
         name
         isSea
         isCoast
@@ -49,6 +50,51 @@ export const UNITS = gql`
       location {
         name
       }
+    }
+  }
+`;
+
+export const PLAYER_ORDERS = gql`
+  query {
+    orders {
+      id
+      turn {
+        id
+      }
+      targetUnit {
+        id
+      }
+    }
+  }
+`;
+
+export const TURNS = gql`
+  query {
+    turns {
+      id
+      isAutumn
+    }
+  }
+`;
+
+export const UPDATE_ORDER = gql`
+  mutation UpdateOrder(
+    $unitID: Int!
+    $instruction: String!
+    $turnID: Int!
+    $currentLocation: Int!
+    $orderID: ID!
+  ) {
+    updateOrder(
+      input: {
+        instruction: $instruction
+        targetUnit: $unitID
+        turn: $turnID
+        currentLocation: $currentLocation
+      }
+      id: $orderID
+    ) {
+      ok
     }
   }
 `;
