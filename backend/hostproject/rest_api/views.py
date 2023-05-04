@@ -4,10 +4,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from host.models import Host
 
+
 @api_view()
 def hello_world(request):
     return Response({"message": "Hello, world!"})
-
 
 @api_view(['POST'])
 def create_room(request):
@@ -19,7 +19,6 @@ def create_room(request):
         room = Host.objects.create(hoster=User.objects.get(pk=user_id), room_name=room_name)
         room.create()
         return Response(room.room_name)
-    
 
 @api_view(['POST'])
 def join_room(request):

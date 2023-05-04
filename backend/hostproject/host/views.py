@@ -13,11 +13,11 @@ def index(request):
 def create_room(request):
     if request.method == 'POST':
         room_name = request.POST['room_name']
-        user_id = request.POST['user_id']
+        user = User.objects.get(pk=request.POST['user_id'])
         if  Host.objects.filter(room_name=room_name):
             return HttpResponse('room name exist')
-        room = Host.objects.create(hoster=User.objects.get(pk=user_id), room_name=room_name)
-        room.create()
+        room = Host.objects.create(hoster=user, room_name=room_name)
+        room.save()
         return HttpResponse(room.room_name)
 
 @csrf_exempt
