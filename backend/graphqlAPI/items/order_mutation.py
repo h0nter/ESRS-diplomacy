@@ -24,7 +24,7 @@ class UpdateOrder(graphene.Mutation):
         id = graphene.ID()
     
     ok = graphene.Boolean() 
-    order = graphene.Field(lambda: OrderType)
+    order = graphene.Field(OrderType)
     
     # Mutation to update a unit 
     @classmethod
