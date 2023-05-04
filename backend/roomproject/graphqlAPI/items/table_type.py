@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
 from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
 from room.models.order import Order, Turn, Outcome
@@ -51,3 +52,7 @@ class Next_toType(DjangoObjectType):
         model = Next_to
         fields = "__all__"
 
+class UserType(DjangoObjectType):
+    class Meta: 
+        model = User
+        fields = ["username", "id", "is_staff"]

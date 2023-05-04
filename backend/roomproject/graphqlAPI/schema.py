@@ -1,13 +1,15 @@
 import graphene
 from .items.table_type import *
 from .items.order_mutation import UpdateOrder
-from django.contrib.auth.models import User
 from room.models.locations import Map, Country, Location
 from room.models.order import Turn, Order, Outcome
 from room.game.unitTypes import Unit
 # add Room to query
 
 
+class Mutation(graphene.ObjectType):
+
+    update_order = UpdateOrder.Field()
 
 
 class Query(graphene.ObjectType):
@@ -55,8 +57,4 @@ class Query(graphene.ObjectType):
         return Country.objects.all()
     
 
-class Mutation(graphene.ObjectType):
-    
-    update_order = UpdateOrder.Field()
-
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutation)
