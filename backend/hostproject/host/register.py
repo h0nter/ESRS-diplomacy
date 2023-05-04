@@ -1,10 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate
 from .forms import CustomUserCreationForm
-from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
-import json
 
 
 def registration(request):
@@ -17,16 +15,10 @@ def registration(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            # return redirect('/')
+            return redirect('/')
     else:
         form = CustomUserCreationForm()
     return render(request, 'host/register.html', {'form': form})
-
-
-# csrf token response
-def my_view(request):
-    if request.method == 'POST':
-        return JsonResponse({'csrfmiddlewaretoken': get_token(request)})
 
 
 @csrf_exempt

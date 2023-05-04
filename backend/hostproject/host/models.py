@@ -1,31 +1,39 @@
-# from django.db import models
-# from django.utils.translation import gettext_lazy as _
+import secrets
+import string
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
+# status for each room
+class Host(models.Model):
+    class StatusType(models.TextChoices):
+        Opening = 'Open', _('Opening')
+        Initial = 'Init', _('Initial')
+        Waiting = 'Wait' , _('Waiting')
+        Checking = 'Check', _('Checking')
+        Ending = 'End', _('Ending')
+        Closed = 'Closed', _('Closed')
 
-# # status for each room
-# class Host(models.Model):
-#     class StatusType(models.TextChoices):
-#         Initial = 'Init', _('Initial')
-#         Opening = 'Open', _('Opening')
-#         Waiting = 'Wait' , _('Waiting')
-#         Checking = 'Check', _('Checking')
-#         Ending = 'End', _('Ending')
-#         Closed = 'Closed', _('Closed')
+    room_name = models.CharField(max_length=30)
+    room_code = models.CharField(max_length=6, default='')
+    room_status = models.CharField(max_length=6,choices=StatusType.choices,default=StatusType.Opening)
+    hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
+    players = models.ManyToManyField(User)
 
-#     total_user = models.IntegerField(default=1)
-#     alive_user = models.IntegerField(default=1)
-#     location_num = models.IntegerField()
-#     room_status = models.CharField(max_length=5,choices=StatusType.choices,default=StatusType.Initial)
+    class Meta:
+        verbose_name_plural = 'Room'
+
+    def __str__(self):
+        return str(self.pk)
+
     
-#     class Meta:
-#         verbose_name_plural = 'Host'
+    def create(self):
+        self.save()
+        self.players.add(self.hoster.pk)
+        self.room_code = ''.join(secrets.choice(string.ascii_letters).capitalize() for _ in range(5))
+        self.save()
 
-#     def __str__(self):
-#         return str(self.pk)
 
-
-# # Create your models here.
-# class User(models.Model):
-#     name = models.CharField(max_length= 30, unique=True)
-#     cookies = models.CharField(max_length= 32, unique=True)
-#     room = models.ForeignKey(Host,on_delete=models.CASCADE)
+# class UserHost(models.Model):
+#     user = models.ForeignKey(User)
+#     room = models.ForeignKey(Room)
