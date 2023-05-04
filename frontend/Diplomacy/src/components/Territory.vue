@@ -3,13 +3,17 @@
     :title="name"
     :id="'territory-' + name"
     :coast="isCoast"
+    :class="isActive ? 'active' : ''"
     @mouseenter="mapStore.territoryHoverHandler(name)"
   >
     <polygon
       v-for="polygon in polygons"
       :key="polygon.id"
-      :class="polygon.colour === PolygonColourChoices.Land ? 'l' : 'w'"
+      :class="[polygon.colour === PolygonColourChoices.Land ? 'l' : 'w']"
       :points="polygon.polygon"
+      :style="
+        polygon.colour !== PolygonColourChoices.Aqua ? 'fill:' + fillColour : ''
+      "
     />
     <text :x="textX" :y="textY">{{ text }}</text>
   </g>
@@ -18,14 +22,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType, ref, Ref, watchEffect } from "vue";
+  import { PropType, ref, Ref, watch, watchEffect } from "vue";
   import type { Map_PolygonType, UnitType } from "@/gql/graphql";
   import { RoomMap_PolygonColourChoices } from "@/gql/graphql";
   import { useMapStore } from "@/stores/MapStore";
+  import { ColorTranslator, HSLObject } from "colortranslator";
+  import { storeToRefs } from "pinia";
 
   const props = defineProps({
     name: String,
-    country: String,
+    countryColor: String,
     polygons: Array as PropType<Map_PolygonType[]>,
     isCoast: Boolean,
     text: String,
@@ -33,9 +39,33 @@
     textY: Number,
   });
 
+  const isActive = ref<boolean>(false);
+
   const mapStore = useMapStore();
 
+  const { currentTerritory } = storeToRefs(mapStore);
+
   const PolygonColourChoices: any = RoomMap_PolygonColourChoices;
+
+  const colourTints = ref<string[]>(ColorTranslator.getTints("#ffffdd", 3));
+  const fillColour = ref<string>(
+    colourTints.value[colourTints.value.length - 3]
+  );
+
+  if (props.countryColor !== undefined) {
+    colourTints.value = ColorTranslator.getTints(props.countryColor, 3);
+    fillColour.value = colourTints.value[colourTints.value.length - 1];
+  }
+
+  watch(currentTerritory, () => {
+    if (currentTerritory.value === props.name) {
+      isActive.value = true;
+      fillColour.value = colourTints.value[colourTints.value.length - 3];
+    } else {
+      isActive.value = false;
+      fillColour.value = colourTints.value[colourTints.value.length - 1];
+    }
+  });
 </script>
 
 <style scoped>

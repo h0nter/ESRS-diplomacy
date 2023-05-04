@@ -18,11 +18,11 @@
         v-for="territory in territories"
         :key="territory.id"
         :name="territory.name"
+        :countryColor="territory.currentOwner?.colour"
         :polygons="territory.polygons"
         :text="territory.abbreviation"
         :textX="territory.textPosX"
         :textY="territory.textPosY"
-        :units="units"
       />
       <use id="territoryOnTop" :href="mapStore.territoryHovered" />
       <!-- Create units, and use-tag for click mechanics -->
@@ -32,6 +32,7 @@
         :unit_id="unit.id"
         :type="unit.canFloat ? 'F' : 'A'"
         :color="unit.owner.colour"
+        :location_name="unit.location.name"
         :location_id="unit.location.id"
         :locationIsSea="unit.location.isSea"
         :locationIsCoast="unit.location.isCoast"
@@ -75,48 +76,6 @@
   const gameStore = useGameStore();
 
   gameStore.turnStart();
-
-  const {
-    result: orders_return,
-    error: orders_error,
-    load: orders_load,
-  } = useLazyQuery(PLAYER_ORDERS);
-
-  let orders: OrderType[] =
-    computed(() => orders_return.value?.orders).value ?? [];
-
-  const {
-    result: turns_return,
-    error: turns_error,
-    loading: turns_load,
-    refetch: turns_refetch,
-  } = useQuery(TURNS);
-
-  let turns: TurnType[] = computed(() => turns_return.value?.turns).value ?? [];
-
-  const holdHandler = (unitID: String, currentTerritoryID: String) => {
-    // Unit doesn't do anything
-    // Update the order for the unit to hold (default)
-    console.log("Hold clicked");
-    turns_refetch();
-    orders_load();
-    const currentTurnId: String = turns[length - 1].id;
-    // const orderId: Number = parseInt(
-    //   orders.find(
-    //     (o) =>
-    //       parseInto.targetUnit!.id === unitID &&
-    //       parseInt(o.turn!.id) === currentTurnId
-    //   )!.id
-    // );
-    const { mutate: updateOrder } = useMutation(UPDATE_ORDER, () => ({
-      variables: {
-        unitID: unitID,
-        instruction: RoomOrderInstructionChoices.Mve,
-        turnID: currentTurnId,
-        currentLocation: currentTerritoryID,
-      },
-    }));
-  };
 
   const {
     result: init_return,

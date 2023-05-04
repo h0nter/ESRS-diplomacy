@@ -15,6 +15,7 @@
       :unit_id="unit_id"
       :type="type"
       :location_id="location_id"
+      :location_name="location_name"
       :locationIsSea="locationIsSea"
       :locationIsCoast="locationIsCoast"
       :positionX="positionX + 8"
@@ -34,6 +35,7 @@
     type: String,
     color: String,
     location_id: String,
+    location_name: String,
     locationIsSea: Boolean,
     locationIsCoast: Boolean,
     positionX: Number,

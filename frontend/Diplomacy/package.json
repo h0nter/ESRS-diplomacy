@@ -19,6 +19,7 @@
     "@apollo/client": "^3.7.8",
     "@vue/apollo-composable": "^4.0.0-alpha.13",
     "@vueuse/core": "^9.12.0",
+    "colortranslator": "^1.10.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "pinia": "^2.0.28",
