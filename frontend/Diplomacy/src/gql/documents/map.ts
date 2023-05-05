@@ -64,6 +64,16 @@ export const PLAYER_ORDERS = gql`
       targetUnit {
         id
       }
+      currentLocation {
+        id
+        textPosX
+        textPosY
+      }
+      targetLocation {
+        id
+        textPosX
+        textPosY
+      }
     }
   }
 `;
@@ -84,6 +94,7 @@ export const UPDATE_ORDER = gql`
     $turnID: Int!
     $currentLocation: Int!
     $orderID: ID!
+    $targetLocation: Int = null
   ) {
     updateOrder(
       input: {
@@ -91,10 +102,31 @@ export const UPDATE_ORDER = gql`
         targetUnit: $unitID
         turn: $turnID
         currentLocation: $currentLocation
+        targetLocation: $targetLocation
       }
       id: $orderID
     ) {
       ok
+      order {
+        id
+        instruction
+        turn {
+          id
+        }
+        targetUnit {
+          id
+        }
+        currentLocation {
+          id
+          textPosX
+          textPosY
+        }
+        targetLocation {
+          id
+          textPosX
+          textPosY
+        }
+      }
     }
   }
 `;

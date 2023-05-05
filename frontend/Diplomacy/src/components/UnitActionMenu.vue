@@ -25,7 +25,7 @@
         'translate(' + (positionX + 25) + ', ' + (positionY - 15) + ')'
       "
       class="action-button"
-      @click="mapStore.moveHandler(location_name)"
+      @click="mapStore.moveHandler(location_id, location_name, true)"
     />
     <use
       v-if="type === 'F' && locationIsSea"

@@ -86,6 +86,7 @@ export type OrderInput = {
   referenceUnitCurrentLocationPk?: InputMaybe<Scalars['Int']>;
   referenceUnitNewLocationPk?: InputMaybe<Scalars['Int']>;
   referenceUnitPk?: InputMaybe<Scalars['Int']>;
+  targetLocation?: InputMaybe<Scalars['Int']>;
   targetUnit: Scalars['Int'];
   turn: Scalars['Int'];
 };

@@ -1,6 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { useGameStore } from "@/stores/GameStore";
+import type { LocationType } from "@/gql/graphql";
+import { RoomOrderInstructionChoices } from "@/gql/graphql";
 
 export const useMapStore = defineStore("MapStore", () => {
   const gameStore = useGameStore();
@@ -11,6 +13,12 @@ export const useMapStore = defineStore("MapStore", () => {
   const activeUnitName = ref("");
   const currentTerritory = ref("");
   const targetTerritory = ref("");
+
+  const moveOrder = ref<boolean>(false);
+  const supportOrder = ref<boolean>(false);
+  const convoyOrder = ref<boolean>(false);
+  const moveViaConvoyOrder = ref<boolean>(false);
+  const submittingOrder = ref<boolean>(false);
 
   const unitClickHandler = (unitID: string, unitMenuID: string) => {
     // If the active unit is clicked again, close the menu
@@ -32,14 +40,21 @@ export const useMapStore = defineStore("MapStore", () => {
     activeUnitMenu.value = "#";
   };
 
-  const holdHandler = () => {
+  const holdHandler = async () => {
     _closeActionMenu();
     // No need to do anything else
     // Update the active unit's order to Hold
-    gameStore.holdHandler();
+    // Submit the order
+    submittingOrder.value = true;
+    await gameStore.updateOrder(RoomOrderInstructionChoices.Hld);
+    submittingOrder.value = false;
   };
 
-  const supportHandler = (territoryName: string) => {
+  const supportHandler = async (
+    territoryID: string,
+    territoryName: string,
+    newMove: Boolean
+  ) => {
     _closeActionMenu();
     // Unit remains in place and supports another unit
     // Begin support action
@@ -52,9 +67,33 @@ export const useMapStore = defineStore("MapStore", () => {
     // 6. Update the order for the unit to support the target unit to the target territory
     currentTerritory.value = territoryName;
     // gameStore.holdHandler();
+    if (newMove) {
+      currentTerritory.value = territoryName;
+      gameStore.currentLocationID = parseInt(territoryID);
+      moveOrder.value = true;
+    } else {
+      targetTerritory.value = territoryName;
+      gameStore.targetLocationID = parseInt(territoryID);
+      moveOrder.value = false;
+
+      // Submit the order
+      submittingOrder.value = true;
+      await gameStore.updateOrder(RoomOrderInstructionChoices.Mve);
+      submittingOrder.value = false;
+
+      // Arrows are drawn from the orders returned by the backend
+
+      // Reset the state for the next order
+      currentTerritory.value = "";
+      targetTerritory.value = "";
+    }
   };
 
-  const moveHandler = (territoryName: string) => {
+  const moveHandler = async (
+    territoryID: string,
+    territoryName: string,
+    newMove: Boolean
+  ) => {
     _closeActionMenu();
     // Unit moves one space
     // Begin move action
@@ -64,8 +103,28 @@ export const useMapStore = defineStore("MapStore", () => {
     // 2. Click on the territory to move to (cancel by clicking on the territory again)
     // 3. Draw move arrow from the unit to the target territory
     // 4. Update the order for the unit to move to the target territory
-    currentTerritory.value = territoryName;
-    // gameStore.holdHandler();
+
+    // Decide if we're starting a new move order or continue an existing one
+    if (newMove) {
+      currentTerritory.value = territoryName;
+      gameStore.currentLocationID = parseInt(territoryID);
+      moveOrder.value = true;
+    } else {
+      targetTerritory.value = territoryName;
+      gameStore.targetLocationID = parseInt(territoryID);
+      moveOrder.value = false;
+
+      // Submit the order
+      submittingOrder.value = true;
+      await gameStore.updateOrder(RoomOrderInstructionChoices.Mve);
+      submittingOrder.value = false;
+
+      // Arrows are drawn from the orders returned by the backend
+
+      // Reset the state for the next order
+      currentTerritory.value = "";
+      targetTerritory.value = "";
+    }
   };
 
   const convoyHandler = (territoryName: string) => {
@@ -105,6 +164,11 @@ export const useMapStore = defineStore("MapStore", () => {
     activeUnitName,
     currentTerritory,
     targetTerritory,
+    moveOrder,
+    supportOrder,
+    convoyOrder,
+    moveViaConvoyOrder,
+    submittingOrder,
     territoryHoverHandler,
     unitClickHandler,
     holdHandler,

@@ -5,6 +5,7 @@
     :coast="isCoast"
     :class="isActive ? 'active' : ''"
     @mouseenter="mapStore.territoryHoverHandler(name)"
+    @click="onClick"
   >
     <polygon
       v-for="polygon in polygons"
@@ -28,20 +29,44 @@
   import { useMapStore } from "@/stores/MapStore";
   import { ColorTranslator, HSLObject } from "colortranslator";
   import { storeToRefs } from "pinia";
+  import { useGameStore } from "@/stores/GameStore";
 
   const props = defineProps({
-    name: String,
+    location_id: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    polygons: {
+      type: Array as PropType<Map_PolygonType[]>,
+      required: true,
+    },
+    isCoast: {
+      type: Boolean,
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+    textX: {
+      type: Number,
+      required: true,
+    },
+    textY: {
+      type: Number,
+      required: true,
+    },
     countryColor: String,
-    polygons: Array as PropType<Map_PolygonType[]>,
-    isCoast: Boolean,
-    text: String,
-    textX: Number,
-    textY: Number,
   });
 
   const isActive = ref<boolean>(false);
 
   const mapStore = useMapStore();
+  const gameStore = useGameStore();
 
   const { currentTerritory } = storeToRefs(mapStore);
 
@@ -66,6 +91,12 @@
       fillColour.value = colourTints.value[colourTints.value.length - 1];
     }
   });
+
+  const onClick = () => {
+    if (mapStore.moveOrder) {
+      mapStore.moveHandler(props.location_id, props.name, false);
+    }
+  };
 </script>
 
 <style scoped>

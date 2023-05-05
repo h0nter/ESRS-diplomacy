@@ -3,13 +3,15 @@
     <p v-if="init_error" class="text-red-600">
       Something went wrong: {{ init_error }}
     </p>
-    <p v-if="init_loading">Loading...</p>
+    <div v-if="init_loading" class="loading-overlay">Loading...</div>
     <svg
       v-else
       viewBox="-0.5 -0.5 610 560"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
     >
+      <!-- Instantiate arrow head, used later to construct move arrows -->
+      <ArrowHeadSetup />
       <!-- Instantiate a single unit and action menu, then 'use' tag will clone them -->
       <UnitsSetup />
       <UnitActonMenuSetup />
@@ -17,6 +19,7 @@
       <Territory
         v-for="territory in territories"
         :key="territory.id"
+        :location_id="territory.id"
         :name="territory.name"
         :countryColor="territory.currentOwner?.colour"
         :polygons="territory.polygons"
@@ -25,6 +28,14 @@
         :textY="territory.textPosY"
       />
       <use id="territoryOnTop" :href="mapStore.territoryHovered" />
+      <!-- Create arrows -->
+      <Arrow
+        v-for="order in gameStore.orders"
+        :key="order.id"
+        :currentLocation="order.currentLocation"
+        :targetLocation="order.targetLocation"
+        :orderType="order.instruction"
+      />
       <!-- Create units, and use-tag for click mechanics -->
       <Unit
         v-for="unit in units"
@@ -70,6 +81,8 @@
   import { RoomOrderInstructionChoices } from "@/gql/graphql";
   import { useMapStore } from "@/stores/MapStore";
   import { useGameStore } from "@/stores/GameStore";
+  import ArrowHeadSetup from "@/components/ArrowHeadSetup.vue";
+  import Arrow from "@/components/Arrow.vue";
 
   // Load store for handling territory hover and unit clicks
   const mapStore = useMapStore();
@@ -98,6 +111,10 @@
     display: flex;
     justify-content: center;
     width: 90%;
+  }
+
+  .loading-overlay {
+    @apply absolute top-0 left-0 h-full w-full z-50 bg-slate-500 bg-opacity-50;
   }
 
   svg {
