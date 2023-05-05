@@ -16,8 +16,8 @@ class Room(models.Model):
         Closed = 'Closed', _('Closed')
 
     room_name = models.CharField(max_length=30)
-    room_status = models.CharField(max_length=8,choices=StatusType.choices,default=StatusType.Initializing)
-    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
+    room_status = models.CharField(max_length=8, choices=StatusType.choices, default=StatusType.Initializing)
+    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn', blank=True, null=True)
     status = models.CharField(max_length=6, default='Open')
     close_time = models.DateTimeField(null=True)
     

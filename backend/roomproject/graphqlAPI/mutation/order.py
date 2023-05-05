@@ -1,6 +1,6 @@
 import graphene
 from room.models.locations import Location
-from room.models.order import Turn, Order, Unit
+from room.models.order import Turn, Order, Unit, MoveType
 from graphqlAPI.query.table_type import OrderType
 
 
@@ -34,7 +34,7 @@ class UpdateOrder(graphene.Mutation):
         order.target_unit = Unit.objects.get(pk=input.target_unit)
         order.current_location = Location.objects.get(pk=input.current_location)
         # while instruction is Convoy, allow further info to be stored.
-        if order.instruction == 'CVY':
+        if order.instruction == MoveType.CONVOY:
             order.reference_unit = Unit.objects.get(pk=input.reference_unit_pk)
             order.reference_unit_current_location = Location.objects.get(pk=input.reference_unit_current_location_pk)
             order.reference_unit_new_location = Location.objects.get(pk=input.reference_unit_new_location_pk)

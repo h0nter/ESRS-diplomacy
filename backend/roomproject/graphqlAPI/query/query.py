@@ -6,7 +6,7 @@ from room.game.unitTypes import Unit
 from .broadcast import GameAPI
 
 
-class Query(GameAPI):
+class Query(GameAPI, graphene.ObjectType):
 
     unit = graphene.List(UnitType)
     outcome = graphene.List(OutcomeType)
