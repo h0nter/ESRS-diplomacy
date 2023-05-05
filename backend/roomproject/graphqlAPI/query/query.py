@@ -3,10 +3,10 @@ from .table_type import *
 from room.models.locations import Map, Country, Location
 from room.models.order import Outcome
 from room.game.unitTypes import Unit
-from .broadcast import Broadcast
+from .broadcast import GameAPI
 
 
-class Query(Broadcast):
+class Query(GameAPI):
 
     unit = graphene.List(UnitType)
     outcome = graphene.List(OutcomeType)
