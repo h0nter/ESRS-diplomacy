@@ -15,7 +15,7 @@ def start_game(request):
     #    if request.method == 'POST':
         room = Host.objects.get(pk=request.POST.get("room_id"))
         # room = Host.objects.get(pk=2)
-        room.room_name = 'Init'
+        room.room_name = room.StatusType.Initializing
         room.save()
         print(room.room_status)
         return Response(room.room_status)

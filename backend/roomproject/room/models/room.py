@@ -1,26 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import User
-from .locations import Country
-from .order import Turn, Unit
+from django.utils.translation import gettext_lazy as _
+from .order import Turn
 import datetime
 
 
-class Player(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name='player_user')
-    country = models.ForeignKey(Country,on_delete=models.DO_NOTHING,null=True, related_name='player_country')
-    # conditions for closing the game
-    is_alive = models.BooleanField(default=True)
-    is_finished = models.BooleanField(default=True)
-
-
-
-
 class Room(models.Model):
+    
+    class StatusType(models.TextChoices):
+        Registered = 'Register', _('registered')
+        Initializing = 'Init', _('Initial')
+        Waiting = 'Wait' , _('Waiting')
+        Checking = 'Check', _('Checking')
+        retreating = 'Retreat', _('retreating ')
+        Ending = 'End', _('Ending')
+        Closed = 'Closed', _('Closed')
+
     room_name = models.CharField(max_length=30)
+    room_status = models.CharField(max_length=8,choices=StatusType.choices,default=StatusType.Initializing)
     current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn',blank=True,null=True)
     status = models.CharField(max_length=6, default='Open')
     close_time = models.DateTimeField(null=True)
-    # players = models.ManyToManyField(Player)
     
     def initial_room(self):
         self.room_status = 'Init'
@@ -34,7 +33,3 @@ class Room(models.Model):
     def set_close_time(self):
         self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
         self.save()
-
-# class PlayerRoom(models.Model):
-#     player = models.ForeignKey(Player)
-#     room = models.ForeignKey(Room)

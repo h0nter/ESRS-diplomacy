@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from host.models import Host, PlayerRoom
+from host.models import Host, UserRoom
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-class PlayerRoomSerializer(serializers.ModelSerializer):
+class UserRoomSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PlayerRoom
+        model = UserRoom
         fields = '__all__'

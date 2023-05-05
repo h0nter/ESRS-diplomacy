@@ -1,7 +1,7 @@
 import graphene
 from room.models.locations import Location
 from room.models.order import Turn, Order, Unit
-from .table_type import OrderType
+from graphqlAPI.query.table_type import OrderType
 
 
 # prepare a input arguments

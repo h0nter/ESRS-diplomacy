@@ -1,5 +1,5 @@
 from .steps import Step
-from ..models.broadcast import Room
+from ..models.room import Room
 
 
 class Game(Step):

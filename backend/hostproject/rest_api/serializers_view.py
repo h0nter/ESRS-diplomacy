@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import RegisterSerializer, MyTokenObtainPairSerializer, HostSerializer, PlayerRoomSerializer
-from host.models import Host, PlayerRoom
+from .serializers import RegisterSerializer, MyTokenObtainPairSerializer, HostSerializer, UserRoomSerializer
+from host.models import Host, UserRoom
 
 
 class RegisterView(generics.ListCreateAPIView):
@@ -27,10 +27,10 @@ class HostUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PlayerRoomJoinView(generics.ListCreateAPIView):
-    queryset = PlayerRoom.objects.all()
-    serializer_class = PlayerRoomSerializer
+    queryset = UserRoom.objects.all()
+    serializer_class = UserRoomSerializer
 
 
 class PlayerRoomUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = PlayerRoom.objects.all()
-    serializer_class = PlayerRoomSerializer
+    queryset = UserRoom.objects.all()
+    serializer_class = UserRoomSerializer

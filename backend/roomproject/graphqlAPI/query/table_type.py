@@ -3,9 +3,11 @@ from graphene_django import DjangoObjectType
 from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
 from room.models.order import Order, Turn, Outcome
 from room.game.unitTypes import Unit
+from room.models.player import Player
+from room.models.room import Room
 
 
-# allow access overall parameters
+# set access fields, in different models
 class LocationType(DjangoObjectType):
     class Meta: 
         model = Location
@@ -56,3 +58,13 @@ class UserType(DjangoObjectType):
     class Meta: 
         model = User
         fields = ["username", "id", "is_staff"]
+
+class PlayerType(DjangoObjectType):
+    class Meta: 
+        model = Player
+        fields = "__all__"
+
+class RoomType(DjangoObjectType):
+    class Meta: 
+        model = Room
+        fields = "__all__"
