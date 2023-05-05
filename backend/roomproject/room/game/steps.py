@@ -6,17 +6,17 @@ from django.core.management import call_command
 
 class Step:
     @classmethod
-    def __init__(cls, room_ID:int):
-        cls.room = Room.objects.get(pk=room_ID)
+    def __init__(cls, room_id: int):
+        cls.room = Room.objects.get(pk=room_id)
         cls.status = cls.room.room_status
-        if cls.status == RoomStatus.INITIAL: # Formating the room database
+        if cls.status == RoomStatus.INITIAL:  # Formating the room database
             cls.initialize()
             # sets RoomStatus to OPEN
-    
+
     @classmethod
     def room_factory(cls, room_id):
         return cls(room_id)
-            
+
     @classmethod
     def isFinished(cls) -> bool:
         return True
@@ -32,18 +32,19 @@ class Step:
             order.save()
 
     @classmethod
-    def initialize(cls) -> None: # format the room database
+    def initialize(cls) -> None:  # format the room database
         call_command('loaddata', 'room/fixtures/*json')
-        
-        # set first turn 
-        cls.room.current_turn = Turn.objects.get(year=1901,is_autumn=False)
+
+        # set first turn
+        cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False)
         cls.current_turn = cls.room.current_turn
 
         cls.room.status = RoomStatus.OPEN
         cls.room.save()
 
     @classmethod
-    def opening(cls) -> None: # wait for user to login the game, then call this.
+    # wait for user to login the game, then call this.
+    def opening(cls) -> None:
 
         cls.initializeTurnOrders()
 
@@ -51,16 +52,16 @@ class Step:
 
         cls.room.status = RoomStatus.WAITING
         cls.room.save()
-        
+
     @classmethod
-    def waiting(cls) -> None: # wait for user to make a decision
+    def waiting(cls) -> None:  # wait for user to make a decision
 
         # Check time, if past time go to resolve
         cls.room.status = RoomStatus.RESOLVE
         cls.room.save()
 
     @classmethod
-    def resolve(cls) -> None: # resolve orders
+    def resolve(cls) -> None:  # resolve orders
         LegitamiseOrders(cls.current_turn)
         ResolveOrders(cls.current_turn)
         # if some need to retreat
@@ -68,13 +69,14 @@ class Step:
         if len(retreaters) > 1:
             # increase to sub-turn
             if cls.current_turn.is_autumn:
-                turn = Turn(year=cls.current_turn.year,is_autumn=True,is_retreat_turn=True)
+                turn = Turn(year=cls.current_turn.year,
+                            is_autumn=True, is_retreat_turn=True)
                 turn.save()
             else:
-                turn = Turn(year=cls.current_turn.year,is_retreat_turn=True)
+                turn = Turn(year=cls.current_turn.year, is_retreat_turn=True)
                 turn.save()
             cls.current_turn = turn
-            # set all orders for this turn to hold 
+            # set all orders for this turn to hold
             cls.initializeTurnOrders()
             # send the retreaters to front end??
 
@@ -85,14 +87,14 @@ class Step:
             cls.room.save()
 
     @classmethod
-    def retreat(cls) -> None: # wait for user to make a decision on retreats
+    def retreat(cls) -> None:  # wait for user to make a decision on retreats
 
-        # check time, if past time go to resolve 
+        # check time, if past time go to resolve
         cls.room.status = RoomStatus.RESOLVE
         cls.room.save()
 
     @classmethod
-    def update(cls) -> None: # Update map with new Unit Positions
+    def update(cls) -> None:  # Update map with new Unit Positions
         # set temp retreat turn to different var
         retreat_turn = cls.current_turn
         # get turn from start of 'turn'
@@ -112,8 +114,8 @@ class Step:
 
     @classmethod
     # TO-DO!
-    def resupply(cls) -> None: # Gaining Units After FALL
-        
+    def resupply(cls) -> None:  # Gaining Units After FALL
+
         # wait for user input on new unit location
         # or random?
 
@@ -121,7 +123,7 @@ class Step:
         cls.room.save()
 
     @classmethod
-    def checking(cls) -> None: # need to update the status to room app
+    def checking(cls) -> None:  # need to update the status to room app
         if cls.isFinished():
             cls.room.status = RoomStatus.CLOSED
             cls.room.save()
@@ -131,7 +133,7 @@ class Step:
                 turn = Turn(year=cls.current_turn.year+1)
                 turn.save()
             else:
-                turn = Turn(year=cls.current_turn.year,is_autumn=True)
+                turn = Turn(year=cls.current_turn.year, is_autumn=True)
                 turn.save()
             cls.room.current_turn = cls.current_turn = turn
             cls.initializeTurnOrders()
