@@ -71,8 +71,4 @@
   .action-button {
     cursor: pointer;
   }
-
-  .action-button:hover {
-    stroke-width: 2px;
-  }
 </style>
