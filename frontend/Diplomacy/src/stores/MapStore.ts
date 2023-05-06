@@ -7,12 +7,20 @@ import { RoomOrderInstructionChoices } from "@/gql/graphql";
 export const useMapStore = defineStore("MapStore", () => {
   const gameStore = useGameStore();
 
+  const ERROR_DELAY = 5000;
+  const orderTargetUnitName = ref("#");
+
   const territoryHovered = ref("#");
+  const errorUnit = ref("#");
   const activeUnit = ref("#");
   const activeUnitMenu = ref("#");
   const activeUnitName = ref("");
   const currentTerritory = ref("");
   const targetTerritory = ref("");
+
+  const referenceUnitID = ref<string>("");
+  const referenceUnitCurrentTerritory = ref<string>("");
+  const referenceUnitTargetTerritory = ref<string>("");
 
   const moveOrder = ref<boolean>(false);
   const supportOrder = ref<boolean>(false);
@@ -24,9 +32,11 @@ export const useMapStore = defineStore("MapStore", () => {
     // If the active unit is clicked again, close the menu
     if (unitID === activeUnitName.value) {
       activeUnitName.value = "";
+      orderTargetUnitName.value = "";
     } else {
       // Otherwise, open the menu (only one open at a time)
       activeUnitName.value = unitID;
+      orderTargetUnitName.value = unitID;
     }
     // This here is a stupid hack to force the re-rendering/drawing of the active unit and menu.
     activeUnit.value = "#" + unitID;
@@ -40,20 +50,45 @@ export const useMapStore = defineStore("MapStore", () => {
     activeUnitMenu.value = "#";
   };
 
+  const _resetOrderState = () => {
+    // Reset the state for the next order
+    currentTerritory.value = "";
+    targetTerritory.value = "";
+    referenceUnitID.value = "";
+    referenceUnitCurrentTerritory.value = "";
+    referenceUnitTargetTerritory.value = "";
+    orderTargetUnitName.value = "";
+  };
+
+  const _showUnitError = async (unitID: string) => {
+    errorUnit.value = unitID;
+    await new Promise((r) => setTimeout(r, ERROR_DELAY));
+    errorUnit.value = "#";
+  };
+
   const holdHandler = async () => {
     _closeActionMenu();
     // No need to do anything else
     // Update the active unit's order to Hold
     // Submit the order
     submittingOrder.value = true;
-    await gameStore.updateOrder(RoomOrderInstructionChoices.Hld);
+    const order_ok = await gameStore.updateOrder(
+      RoomOrderInstructionChoices.Hld
+    );
     submittingOrder.value = false;
+
+    if (!order_ok) {
+      _showUnitError(orderTargetUnitName.value);
+    }
+
+    _resetOrderState();
   };
 
   const supportHandler = async (
     territoryID: string,
     territoryName: string,
-    newMove: Boolean
+    newSupport: Boolean,
+    unitID: string = ""
   ) => {
     _closeActionMenu();
     // Unit remains in place and supports another unit
@@ -65,27 +100,35 @@ export const useMapStore = defineStore("MapStore", () => {
     // 4. If the unit belongs to the player, update the target unit order to move to the target territory
     // 5. Draw a support (double) arrow from the supporting unit to the target territory
     // 6. Update the order for the unit to support the target unit to the target territory
-    currentTerritory.value = territoryName;
     // gameStore.holdHandler();
-    if (newMove) {
+    if (newSupport) {
       currentTerritory.value = territoryName;
       gameStore.currentLocationID = parseInt(territoryID);
-      moveOrder.value = true;
+      supportOrder.value = true;
+    } else if (supportOrder.value && unitID !== "") {
+      referenceUnitID.value = unitID;
+      referenceUnitCurrentTerritory.value = territoryName;
+      gameStore.referenceUnitID = parseInt(unitID);
+      gameStore.referenceUnitCurrentLocationID = parseInt(territoryID);
     } else {
-      targetTerritory.value = territoryName;
-      gameStore.targetLocationID = parseInt(territoryID);
-      moveOrder.value = false;
+      referenceUnitTargetTerritory.value = territoryName;
+      gameStore.referenceUnitTargetLocationID = parseInt(territoryID);
+      supportOrder.value = false;
 
       // Submit the order
       submittingOrder.value = true;
-      await gameStore.updateOrder(RoomOrderInstructionChoices.Mve);
+      const order_ok = await gameStore.updateOrder(
+        RoomOrderInstructionChoices.Spt
+      );
       submittingOrder.value = false;
 
       // Arrows are drawn from the orders returned by the backend
 
-      // Reset the state for the next order
-      currentTerritory.value = "";
-      targetTerritory.value = "";
+      if (!order_ok) {
+        _showUnitError(orderTargetUnitName.value);
+      }
+
+      _resetOrderState();
     }
   };
 
@@ -116,18 +159,25 @@ export const useMapStore = defineStore("MapStore", () => {
 
       // Submit the order
       submittingOrder.value = true;
-      await gameStore.updateOrder(RoomOrderInstructionChoices.Mve);
+      const order_ok = await gameStore.updateOrder(
+        RoomOrderInstructionChoices.Mve
+      );
       submittingOrder.value = false;
 
-      // Arrows are drawn from the orders returned by the backend
+      if (!order_ok) {
+        _showUnitError(orderTargetUnitName.value);
+      }
 
-      // Reset the state for the next order
-      currentTerritory.value = "";
-      targetTerritory.value = "";
+      _resetOrderState();
     }
   };
 
-  const convoyHandler = (territoryName: string) => {
+  const convoyHandler = async (
+    territoryID: string,
+    territoryName: string,
+    newConvoy: Boolean,
+    unitID: string = ""
+  ) => {
     _closeActionMenu();
     // Fleet convoys an army
     // Begin convoy action
@@ -136,11 +186,42 @@ export const useMapStore = defineStore("MapStore", () => {
     // 2. Click on the unit to convoy (cancel by clicking on the territory again)
     // 3. Draw the convoy (dotted) line from the fleet to the unit's move arrow
     // 4. Update the order for the unit to convoy the target unit
-    currentTerritory.value = territoryName;
-    // gameStore.holdHandler();
+    if (newConvoy) {
+      currentTerritory.value = territoryName;
+      gameStore.currentLocationID = parseInt(territoryID);
+      convoyOrder.value = true;
+    } else if (convoyOrder.value && unitID !== "") {
+      referenceUnitID.value = unitID;
+      referenceUnitCurrentTerritory.value = territoryName;
+      gameStore.referenceUnitID = parseInt(unitID);
+      gameStore.referenceUnitCurrentLocationID = parseInt(territoryID);
+    } else {
+      referenceUnitTargetTerritory.value = territoryName;
+      gameStore.referenceUnitTargetLocationID = parseInt(territoryID);
+      convoyOrder.value = false;
+
+      // Submit the order
+      submittingOrder.value = true;
+      const order_ok = await gameStore.updateOrder(
+        RoomOrderInstructionChoices.Cvy
+      );
+      submittingOrder.value = false;
+
+      // Arrows are drawn from the orders returned by the backend
+
+      if (!order_ok) {
+        _showUnitError(orderTargetUnitName.value);
+      }
+
+      _resetOrderState();
+    }
   };
 
-  const moveViaConvoyHandler = (territoryName: string) => {
+  const moveViaConvoyHandler = async (
+    territoryID: string,
+    territoryName: string,
+    newConvoyMove: Boolean
+  ) => {
     _closeActionMenu();
     // An Army is convoyed by a fleet
     // Begin convoy action
@@ -149,8 +230,30 @@ export const useMapStore = defineStore("MapStore", () => {
     // 2. Click on the territory to move to (cancel by clicking on the territory again)
     // 3. Draw a move arrow from the unit to the target territory
     // 4. Update the order for the unit to move to the target territory
-    currentTerritory.value = territoryName;
-    // gameStore.holdHandler();
+    if (newConvoyMove) {
+      currentTerritory.value = territoryName;
+      gameStore.currentLocationID = parseInt(territoryID);
+      moveViaConvoyOrder.value = true;
+    } else {
+      targetTerritory.value = territoryName;
+      gameStore.targetLocationID = parseInt(territoryID);
+      moveViaConvoyOrder.value = false;
+
+      // Submit the order
+      submittingOrder.value = true;
+      const order_ok = await gameStore.updateOrder(
+        RoomOrderInstructionChoices.Mve
+      );
+      submittingOrder.value = false;
+
+      // Arrows are drawn from the orders returned by the backend
+
+      if (!order_ok) {
+        _showUnitError(orderTargetUnitName.value);
+      }
+
+      _resetOrderState();
+    }
   };
 
   const territoryHoverHandler = (territoryName: string) => {
@@ -159,11 +262,15 @@ export const useMapStore = defineStore("MapStore", () => {
 
   return {
     territoryHovered,
+    errorUnit,
     activeUnit,
     activeUnitMenu,
     activeUnitName,
     currentTerritory,
     targetTerritory,
+    referenceUnitID,
+    referenceUnitCurrentTerritory,
+    referenceUnitTargetTerritory,
     moveOrder,
     supportOrder,
     convoyOrder,

@@ -34,6 +34,8 @@
         :key="order.id"
         :currentLocation="order.currentLocation"
         :targetLocation="order.targetLocation"
+        :referenceCurrentLocation="order.referenceUnitCurrentLocation"
+        :referenceTargetLocation="order.referenceUnitNewLocation"
         :orderType="order.instruction"
       />
       <!-- Create units, and use-tag for click mechanics -->

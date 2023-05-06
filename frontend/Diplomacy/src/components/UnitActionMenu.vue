@@ -16,7 +16,7 @@
         'translate(' + (positionX - 30) + ', ' + (positionY - 50) + ')'
       "
       class="action-button"
-      @click="mapStore.supportHandler(location_name)"
+      @click="mapStore.supportHandler(location_id, location_name, true)"
     />
     <use
       v-bind="{ 'xlink:href': '#MoveButton' }"
@@ -35,7 +35,7 @@
         'translate(' + (positionX - 28) + ', ' + (positionY + 20) + ')'
       "
       class="action-button"
-      @click="mapStore.convoyHandler(location_name)"
+      @click="mapStore.convoyHandler(location_id, location_name, true)"
     />
     <use
       v-if="type === 'A' && locationIsCoast"
@@ -45,7 +45,7 @@
         'translate(' + (positionX - 30) + ', ' + (positionY + 20) + ')'
       "
       class="action-button"
-      @click="mapStore.moveViaConvoyHandler(location_name)"
+      @click="mapStore.moveViaConvoyHandler(location_id, location_name, true)"
     />
   </g>
 </template>

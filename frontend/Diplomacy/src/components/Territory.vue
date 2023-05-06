@@ -68,7 +68,8 @@
   const mapStore = useMapStore();
   const gameStore = useGameStore();
 
-  const { currentTerritory } = storeToRefs(mapStore);
+  const { currentTerritory, referenceUnitCurrentTerritory } =
+    storeToRefs(mapStore);
 
   const PolygonColourChoices: any = RoomMap_PolygonColourChoices;
 
@@ -92,9 +93,49 @@
     }
   });
 
+  watch(referenceUnitCurrentTerritory, () => {
+    if (
+      (mapStore.supportOrder || mapStore.convoyOrder) &&
+      referenceUnitCurrentTerritory.value === props.name
+    ) {
+      isActive.value = true;
+      fillColour.value = colourTints.value[colourTints.value.length - 3];
+    } else if (currentTerritory.value !== props.name) {
+      isActive.value = false;
+      fillColour.value = colourTints.value[colourTints.value.length - 1];
+    }
+  });
+
   const onClick = () => {
-    if (mapStore.moveOrder) {
+    // If the user is moving a unit, and they didn't click on the same territory
+    if (mapStore.moveOrder && mapStore.currentTerritory !== props.name) {
       mapStore.moveHandler(props.location_id, props.name, false);
+    }
+
+    // If the user is supporting a unit, and they're not clicking on the initial territory
+    if (
+      mapStore.supportOrder &&
+      mapStore.referenceUnitID != "" &&
+      mapStore.currentTerritory !== props.name
+    ) {
+      mapStore.supportHandler(props.location_id, props.name, false);
+    }
+
+    // If the user is convoying a unit, and they're not clicking on the initial territory
+    if (
+      mapStore.convoyOrder &&
+      mapStore.referenceUnitID != "" &&
+      mapStore.currentTerritory !== props.name
+    ) {
+      mapStore.convoyHandler(props.location_id, props.name, false);
+    }
+
+    // If the user is moving a unit via convoy, and they didn't click on the same territory
+    if (
+      mapStore.moveViaConvoyOrder &&
+      mapStore.currentTerritory !== props.name
+    ) {
+      mapStore.moveViaConvoyHandler(props.location_id, props.name, false);
     }
   };
 </script>

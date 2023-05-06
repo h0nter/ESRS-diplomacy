@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { useApolloClient } from "@vue/apollo-composable";
 import { PLAYER_ORDERS, TURNS, UPDATE_ORDER } from "@/gql/documents/map";
@@ -13,6 +13,11 @@ export const useGameStore = defineStore("GameStore", () => {
   const activeUnitID = ref<number>(0);
   const currentLocationID = ref<number>(0);
   const targetLocationID = ref<number>(0);
+
+  const referenceUnitID = ref<number>(0);
+  const referenceUnitCurrentLocationID = ref<number>(0);
+  const referenceUnitTargetLocationID = ref<number>(0);
+
   const turns = ref<TurnType[]>([]);
   const orders = ref<OrderType[]>([]);
 
@@ -53,6 +58,23 @@ export const useGameStore = defineStore("GameStore", () => {
           orderID: currOrderID,
         },
       };
+    } else if (
+      instruction === RoomOrderInstructionChoices.Spt ||
+      instruction === RoomOrderInstructionChoices.Cvy
+    ) {
+      options = {
+        mutation: UPDATE_ORDER,
+        variables: {
+          unitID: activeUnitID.value,
+          instruction: instruction,
+          turnID: parseInt(turns.value[0].id),
+          currentLocation: currentLocationID.value,
+          referenceUnitID: referenceUnitID.value,
+          referenceUnitCurrentLocation: referenceUnitCurrentLocationID.value,
+          referenceUnitTargetLocation: referenceUnitTargetLocationID.value,
+          orderID: currOrderID,
+        },
+      };
     } else {
       options = {
         mutation: UPDATE_ORDER,
@@ -75,11 +97,22 @@ export const useGameStore = defineStore("GameStore", () => {
       const orderIndex: number = orders.value.findIndex(
         (o) => o.id === order.id
       );
-      console.log(order);
       const ordersCopy = [...orders.value];
       ordersCopy[orderIndex] = order;
       orders.value = ordersCopy;
     }
+
+    // Reset the state for next order
+    activeUnitID.value = 0;
+    currentLocationID.value = 0;
+    targetLocationID.value = 0;
+    referenceUnitID.value = 0;
+    referenceUnitCurrentLocationID.value = 0;
+    referenceUnitTargetLocationID.value = 0;
+
+    console.log("order ok? " + order_update_result.data.updateOrder.ok);
+
+    return order_update_result.data.updateOrder.ok;
   };
 
   return {
@@ -87,6 +120,9 @@ export const useGameStore = defineStore("GameStore", () => {
     activeUnitID,
     currentLocationID,
     targetLocationID,
+    referenceUnitID,
+    referenceUnitCurrentLocationID,
+    referenceUnitTargetLocationID,
     setActiveUnitID,
     setCurrentLocationID,
     updateOrder,

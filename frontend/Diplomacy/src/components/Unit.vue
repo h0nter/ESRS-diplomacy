@@ -6,7 +6,7 @@
       :transform="
         'translate(' + (positionX + 8) + ', ' + (positionY - 14) + ')'
       "
-      class="unit"
+      :class="'unit' + (mapStore.errorUnit === unitID ? ' error' : '')"
       @click="onUnitClick"
     />
     <UnitActionMenu
@@ -31,15 +31,42 @@
   import { useGameStore } from "@/stores/GameStore";
 
   const props = defineProps({
-    unit_id: String,
-    type: String,
-    color: String,
-    location_id: String,
-    location_name: String,
-    locationIsSea: Boolean,
-    locationIsCoast: Boolean,
-    positionX: Number,
-    positionY: Number,
+    unit_id: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+    location_id: {
+      type: String,
+      required: true,
+    },
+    location_name: {
+      type: String,
+      required: true,
+    },
+    locationIsSea: {
+      type: String,
+      required: true,
+    },
+    locationIsCoast: {
+      type: String,
+      required: true,
+    },
+    positionX: {
+      type: Number,
+      required: true,
+    },
+    positionY: {
+      type: Number,
+      required: true,
+    },
   });
 
   const mapStore = useMapStore();
@@ -49,11 +76,45 @@
   const unitActionMenuID = unitID + "-menu";
 
   const onUnitClick = () => {
-    // Update the map state to show the action menu
-    mapStore.unitClickHandler(unitID, unitActionMenuID);
-    // Update the game state to the active unit
-    gameStore.setActiveUnitID(parseInt(props.unit_id!));
-    gameStore.setCurrentLocationID(parseInt(props.location_id!));
+    // If no orders are set, show the action menu
+    if (
+      !mapStore.moveOrder &&
+      !mapStore.supportOrder &&
+      !mapStore.convoyOrder &&
+      !mapStore.moveViaConvoyOrder
+    ) {
+      // Update the map state to show the action menu
+      mapStore.unitClickHandler(unitID, unitActionMenuID);
+      // Update the game state to the active unit
+      gameStore.activeUnitID = parseInt(props.unit_id!);
+      gameStore.currentLocationID = parseInt(props.location_id!);
+    }
+
+    // If it's support order, add this unit and territory as reference
+    if (
+      mapStore.supportOrder &&
+      gameStore.activeUnitID !== parseInt(props.unit_id)
+    ) {
+      mapStore.supportHandler(
+        props.location_id,
+        props.location_name,
+        false,
+        props.unit_id
+      );
+    }
+
+    // If it's a convoy order, add this unit and territory as reference
+    if (
+      mapStore.convoyOrder &&
+      gameStore.activeUnitID !== parseInt(props.unit_id)
+    ) {
+      mapStore.supportHandler(
+        props.location_id,
+        props.location_name,
+        false,
+        props.unit_id
+      );
+    }
   };
 </script>
 
@@ -65,6 +126,11 @@
 
   .unit:hover {
     stroke-width: 2px;
+  }
+
+  .error {
+    stroke: hsl(5, 100%, 65%);
+    stroke-width: 3px;
   }
 
   .action-menu {
