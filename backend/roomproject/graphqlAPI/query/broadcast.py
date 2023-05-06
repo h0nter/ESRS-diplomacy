@@ -6,7 +6,7 @@ from room.models.room import Room
 from room.models.broadcast import OrderBroadcast
 
 
-class GameAPI(graphene.ObjectType):
+class Broadcast(graphene.ObjectType):
 
     turn = graphene.List(TurnType, room_id=graphene.Int())
     room = graphene.List(RoomType, player_id=graphene.Int())
@@ -54,6 +54,6 @@ class GameAPI(graphene.ObjectType):
             turn_id = kwargs.get('turn_id')
             room_id = kwargs.get('room_id')
             unit_id = kwargs.get('unit_id')
-            return OrderBroadcast.objects.filter(room__id=room_id, order__turn__id=turn_id, order__unit_id=unit_id)
+            return OrderBroadcast.objects.filter(room__id=room_id, order__turn__id=turn_id, order__target_unit__id=unit_id)
         else:
             return OrderBroadcast.objects.all()
