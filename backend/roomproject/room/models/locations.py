@@ -11,6 +11,7 @@ class Map(models.Model):
         return self.name
     
 class Country(models.Model):
+
     name = models.CharField(max_length=15)
     map = models.ForeignKey(Map,on_delete=models.CASCADE)
     colour = models.CharField(max_length=10)
