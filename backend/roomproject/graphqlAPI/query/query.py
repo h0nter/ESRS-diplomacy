@@ -11,7 +11,7 @@ class Query(Broadcast, graphene.ObjectType):
     unit = graphene.List(UnitType)
     outcome = graphene.List(OutcomeType)
     location = graphene.List(LocationType)
-    maps = graphene.List(MapType)
+    map = graphene.List(MapType)
     country = graphene.List(CountryType)
     map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
@@ -22,16 +22,16 @@ class Query(Broadcast, graphene.ObjectType):
     Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data.
     """
     
-    def resolve_units(root, info, **kwargs):
+    def resolve_unit(root, info, **kwargs):
         return Unit.objects.all()
 
-    def resolve_outcomes(root, info, **kwargs):
+    def resolve_outcome(root, info, **kwargs):
         return Outcome.objects.all()
     
-    def resolve_locations(root, info, **kwargs):
+    def resolve_location(root, info, **kwargs):
         return Location.objects.all()
 
-    def resolve_maps(root, info, **kwargs):
+    def resolve_map(root, info, **kwargs):
         return Map.objects.all()
 
     def resolve_map_polygon(root, info, **kwargs):

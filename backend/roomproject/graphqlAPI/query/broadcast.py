@@ -31,7 +31,7 @@ class Broadcast(graphene.ObjectType):
     def resolve_room(root, info, **kwargs):
         player_id = kwargs.get('player_id')
         if player_id != None:
-            room_id = Player.objects.get(pk=player_id).room.id
+            room_id = Player.objects.get(pk=player_id).room.pk
             return  Room.objects.filter(pk=room_id)
             
         return Room.objects.all()

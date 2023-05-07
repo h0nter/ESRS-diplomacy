@@ -55,8 +55,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
 
     def test_check_two_locations_same_army(self):
         # A <- A
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationB)
-        unitB = Unit.objects.create(owner=self.countryA,location=self.locationC)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationB,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryA,location=self.locationC,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationB,
                                 target_location=self.locationC)
@@ -75,8 +75,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
     
     def test_check_two_locations_different_army(self):
         # B <- A
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationB)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationC)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationB,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationC,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationB,
                                 target_location=self.locationC)
@@ -95,8 +95,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
     
     def test_check_two_locations_both_mve(self):
         # B <-> A
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationB)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationC)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationB,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationC,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationB,
                                 target_location=self.locationC)
@@ -117,8 +117,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
     def test_check_three_locations_both_mve_to_location_unoccupied(self):
         # D -> E
         # F -> E
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
@@ -142,9 +142,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         # D -> E
         # F -> E
         # E Hold
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
-        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
@@ -171,9 +171,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
     def test_check_three_locations_mve_and_spt_to_location_occupied(self):
         # D -> E
         # F spt D -> E
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
-        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
@@ -203,9 +203,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         # D -> E
         # F -> D
         # E -> F
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
-        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
@@ -234,9 +234,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         # D -> E - bounce
         # E -> F - bounce
         # F Hold - maybe
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationE)
-        unitC = Unit.objects.create(owner=self.countryC,location=self.locationF)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationE,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationF,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
@@ -264,9 +264,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         # D -> E - maybe
         # F SPT D -> E - maybe
         # E -> F - void/bounce
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
-        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationF,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationE,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
@@ -297,9 +297,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         # D -> E - bounce
         # E -> F - bounce
         # F Hold - maybe
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationG)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationH,can_float=True)
-        unitC = Unit.objects.create(owner=self.countryC,location=self.locationJ)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationG,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationH,can_float=True,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryC,location=self.locationJ,room=self.room)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationG,
                                 target_location=self.locationJ)
@@ -329,9 +329,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         # D -> F - bounce
         # E SPT D -> F - void
         # F hold - maybe
-        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
-        unitB = Unit.objects.create(owner=self.countryB,location=self.locationE)
-        unitC = Unit.objects.create(owner=self.countryB,location=self.locationF)
+        unitA = Unit.objects.create(owner=self.countryA,location=self.locationD,room=self.room)
+        unitB = Unit.objects.create(owner=self.countryB,location=self.locationE,room=self.room)
+        unitC = Unit.objects.create(owner=self.countryB,location=self.locationF,room=self.room)
 
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitC,current_location=self.locationF)
