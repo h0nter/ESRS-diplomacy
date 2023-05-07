@@ -1,22 +1,17 @@
 import graphene
-from .items.table_type import *
-from .items.order_mutation import UpdateOrder
-from django.contrib.auth.models import User
+from .table_type import *
 from room.models.locations import Map, Country, Location
-from room.models.order import Turn, Order, Outcome
+from room.models.order import Outcome
 from room.game.unitTypes import Unit
-# add Room to query
+from .broadcast import Broadcast
 
 
+class Query(Broadcast, graphene.ObjectType):
 
-
-class Query(graphene.ObjectType):
-    turns = graphene.List(TurnType)
-    units = graphene.List(UnitType)
-    orders = graphene.List(OrderType, order_id=graphene.Int())
-    outcomes = graphene.List(OutcomeType)
-    locations = graphene.List(LocationType)
-    map = graphene.List(MapType)
+    unit = graphene.List(UnitType)
+    outcome = graphene.List(OutcomeType)
+    location = graphene.List(LocationType)
+    maps = graphene.List(MapType)
     country = graphene.List(CountryType)
     map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
@@ -27,22 +22,16 @@ class Query(graphene.ObjectType):
     Each field on an ObjectType in Graphene should have a corresponding resolver method to fetch data.
     """
     
-    def resolve_turns(root, info, **kwargs):
-        return Turn.objects.all()
-    
     def resolve_units(root, info, **kwargs):
         return Unit.objects.all()
 
-    def resolve_orders(root, info, **kwargs):
-        return Order.objects.all()
-    
     def resolve_outcomes(root, info, **kwargs):
         return Outcome.objects.all()
     
     def resolve_locations(root, info, **kwargs):
         return Location.objects.all()
 
-    def resolve_map(root, info, **kwargs):
+    def resolve_maps(root, info, **kwargs):
         return Map.objects.all()
 
     def resolve_map_polygon(root, info, **kwargs):
@@ -53,10 +42,3 @@ class Query(graphene.ObjectType):
 
     def resolve_country(root, info, **kwargs):
         return Country.objects.all()
-    
-
-class Mutation(graphene.ObjectType):
-    
-    update_order = UpdateOrder.Field()
-
-schema = graphene.Schema(query=Query)

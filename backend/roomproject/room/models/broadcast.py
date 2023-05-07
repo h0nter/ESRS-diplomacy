@@ -6,12 +6,9 @@ import datetime
 from django.utils.translation import gettext_lazy as _
 
 
-class Player(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name='player_user')
-    country = models.ForeignKey(Country,on_delete=models.DO_NOTHING,null=True, related_name='player_country')
-    # conditions for closing the game
-    is_alive = models.BooleanField(default=True)
-    is_finished = models.BooleanField(default=True)
+class OrderBroadcast(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="OrderBroadcast_room")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="OrderBroadcast_order")
 
 class RoomStatus(models.TextChoices):
 
@@ -44,17 +41,7 @@ class Room(models.Model):
         self.room_status = 'Wait'
         self.save()
 
-     # set the close_time while save, automatactly add 2 hours
-    def set_close_time(self):
-        self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
-        self.save()
 
-class PlayerRoom(models.Model):
-    # relate the player and the room together
-    player = models.ForeignKey(Player,on_delete=models.CASCADE)
-    room = models.ForeignKey(Room,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.pk)
-    class Meta:
-        verbose_name_plural = 'PlayersRooms'
+class OutcomeBroadcast(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="OutcomeBroadcast_room")
+    outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE, related_name="OutcomeBroadcast_outcome")

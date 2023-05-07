@@ -14,7 +14,7 @@ class Map(models.Model):
 
 
 class Country(models.Model):
-    # will have user ID assoiated with it??
+
     name = models.CharField(max_length=10)
     map = models.ForeignKey(Map, on_delete=models.CASCADE)
     colour = models.CharField(max_length=10)
@@ -35,7 +35,8 @@ class Location(models.Model):
     text_pos_x = models.IntegerField(default=0)
     text_pos_y = models.IntegerField(default=0)
     current_owner = models.ForeignKey(
-        Country, blank=True, null=True, on_delete=models.DO_NOTHING)
+    Country, blank=True, null=True, on_delete=models.DO_NOTHING)
+
     abbreviation = models.CharField(max_length=3)
 
     class Meta:
@@ -50,6 +51,7 @@ class Location(models.Model):
 class Map_Polygon(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     polygon = models.CharField(max_length=500)
+    colour = models.CharField(max_length=10)
 
     class Meta:
         verbose_name_plural = 'Map_Polygons'
@@ -63,10 +65,8 @@ class Map_Polygon(models.Model):
 class Next_to(models.Model):
     # not sure on on delete here
     # only one type of location but many next_tos
-    location = models.ForeignKey(
-        Location, on_delete=models.CASCADE, related_name='location')
-    next_to = models.ForeignKey(
-        Location, on_delete=models.DO_NOTHING, related_name='next_to')
+    location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='Next_to_location')
+    next_to = models.ForeignKey(Location,on_delete=models.DO_NOTHING,related_name='next_to')
 
     def __str__(self):
         return str(self.pk)

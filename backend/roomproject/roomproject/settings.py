@@ -41,10 +41,9 @@ INSTALLED_APPS = [
     'corsheaders',
     # apps
     'room.apps.RoomConfig',
-    # 'graphqlAPI.apps.GraphqlapiConfig',
-    # 'host.apps.HostConfig',
+    'graphqlAPI.apps.GraphqlapiConfig',
     # # 3rd Party apps
-    # 'graphene_django',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +86,7 @@ WSGI_APPLICATION = 'roomproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'room.sqlite3',
     }
 }
 
@@ -143,3 +142,4 @@ CORS_ALLOWED_ORIGINS = [
 "http://localhost:8080",
 "http://127.0.0.1:8080",
 ]
+
