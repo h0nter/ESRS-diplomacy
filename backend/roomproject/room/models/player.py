@@ -11,3 +11,4 @@ class Player(models.Model):
     is_alive = models.BooleanField(default=True)
     # condition for identify is player completed their turn.
     is_finished = models.BooleanField(default=True)
+ 

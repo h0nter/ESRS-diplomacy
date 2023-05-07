@@ -8,7 +8,7 @@ class OutcomeManager(models.Manager):
         if type(turn) is Turn:
             for successful_outcome in self.get_queryset().filter(validation=OutcomeType.PASS)\
                     .filter(order_reference__turn=turn).filter(order_reference__instruction=MoveType.MOVE):
-                successful_outcome.order_reference.target_unit.move(successful_outcome.order_reference.target_location)
+                successful_outcome.order_reference.unit.move(successful_outcome.order_reference.target_location)
         else:
             raise TypeError('Type should be Turn')
         
@@ -29,7 +29,7 @@ class OutcomeManager(models.Manager):
         from room.models.order import MoveType, OutcomeType
         return (models.Q(order_reference__turn=turn) & models.Q(validation=OutcomeType.MAYBE)
                     & models.Q(order_reference__instruction=MoveType.SUPPORT)
-                    & models.Q(order_reference__reference_unit=order.target_unit)
+                    & models.Q(order_reference__reference_unit=order.unit)
                     & models.Q(order_reference__reference_unit_current_location=order.current_location)
                     & models.Q(order_reference__reference_unit_new_location=order.target_location)
                 )
@@ -74,11 +74,11 @@ class OutcomeManager(models.Manager):
             if not include_bounce:
                 outcome_query = (models.Q(order_reference__turn=turn) & 
                                  models.Q(validation=OutcomeType.MAYBE) &
-                                 models.Q(order_reference__target_unit = order.target_unit))
+                                 models.Q(order_reference__unit = order.unit))
             else:
                 outcome_query = (models.Q(order_reference__turn=turn) & 
                                  models.Q(validation=OutcomeType.BOUNCE) &
-                                 models.Q(order_reference__target_unit = order.target_unit))
+                                 models.Q(order_reference__unit = order.unit))
             return self.get_queryset().filter(outcome_query | self._grab_related_spt_orders(order,turn))
         else:
             raise TypeError('turn Type should be Turn and order Type ({}) should be Order'.format(type(order)))
@@ -169,7 +169,7 @@ class OutcomeManager(models.Manager):
         if type(turn) is Turn and type(order) is Order:
             return self._grab_this_turn_maybe_orders(turn) \
                 .filter(order_reference__instruction=MoveType.CONVOY) \
-                .filter(order_reference__reference_unit=order.target_unit)
+                .filter(order_reference__reference_unit=order.unit)
         else:
             raise TypeError('turn Type should be Turn and order Type should be Order')
     
@@ -231,13 +231,13 @@ class OutcomeManager(models.Manager):
                 .values_list('reference_unit',flat=True)
 
             # filter to just convoy units
-            return self.get_queryset().filter(moves).filter(models.Q(order_reference__target_unit__in = ref_units))
+            return self.get_queryset().filter(moves).filter(models.Q(order_reference__unit__in = ref_units))
         else:
             raise TypeError('Type should be Turn')
         
     def grab_all_non_cvy_mve_orders(self,turn):
         from room.models.order import Turn,Outcome
         if type(turn) is Turn:
-            cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('order_reference__target_unit',flat=True)
+            cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('order_reference__unit',flat=True)
             all_mve_orders: models.QuerySet[Outcome] = self.grab_all_mve_orders(turn)
-            return all_mve_orders.exclude(order_reference__target_unit__in = cvy_mves)
+            return all_mve_orders.exclude(order_reference__unit__in = cvy_mves)
