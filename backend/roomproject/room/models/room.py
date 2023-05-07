@@ -31,11 +31,3 @@ class Room(models.Model):
         self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
         self.save()
 
-    def initial_room(self):
-        self.room_status = 'Init'
-        self.save()
-        self.current_turn = Turn.objects.create(year=1901)
-        self.set_close_time()
-        self.room_status = 'Wait'
-        self.save()
-

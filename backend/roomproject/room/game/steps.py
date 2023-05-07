@@ -8,12 +8,13 @@ from room.models.unit import Unit
 from room.models.location_owner import LocationOwner
 from django.core.management import call_command
 import json
+import datetime
 
 class Step:
     @classmethod
     def __init__(cls, room_id: int):
         cls.room = Room.objects.get(pk=room_id)
-        cls.status = cls.room.room_status
+        cls.status = cls.room.status
         cls.map = cls.room.map
         if cls.status == RoomStatus.REGISTERED:  # Formating the room database
             cls.initialize()
@@ -25,7 +26,7 @@ class Step:
 
     @classmethod
     def isFinished(cls) -> bool:
-        return True
+        return cls.current_turn.year > 1950
     
     @classmethod
     def initializeUnits(cls):
@@ -81,10 +82,12 @@ class Step:
 
     @classmethod
     def waiting(cls) -> None:  # wait for user to make a decision
-
-        # Check time, if past time go to resolve
-        cls.room.status = RoomStatus.RESOLVE
-        cls.room.save()
+        if cls.room.close_time is None:
+            cls.room.set_close_time()
+        elif cls.room.close_time <= datetime.datetime.now():
+            # Check time, if past time go to resolve
+            cls.room.status = RoomStatus.RESOLVE
+            cls.room.save()
 
     @classmethod
     def resolve(cls) -> None:  # resolve orders
@@ -114,10 +117,12 @@ class Step:
 
     @classmethod
     def retreat(cls) -> None:  # wait for user to make a decision on retreats
-
-        # check time, if past time go to resolve
-        cls.room.status = RoomStatus.RESOLVE
-        cls.room.save()
+        if cls.room.close_time is None:
+            cls.room.set_close_time()
+        elif cls.room.close_time <= datetime.datetime.now():
+            # check time, if past time go to resolve
+            cls.room.status = RoomStatus.RESOLVE
+            cls.room.save()
 
     @classmethod
     def update(cls) -> None:  # Update map with new Unit Positions
