@@ -21,7 +21,7 @@ class RoomStatus(models.TextChoices):
 
 class Room(models.Model):
     room_name = models.CharField(max_length=30)
-    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn')
+    current_turn = models.ForeignKey(Turn, null=True, on_delete=models.DO_NOTHING, related_name='current_turn')
     status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.INITIAL)
     close_time = models.DateTimeField(null=True)
 

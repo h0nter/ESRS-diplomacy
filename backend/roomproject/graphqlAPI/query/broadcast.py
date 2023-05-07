@@ -1,6 +1,7 @@
 import graphene
 from .table_type import *
-from room.models.order import Turn, Order
+from room.models.order import Order
+from room.models.turn import Turn
 from room.models.player import Player
 from room.models.room import Room
 
