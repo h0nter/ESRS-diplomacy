@@ -48,30 +48,30 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
+  import { RouterLink } from "vue-router";
 
-let games = [
-  {
-    name: "Bestest game ever, come join plz",
-    status: "Waiting To Start",
-    timeleft: "N/A",
-  },
-  {
-    name: "Testing5",
-    status: "Orders Submitted",
-    timeleft: "12m15s",
-  },
-  {
-    name: "Risk v2.0",
-    status: "Awaiting Orders",
-    timeleft: "1h12m5s",
-  },
-  {
-    name: "Is this game any good?",
-    status: "Orders Submitted",
-    timeleft: "2m30s",
-  },
-];
+  let games = [
+    {
+      name: "Bestest game ever, come join plz",
+      status: "Waiting To Start",
+      timeleft: "N/A",
+    },
+    {
+      name: "Testing5",
+      status: "Orders Submitted",
+      timeleft: "12m15s",
+    },
+    {
+      name: "Risk v2.0",
+      status: "Awaiting Orders",
+      timeleft: "1h12m5s",
+    },
+    {
+      name: "Is this game any good?",
+      status: "Orders Submitted",
+      timeleft: "2m30s",
+    },
+  ];
 </script>
 
 <style scoped></style>

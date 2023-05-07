@@ -67,20 +67,20 @@
 <script setup lang="ts"></script>
 
 <style scoped>
-.radioselector input:checked ~ .checkmark {
-  @apply bg-emerald-500;
-}
+  .radioselector input:checked ~ .checkmark {
+    @apply bg-emerald-500;
+  }
 
-.checkmark:after {
-  @apply absolute hidden;
-  content: "";
-}
+  .checkmark:after {
+    @apply absolute hidden;
+    content: "";
+  }
 
-.radioselector input:checked ~ .checkmark:after {
-  @apply block;
-}
+  .radioselector input:checked ~ .checkmark:after {
+    @apply block;
+  }
 
-.radioselector .checkmark:after {
-  @apply w-2 h-2 bg-emerald-200 top-1 left-1 rounded-sm;
-}
+  .radioselector .checkmark:after {
+    @apply w-2 h-2 bg-emerald-200 top-1 left-1 rounded-sm;
+  }
 </style>

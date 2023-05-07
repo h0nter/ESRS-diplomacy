@@ -23,7 +23,7 @@
 </template>
 
 <style scoped>
-.app-container {
-  height: 100%;
-}
+  .app-container {
+    height: 100%;
+  }
 </style>

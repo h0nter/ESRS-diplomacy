@@ -76,62 +76,62 @@
 </template>
 
 <script lang="ts">
-export default {
-  data() {
-    return {
-      isMenuOpen: false,
-    };
-  },
-  methods: {
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
+  export default {
+    data() {
+      return {
+        isMenuOpen: false,
+      };
     },
-    closeMenu() {
-      this.isMenuOpen = false;
+    methods: {
+      toggleMenu() {
+        this.isMenuOpen = !this.isMenuOpen;
+      },
+      closeMenu() {
+        this.isMenuOpen = false;
+      },
     },
-  },
-};
+  };
 </script>
 
 <style scoped>
-.hamburger-top,
-.hamburger-middle,
-.hamburger-bottom {
-  background-color: #fff;
-  display: block;
-  height: 2px;
-  transition: all 0.3s ease-in-out;
-  width: 20px;
-}
+  .hamburger-top,
+  .hamburger-middle,
+  .hamburger-bottom {
+    background-color: #fff;
+    display: block;
+    height: 2px;
+    transition: all 0.3s ease-in-out;
+    width: 20px;
+  }
 
-.open .hamburger-top {
-  transform: rotate(45deg) translate(5px, 5px);
-}
+  .open .hamburger-top {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
 
-.open .hamburger-middle {
-  opacity: 0;
-}
+  .open .hamburger-middle {
+    opacity: 0;
+  }
 
-.open .hamburger-bottom {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
+  .open .hamburger-bottom {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
 
-.navbar {
-  height: calc(100vh - 5rem);
-}
+  .navbar {
+    height: calc(100vh - 5rem);
+  }
 
-.navbar-link {
-  @apply text-white block font-bold whitespace-nowrap py-4 px-6;
-}
+  .navbar-link {
+    @apply text-white block font-bold whitespace-nowrap py-4 px-6;
+  }
 
-.navbar-link:hover {
-  @apply bg-slate-500;
-}
+  .navbar-link:hover {
+    @apply bg-slate-500;
+  }
 
-.arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
 </style>
