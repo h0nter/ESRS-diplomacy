@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .turn import Turn
+from .map import Map
 
 
 class RoomStatus(models.TextChoices):
@@ -23,17 +24,10 @@ class Room(models.Model):
     current_turn = models.ForeignKey(Turn, null=True, on_delete=models.DO_NOTHING, related_name='current_turn')
     status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
     close_time = models.DateTimeField(null=True)
+    map = models.ForeignKey(Map,on_delete=models.DO_NOTHING, related_name='room_map')
 
      # set the close_time while save, automatactly add 2 hours
     def set_close_time(self):
         self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
-        self.save()
-
-    def initial_room(self):
-        self.room_status = 'Init'
-        self.save()
-        self.current_turn = Turn.objects.create(year=1901)
-        self.set_close_time()
-        self.room_status = 'Wait'
         self.save()
 

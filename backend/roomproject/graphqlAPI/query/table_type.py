@@ -1,5 +1,7 @@
 from graphene_django import DjangoObjectType
-from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
+from room.models.location import Location, Map_Polygon, Next_to
+from room.models.country import Country
+from room.models.map import Map
 from room.models.order import Order
 from room.models.turn import Turn
 from room.models.outcome import Outcome 

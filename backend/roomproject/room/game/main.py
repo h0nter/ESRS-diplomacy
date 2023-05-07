@@ -9,6 +9,7 @@ class Game(Step):
     def __init__(cls, room_id: int):
         super().__init__(room_id=room_id)
     
+    
     @classmethod
     def factory(cls, room_name):
         return cls(room_name)
@@ -16,7 +17,6 @@ class Game(Step):
     @classmethod
     # SHOULD THIS BE asynchronous? Only called when triggered from frontend?
     def start(cls) -> None:
-
         # while the game is not closed, execute the following step
         while cls.status != RoomStatus.CLOSED: 
             

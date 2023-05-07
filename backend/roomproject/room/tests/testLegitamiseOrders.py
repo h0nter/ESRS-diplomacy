@@ -2,7 +2,9 @@
 from django.test import TestCase
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.models.unit import Unit
-from room.models.locations import Map,Country,Location,Next_to
+from room.models.location import Location,Next_to
+from room.models.map import Map
+from room.models.country import Country
 from room.models.order import Order, MoveType
 from room.models.outcome import Outcome, OutcomeType
 from room.models.turn import Turn
@@ -13,9 +15,10 @@ class room_app_test_legitamise_orders(TestCase):
     # setup test database to use throughout this class
     @classmethod
     def setUpTestData(cls):
-        cls.turn = Turn.objects.create(year=1994)
-        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
         cls.map = Map.objects.create(name="A test map", max_countries=7)
+        cls.turn = Turn.objects.create(year=1994)
+        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room',map=cls.map)
+        
         cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
         cls.locationA = Location.objects.create(name="location A",map=cls.map)
         cls.locationB = Location.objects.create(name="location B",map=cls.map, is_coast=True,is_sea=True)

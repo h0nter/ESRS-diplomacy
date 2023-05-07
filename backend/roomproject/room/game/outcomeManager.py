@@ -24,7 +24,7 @@ class OutcomeManager(models.Manager):
     def grab_spt_attacking_orders(self,location,turn,room):
         from room.models.order import MoveType
         from room.models.turn import Turn
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.room import Room
         # we grab the support moves that reference this new location
         # this means the referenced unit is Moving to this location
@@ -58,7 +58,7 @@ class OutcomeManager(models.Manager):
     def _grab_mve_attacking_orders(self,location,turn,room,include_bounce=False):
         from room.models.order import MoveType
         from room.models.outcome import OutcomeType
-        from room.models.locations import Location
+        from room.models.location import Location
         # we grab the moves that reference this location
         if isinstance(location,Location):
             if include_bounce:
@@ -74,7 +74,7 @@ class OutcomeManager(models.Manager):
         
     def grab_mve_attacking_orders(self,location,turn,room,include_bounce=False):
         from room.models.turn import Turn
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.room import Room
         if isinstance(turn,Turn) and isinstance(location,Location) and isinstance(room,Room):
             return self.get_queryset().filter(
@@ -104,7 +104,7 @@ class OutcomeManager(models.Manager):
             raise TypeError('turn Type should be Turn and order Type ({}) should be Order'.format(type(order)))
         
     def grab_highest_attacking_mve(self,location,turn,room,include_bounce=False):
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.turn import Turn
         from room.models.room import Room
         if isinstance(turn,Turn) and isinstance(location,Location) and isinstance(room,Room):
@@ -124,7 +124,7 @@ class OutcomeManager(models.Manager):
         
     def _grab_outcome_current_location(self,location,turn,room):
         # we grab the orders that reference this location as current
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.turn import Turn
         from room.models.room import Room
         if isinstance(turn,Turn) and isinstance(location,Location) and isinstance(room,Room):
@@ -135,7 +135,7 @@ class OutcomeManager(models.Manager):
             raise TypeError('location Type should be Location and turn Type should be Turn')
         
     def grab_outcome_current_location(self,location,turn,room):
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.turn import Turn
         from room.models.room import Room
         if isinstance(turn,Turn) and isinstance(location,Location) and isinstance(room,Room):
@@ -153,7 +153,7 @@ class OutcomeManager(models.Manager):
                       models.Q(validation=OutcomeType.MAYBE)))
         
     def grab_defender_current_location(self,location,turn,room):
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.turn import Turn
         from room.models.room import Room
         if isinstance(turn,Turn) and isinstance(location,Location) and isinstance(room,Room):
@@ -173,7 +173,7 @@ class OutcomeManager(models.Manager):
                 models.Q(order_reference__reference_unit_new_location=None))
     
     def grab_all_defence_orders(self,location,turn,room):
-        from room.models.locations import Location
+        from room.models.location import Location
         from room.models.turn import Turn
         from room.models.room import Room
         if isinstance(turn,Turn) and isinstance(location,Location) and isinstance(room,Room):
@@ -223,7 +223,7 @@ class OutcomeManager(models.Manager):
         return False
 
     def is_alternative_convoy_route(self,turn,room,order,location):
-        from room.models.locations import Location, Next_to
+        from backend.roomproject.room.models.location import Location, Next_to
         from room.models.turn import Turn
         from room.models.order import Order
         from room.models.room import Room

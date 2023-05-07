@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from room.models.locations import Location, Next_to
+from room.models.location import Location, Next_to
 from .unit import Unit
 from .room import Room
 from .turn import Turn
