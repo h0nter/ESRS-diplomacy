@@ -45,11 +45,15 @@ class LegitamiseOrders():
                 .filter(target_unit=order.reference_unit)\
                 .filter(current_location=order.reference_unit_current_location)\
                 .filter(target_location=order.reference_unit_new_location)\
-                .filter(instruction=MoveType.MOVE)
-                if(len(reference_unit_order) == 1):
-                    # check move exists - it does so all good
-                    pass
-                else:
+                .filter(instruction=MoveType.MOVE).first()
+                # check move exists - it does so all good
+                # check its not spting an attack against its own
+                new_location = Outcome.objects.grab_outcome_current_location(
+                        order.reference_unit_new_location,turn).first()
+                same_owner = False
+                if type(new_location) is Outcome:
+                    same_owner = new_location.order_reference.target_unit.owner == order.target_unit.owner
+                if type(reference_unit_order) is None or same_owner:
                     # spt void but unit acts like hld
                     current_outcome.validation = OutcomeType.VOID
                     current_outcome.save()
