@@ -40,10 +40,9 @@ INSTALLED_APPS = [
     # Django package, enable CORS service
     'corsheaders',
     # apps
-    'room.apps.RoomConfig',
-    'graphqlAPI.apps.GraphqlapiConfig',
     'host.apps.HostConfig',
     # 3rd Party apps
+    'rest_framework',
     'graphene_django',
 ]
 
@@ -60,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = "hostproject.urls"
 
 TEMPLATES = [
     {
@@ -78,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "hostproject.wsgi.application"
 
 
 # Database
@@ -87,7 +86,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "host.sqlite3",
     }
 }
 
@@ -133,9 +132,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-GRAPHENE = {
-    "SCHEMA": "graphqlAPI.schema.schema"
-}
 
 CORS_ALLOWED_ORIGINS = [
 "http://localhost:5173",
@@ -143,3 +139,13 @@ CORS_ALLOWED_ORIGINS = [
 "http://localhost:8080",
 "http://127.0.0.1:8080",
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}

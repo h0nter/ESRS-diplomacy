@@ -1,38 +1,140 @@
-from .orderManager import OrderManager
+from room.game.legitamiseOrders import LegitamiseOrders
+from room.game.resolveOrders import ResolveOrders
+from room.models.room import RoomStatus, Room
+from room.models.order import Order, MoveType
+from room.models.outcome import Outcome
+from room.models.turn import Turn
+from room.models.unit import Unit
 from django.core.management import call_command
 
 class Step:
+    @classmethod
+    def __init__(cls, room_id: int):
+        cls.room = Room.objects.get(pk=room_id)
+        cls.status = cls.room.room_status
+        if cls.status == RoomStatus.REGISTERED:  # Formating the room database
+            cls.initialize()
+            # sets RoomStatus to OPEN
+
+    # @classmethod
+    # def room_factory(cls, room_id):
+    #     return cls(room_id)
 
     @classmethod
     def isFinished(cls) -> bool:
-         pass
+        return True
     
-    @staticmethod
-    def create_turn(cls):
-        pass
+    @classmethod
+    def initializeUnits(cls):
+        for unit in Unit.objects.all():
+            pass
 
     @classmethod
-    def initialize(cls) -> None: # format the room database
+    def initializeTurnOrders(cls):
+        for unit in Unit.objects.all():
+            order = Order(instruction=MoveType.HOLD,
+                          turn=cls.current_turn,
+                          target_unit=unit,
+                          current_location=unit.location)
+            order.save()
+
+    @classmethod
+    def initialize(cls) -> None:  # format the room database
         call_command('loaddata', 'room/fixtures/*json')
-        cls.room.update(room_status='Open')
-        return 'success'
-        
-    @classmethod
-    def waiting(cls) -> None: # wait for user to make a decision
-        cls.room.update(room_status='Check')
+
+        # set first turn
+        cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False)
+        cls.current_turn = cls.room.current_turn
+
+        cls.initializeUnits()
+        cls.initializeTurnOrders()
+
+        cls.room.status = RoomStatus.WAITING
+        cls.room.save()
 
     @classmethod
-    def checking(cls) -> None: # need to update the status to room app
-        OrderManager.validate_order_table(cls.turn)
-        if cls.isFinished():
-            cls.room.update(room_status='end')
+    def waiting(cls) -> None:  # wait for user to make a decision
+
+        # Check time, if past time go to resolve
+        cls.room.status = RoomStatus.RESOLVE
+        cls.room.save()
+
+    @classmethod
+    def resolve(cls) -> None:  # resolve orders
+        LegitamiseOrders(cls.current_turn,cls.room)
+        ResolveOrders(cls.current_turn,cls.room)
+        # if some need to retreat
+        retreaters = Outcome.objects.get_outcomes_retreat(cls.current_turn,cls.room)
+        if len(retreaters) > 1:
+            # increase to sub-turn
+            if cls.current_turn.is_autumn:
+                turn = Turn(year=cls.current_turn.year,
+                            is_autumn=True, is_retreat_turn=True)
+                turn.save()
+            else:
+                turn = Turn(year=cls.current_turn.year, is_retreat_turn=True)
+                turn.save()
+            cls.current_turn = turn
+            # set all orders for this turn to hold
+            cls.initializeTurnOrders()
+            # send the retreaters to front end??
+
+            cls.room.status = RoomStatus.RETREAT
+            cls.room.save()
         else:
-            cls.room.update(room_status='Wait')
+            cls.room.status = RoomStatus.UPDATE
+            cls.room.save()
 
     @classmethod
-    def ending(cls) -> None: # the status before the room are totaly closed.
-        cls.room.update(room_status='close')
-    
+    def retreat(cls) -> None:  # wait for user to make a decision on retreats
+
+        # check time, if past time go to resolve
+        cls.room.status = RoomStatus.RESOLVE
+        cls.room.save()
+
     @classmethod
-    def closed(cls) -> None: # will only change the status to be 'closed'
-        cls.room.update(room_status='closed')
+    def update(cls) -> None:  # Update map with new Unit Positions
+        # set temp retreat turn to different var
+        retreat_turn = cls.current_turn
+        # get turn from start of 'turn'
+        cls.current_turn = Turn.objects.get(year=retreat_turn.year,
+                                            is_autumn=retreat_turn.is_autumn,
+                                            is_retreat_turn=False)
+        # update unit positions
+        Outcome.objects.perform_move_operations(retreat_turn,cls.room)
+        Outcome.objects.perform_move_operations(cls.current_turn,cls.room)
+
+        if cls.current_turn.is_autumn:
+            cls.room.status = RoomStatus.RESUPPLY
+            cls.room.save()
+        else:
+            cls.room.status = RoomStatus.CHECKING
+            cls.room.save()
+
+    @classmethod
+    # TO-DO!
+    def resupply(cls) -> None:  # Gaining Units After FALL
+
+        # wait for user input on new unit location
+        # or random?
+
+        cls.room.status = RoomStatus.CHECKING
+        cls.room.save()
+
+    @classmethod
+    def checking(cls) -> None:  # need to update the status to room app
+        if cls.isFinished():
+            cls.room.status = RoomStatus.CLOSED
+            cls.room.save()
+        else:
+            # increase turn here!
+            if cls.current_turn.is_autumn:
+                turn = Turn(year=cls.current_turn.year+1)
+                turn.save()
+            else:
+                turn = Turn(year=cls.current_turn.year, is_autumn=True)
+                turn.save()
+            cls.room.current_turn = cls.current_turn = turn
+            cls.initializeTurnOrders()
+            cls.room.status = RoomStatus.WAITING
+            cls.room.save()

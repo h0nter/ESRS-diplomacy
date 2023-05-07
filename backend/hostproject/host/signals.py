@@ -1,13 +1,14 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from host.models.host import Host
-from room.models.broadcast import Room
+from .models import Host
+from .models import UserRoom
 
-@receiver(post_save, sender=Room)
+
+@receiver(post_save, sender=Host)
 def post_save_receiver(sender, instance, created, **kwargs):
-    if not created:
-        # Room object updated
-        pass
-    else:
+    if created:
         # Room be created
-        pass
+        UserRoom.objects.create(user=instance.hoster, room=instance).save()
+    else:
+        if instance.room_status == 'Closed':
+            print(instance.room_name,' room closed')
