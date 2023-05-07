@@ -8,17 +8,22 @@
   import HomeView from "@/views/HomeView.vue";
 </script>
 
-<template>
+<!-- <template>
   <Wrapper>
     <DarkModeSwitch />
     <Container class="app-container">
       <RouterView />
     </Container>
   </Wrapper>
+</template> -->
+
+<template>
+  <Navigation-Bar />
+  <RouterView />
 </template>
 
 <style scoped>
-  .app-container {
-    height: 100%;
-  }
+.app-container {
+  height: 100%;
+}
 </style>

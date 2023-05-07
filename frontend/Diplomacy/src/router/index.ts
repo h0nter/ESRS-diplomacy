@@ -9,9 +9,46 @@ const routes = [
     alias: "/home",
   },
   {
+    path: "/join",
+    name: "join",
+    component: () => import("@/views/JoinView.vue"),
+  },
+  {
+    path: "/create",
+    name: "create",
+    component: () => import("@/views/CreateView.vue"),
+  },
+  {
+    path: "/active",
+    name: "active",
+    component: () => import("@/views/ActiveView.vue"),
+  },
+  {
+    path: "/lobby",
+    name: "lobby",
+    component: () => import("@/views/LobbyView.vue"),
+  },
+  {
     path: "/game",
     name: "game",
     component: () => import("@/views/GameView.vue"),
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/LoginView.vue"),
+  },
+
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("@/views/RegisterView.vue"),
+  },
+
+  {
+    path: "/settings",
+    name: "settings",
+    component: () => import("@/views/SettingsView.vue"),
   },
   // {
   //   path: '*',
