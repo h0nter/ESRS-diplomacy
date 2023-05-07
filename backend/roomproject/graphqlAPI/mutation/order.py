@@ -2,7 +2,6 @@ import graphene
 from room.models.locations import Location
 from room.models.room import Room
 from room.models.order import Turn, Order, Unit, MoveType
-from room.models.broadcast import OrderBroadcast
 from graphqlAPI.query.table_type import OrderType
 
 
@@ -32,12 +31,10 @@ class UpdateOrder(graphene.Mutation):
     # Mutation to update a unit 
     @classmethod
     def mutate(cls, root, info, input, id=None):
-        if id:
-            order = Order.objects.get(pk=id)
-        else:
-            order = OrderBroadcast.objects.get(room__id=input.room_id,
-                                               order__turn__id=input.turn_id,
-                                               order__target_unit__id=input.unit_id).order
+
+        order = Order.objects.get(room__id=input.room_id,
+                                            order__turn__id=input.turn_id,
+                                            order__target_unit__id=input.unit_id)
 
         order.instruction = input.instruction
         order.turn = Turn.objects.get(pk=input.turn_id)

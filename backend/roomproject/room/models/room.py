@@ -1,25 +1,35 @@
 import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .order import Turn
+from .turn import Turn
+
+
+class RoomStatus(models.TextChoices):
+
+    REGISTERED =  'REGISTERD', _('registered')
+    INITIAL = 'INIT', _('Formating the room database')
+
+    # Loops
+    WAITING = 'WAIT', _('Orders Incoming, Players Debating')
+    RESOLVE = 'RESOLVE', _('Resolving Orders')
+    RETREAT = 'RETREAT', _('Orders Incoming, Only Players Retreating') # Goes back to Resolve, this time just MVEs, and Players can only MVE to certain places
+    UPDATE = 'UPDATE', _('Update map with new Unit Positions') 
+    RESUPPLY = 'RESUPP', _('Gaining Units After FALL')
+    CHECKING = 'CHECK', _('Check the closing conditions')
+
+    CLOSED = 'CLOSED', _('Will only change the status when room is closed')
 
 class Room(models.Model):
-    
-    class StatusType(models.TextChoices):
-        Registered = 'Register', _('registered')
-        Initializing = 'Init', _('Initial')
-        Waiting = 'Wait' , _('Waiting')
-        Checking = 'Check', _('Checking')
-        retreating = 'Retreat', _('retreating ')
-        Ending = 'End', _('Ending')
-        Closed = 'Closed', _('Closed')
-
     room_name = models.CharField(max_length=30)
-    room_status = models.CharField(max_length=8, choices=StatusType.choices, default=StatusType.Initializing)
-    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn', blank=True, null=True)
-    status = models.CharField(max_length=6, default='Open')
+    current_turn = models.ForeignKey(Turn, on_delete=models.DO_NOTHING, related_name='current_turn')
+    status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.INITIAL)
     close_time = models.DateTimeField(null=True)
-    
+
+     # set the close_time while save, automatactly add 2 hours
+    def set_close_time(self):
+        self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
+        self.save()
+
     def initial_room(self):
         self.room_status = 'Init'
         self.save()
@@ -28,7 +38,3 @@ class Room(models.Model):
         self.room_status = 'Wait'
         self.save()
 
-     # set the close_time while save, automatactly add 2 hours
-    def set_close_time(self):
-        self.close_time = datetime.datetime.now() + datetime.timedelta(hours=2)
-        self.save()

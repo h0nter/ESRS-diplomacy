@@ -1,17 +1,13 @@
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
-from room.models.broadcast import Room, RoomStatus
-from room.models.order import Order, MoveType, Outcome, Turn
+from room.models.room import RoomStatus
+from room.models.order import Order, MoveType
+from room.models.outcome import Outcome
+from room.models.turn import Turn
+from room.models.unitTypes import Unit
 from django.core.management import call_command
 
 class Step:
-    @classmethod
-    def __init__(cls, room_id: int):
-        cls.room = Room.objects.get(pk=room_id)
-        cls.status = cls.room.room_status
-        if cls.status == RoomStatus.INITIAL:  # Formating the room database
-            cls.initialize()
-            # sets RoomStatus to OPEN
 
     @classmethod
     def room_factory(cls, room_id):
@@ -23,7 +19,6 @@ class Step:
 
     @classmethod
     def initializeTurnOrders(cls):
-        from room.game.unitTypes import Unit
         for unit in Unit.objects.all():
             order = Order(instruction=MoveType.HOLD,
                           turn=cls.current_turn,

@@ -4,9 +4,14 @@ from room.models.broadcast import Room, RoomStatus
 
 
 class Game(Step):
+
     @classmethod
-    def __init__(cls, room_name:str):
-        super().__init__(Room.objects.get(room_name=room_name).pk)
+    def __init__(cls, room_id: int):
+        cls.room = Room.objects.get(pk=room_id)
+        cls.status = cls.room.room_status
+        if cls.status == RoomStatus.INITIAL:  # Formating the room database
+            cls.initialize()
+            # sets RoomStatus to OPEN
     
     @classmethod
     def factory(cls, room_name):
@@ -15,10 +20,6 @@ class Game(Step):
     @classmethod
     # SHOULD THIS BE asynchronous? Only called when triggered from frontend?
     def start(cls) -> None:
-        #Starts when user joins game
-        if cls.status == RoomStatus.OPEN:
-            # sets RoomStatus to WAITING
-            cls.opening()
 
         # while the game is not closed, execute the following step
         while cls.status != RoomStatus.CLOSED: 

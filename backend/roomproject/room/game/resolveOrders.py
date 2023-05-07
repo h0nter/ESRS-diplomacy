@@ -5,7 +5,8 @@ class ResolveOrders():
     # this class resolves all legitamite orders
     # call the class LegitamiseOrders before this!
     def __init__(self,turn) -> None:
-        from room.models.order import Turn, Outcome, OutcomeType, MoveType
+        from room.models.order import Turn
+        from room.models.outcome import Outcome
         if type(turn) is not Turn: raise TypeError('Type should be Turn')
         self.turn = turn
 
@@ -36,7 +37,7 @@ class ResolveOrders():
         # these then need to be validated
         
     def _determine_convoy_disruptions(self):
-        from room.models.order import Outcome, OutcomeType
+        from room.models.outcome import Outcome, OutcomeType
         cut,cutters = True,[]
         while cut:
             cut = False
@@ -76,7 +77,8 @@ class ResolveOrders():
 
     # if MVE attacks SPT unit cut it
     def _cut_support(self,outcome,direct=0):
-        from room.models.order import Outcome, MoveType, OutcomeType
+        from room.models.order import MoveType
+        from room.models.outcome import Outcome, OutcomeType
         if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
         # don't cut for convoy moves if direct
         if direct and len(Outcome.objects.grab_convoy_orders_for_order(self.turn,outcome.order_reference)) > 0: return
@@ -106,7 +108,8 @@ class ResolveOrders():
 
     def _check_disruptions(self,mve_order_result,cvy_order_result):
         # determines convoy disruptions
-        from room.models.order import Outcome, Next_to
+        from room.models.order import Next_to
+        from room.models.outcome import Outcome
         for outcome in Outcome.objects.grab_all_cvy_mve_orders(self.turn,add_marked=True):
             if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
             # grab unit destination order
@@ -169,7 +172,8 @@ class ResolveOrders():
                 convoy.save()
 
     def _bounce(self):
-        from room.models.order import Outcome, OutcomeType, MoveType
+        from room.models.order import MoveType
+        from room.models.outcome import Outcome, OutcomeType
         from room.models.locations import Location
         # marks all units that can't get where they are going as bounced
         # loops to handle bounce chains
@@ -303,7 +307,8 @@ class ResolveOrders():
                             outcome_at_destination_support.save()
 
     def _cut_supports_from_dislodge(self) -> bool:
-        from room.models.order import Outcome, OutcomeType, MoveType
+        from room.models.order import MoveType
+        from room.models.outcome import Outcome, OutcomeType
         cut = False
         # ones that are marked as bounced -> already evaled
         for outcome in Outcome.objects.grab_all_mve_orders(self.turn):
@@ -338,7 +343,8 @@ class ResolveOrders():
         return cut
     
     def _determine_dislodgement(self,outcome):
-        from room.models.order import Outcome, OutcomeType, MoveType
+        from room.models.order import MoveType
+        from room.models.outcome import Outcome, OutcomeType
         if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
         outcome_location = outcome.order_reference.target_location
         loser = Outcome.objects.grab_outcome_current_location(outcome_location,self.turn).first()
@@ -361,7 +367,7 @@ class ResolveOrders():
 
     def _unbounce(self,outcome_location):
         # unbounce any powerful-enough move that can now take the spot being vacated by the dislodger
-        from room.models.order import Outcome, OutcomeType, MoveType
+        from room.models.outcome import Outcome, OutcomeType
         from room.models.locations import Location
         # Detecting if there is only one attack winning at site
         if type(outcome_location) is not Location: raise TypeError('outcome_location should be of type Location')

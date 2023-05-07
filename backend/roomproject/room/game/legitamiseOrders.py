@@ -4,7 +4,7 @@ class LegitamiseOrders():
     # e.g. SPT or CVY references a null unit
     # or CVY not valid etc.
     def __init__(self,turn) -> None:
-        from room.models.order import Turn
+        from room.models.turn import Turn
         if type(turn) is Turn:
             self._legitamise_orders(turn)
         else:
@@ -28,7 +28,8 @@ class LegitamiseOrders():
     # remove orders that are theoritcally impossible
     def _legitamise_orders(self,turn):
         from room.models.locations import Next_to, Location
-        from room.models.order import Order,Outcome, MoveType, OutcomeType
+        from room.models.order import Order, MoveType
+        from room.models.outcome import Outcome, OutcomeType
         all_moves_requiring_convoys = []
         for order in Order.objects.filter(turn=turn):
             if type(order) is not Order: continue

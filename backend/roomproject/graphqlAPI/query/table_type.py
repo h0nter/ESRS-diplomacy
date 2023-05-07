@@ -1,10 +1,12 @@
 from graphene_django import DjangoObjectType
 from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
-from room.models.order import Order, Turn, Outcome
-from room.game.unitTypes import Unit
+from room.models.order import Order
+from room.models.turn import Turn
+from room.models.outcome import Outcome 
+from room.models.unitTypes import Unit
 from room.models.player import Player
 from room.models.room import Room
-from room.models.broadcast import OrderBroadcast, OutcomeBroadcast
+
 
 
 # set access fields, in different models
@@ -74,14 +76,4 @@ class RoomType(DjangoObjectType):
         fields = "__all__"
 
 
-class OutcomeBroadcastType(DjangoObjectType):
-    class Meta: 
-        model = OutcomeBroadcast
-        fields = "__all__"
-
-
-class OrderBroadcastType(DjangoObjectType):
-    class Meta: 
-        model = OrderBroadcast
-        fields = "__all__"
 

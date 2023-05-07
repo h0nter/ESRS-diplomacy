@@ -34,8 +34,6 @@ class Location(models.Model):
     map = models.ForeignKey(Map, on_delete=models.CASCADE)
     text_pos_x = models.IntegerField(default=0)
     text_pos_y = models.IntegerField(default=0)
-    current_owner = models.ForeignKey(
-    Country, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     abbreviation = models.CharField(max_length=3)
 
