@@ -1,10 +1,11 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from host.models import Host, UserRoom
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    # email = serializers.EmailField(required=True)
+
     password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
@@ -28,12 +29,24 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return user
     
+
+class HostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Host
+        fields = '__all__'
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     @classmethod
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
-
         # Add custom claims
         token['username'] = user.username
         return token
+
+
+class UserRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRoom
+        fields = '__all__'

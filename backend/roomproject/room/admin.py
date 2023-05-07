@@ -1,6 +1,7 @@
 from django.contrib import admin
 from room.models.locations import Location, Next_to, Map_Polygon, Map, Country
 from room.models.order import Order, Outcome, Turn
+from room.models.player import Player
 from room.game.unitTypes import Unit
 
 
@@ -14,3 +15,4 @@ admin.site.register(Order)
 admin.site.register(Outcome)
 admin.site.register(Unit)
 admin.site.register(Turn)
+admin.site.register(Player)
