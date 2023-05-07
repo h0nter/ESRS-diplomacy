@@ -3,10 +3,11 @@ class LegitamiseOrders():
     # and filters the non-valid overall orders
     # e.g. SPT or CVY references a null unit
     # or CVY not valid etc.
-    def __init__(self,turn) -> None:
+    def __init__(self,turn,room) -> None:
         from room.models.turn import Turn
-        if type(turn) is Turn:
-            self._legitamise_orders(turn)
+        from room.models.room import Room
+        if isinstance(turn,Turn) and isinstance(room,Room):
+            self._legitamise_orders(turn,room)
         else:
             raise TypeError('Type should be Turn')
 
@@ -26,12 +27,12 @@ class LegitamiseOrders():
         return False
 
     # remove orders that are theoritcally impossible
-    def _legitamise_orders(self,turn):
+    def _legitamise_orders(self,turn,room):
         from room.models.locations import Next_to, Location
         from room.models.order import Order, MoveType
         from room.models.outcome import Outcome, OutcomeType
         all_moves_requiring_convoys = []
-        for order in Order.objects.filter(turn=turn):
+        for order in Order.objects.filter(turn=turn).filter(room=room):
             if type(order) is not Order: continue
             current_outcome = Outcome.objects.create(order_reference=order)
             current_outcome.save() # save init
@@ -42,7 +43,7 @@ class LegitamiseOrders():
                 #auto pass, checks done when submitted to Order originally
                 pass
             elif order.instruction == MoveType.SUPPORT:
-                reference_unit_order = Order.objects.filter(turn=turn)\
+                reference_unit_order = Order.objects.filter(turn=turn).filter(room=room)\
                 .filter(unit=order.reference_unit)\
                 .filter(current_location=order.reference_unit_current_location)\
                 .filter(target_location=order.reference_unit_new_location)\
@@ -50,7 +51,7 @@ class LegitamiseOrders():
                 # check move exists - it does so all good
                 # check its not spting an attack against its own
                 new_location = Outcome.objects.grab_outcome_current_location(
-                        order.reference_unit_new_location,turn).first()
+                        order.reference_unit_new_location,turn,room).first()
                 same_owner = False
                 if type(new_location) is Outcome:
                     same_owner = new_location.order_reference.unit.owner == order.unit.owner
@@ -59,7 +60,7 @@ class LegitamiseOrders():
                     current_outcome.validation = OutcomeType.VOID
                     current_outcome.save()
             elif order.instruction == MoveType.CONVOY:
-                reference_unit_order = Order.objects.filter(turn=turn)\
+                reference_unit_order = Order.objects.filter(turn=turn).filter(room=room)\
                 .filter(unit=order.reference_unit)\
                 .filter(current_location=order.reference_unit_current_location)\
                 .filter(target_location=order.reference_unit_new_location)\
@@ -82,6 +83,7 @@ class LegitamiseOrders():
                 # get convoys relating to move
                 related_convoys = Outcome.objects.filter(validation=OutcomeType.MAYBE)\
                                     .filter(order_reference__turn=turn)\
+                                    .filter(order_reference__room=room)\
                                     .filter(order_reference__instruction=MoveType.CONVOY)\
                                     .filter(order_reference__reference_unit=outcome.order_reference.unit)
                 graph = {}

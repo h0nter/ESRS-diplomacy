@@ -1,10 +1,12 @@
 from django.db import models
 from room.models.locations import Country, Location
+from room.models.room import Room
 
 class Unit(models.Model):
     # Don't want to delete previous location if Unit moves
     
     owner = models.ForeignKey(Country,on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     location = models.ForeignKey(Location,on_delete=models.CASCADE)
     can_float = models.BooleanField(default=False)
 
