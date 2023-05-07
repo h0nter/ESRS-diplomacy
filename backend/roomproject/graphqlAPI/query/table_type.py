@@ -3,7 +3,7 @@ from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
 from room.models.order import Order
 from room.models.turn import Turn
 from room.models.outcome import Outcome 
-from room.models.unitTypes import Unit
+from room.models.unit import Unit
 from room.models.player import Player
 from room.models.room import Room
 

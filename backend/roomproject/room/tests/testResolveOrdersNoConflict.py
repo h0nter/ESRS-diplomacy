@@ -1,7 +1,7 @@
 # Create your tests here.
 from django.test import TestCase
 from room.models.room import Room
-from room.models.unitTypes import Unit
+from room.models.unit import Unit
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
 from room.models.locations import Country, Map, Location, Next_to
@@ -15,7 +15,7 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.turn = Turn.objects.create(year=1994)
-        cls.room = Room(current_turn=cls.turn,room_name='test Room')
+        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
         cls.map = Map.objects.create(name="A test map", max_countries=7)
 
         # Locations
@@ -62,31 +62,31 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
 
         # Orders
         # Hold - no outside forces
-        cls.Order_1 = Order(instruction=MoveType.HOLD,turn=cls.turn,
+        cls.Order_1 = Order(instruction=MoveType.HOLD,turn=cls.turn, room=cls.room,
                                     unit=cls.unitA,current_location=cls.locationA)
         cls.Order_1.save()
         # Move - no outside forces
-        cls.Order_2 = Order(instruction=MoveType.MOVE,turn=cls.turn,
+        cls.Order_2 = Order(instruction=MoveType.MOVE,turn=cls.turn, room=cls.room,
                                     unit=cls.unitB,current_location=cls.locationB,
                                     target_location=cls.locationC)
         cls.Order_2.save()
         # Support - no outside forces
-        cls.Order_3 = Order(instruction=MoveType.MOVE,turn=cls.turn,
+        cls.Order_3 = Order(instruction=MoveType.MOVE,turn=cls.turn, room=cls.room,
                                     unit=cls.unitC,current_location=cls.locationD,
                                     target_location=cls.locationE)
         cls.Order_3.save()
-        cls.Order_4 = Order(instruction=MoveType.SUPPORT,turn=cls.turn,
+        cls.Order_4 = Order(instruction=MoveType.SUPPORT,turn=cls.turn, room=cls.room,
                                     unit=cls.unitD,current_location=cls.locationF,
                                     reference_unit=cls.unitC,
                                     reference_unit_current_location=cls.locationD,
                                     reference_unit_new_location=cls.locationE)
         cls.Order_4.save()
         # Convoy - no outside forces
-        cls.Order_5 = Order(instruction=MoveType.MOVE,turn=cls.turn,
+        cls.Order_5 = Order(instruction=MoveType.MOVE,turn=cls.turn, room=cls.room,
                                     unit=cls.unitE,current_location=cls.locationG,
                                     target_location=cls.locationJ)
         cls.Order_5.save()
-        cls.Order_6 = Order(instruction=MoveType.CONVOY,turn=cls.turn,
+        cls.Order_6 = Order(instruction=MoveType.CONVOY,turn=cls.turn, room=cls.room,
                                     unit=cls.unitF,current_location=cls.locationH,
                                     reference_unit=cls.unitE,
                                     reference_unit_current_location=cls.locationG,

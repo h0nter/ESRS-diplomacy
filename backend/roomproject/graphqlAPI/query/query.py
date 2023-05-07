@@ -2,7 +2,7 @@ import graphene
 from .table_type import *
 from room.models.locations import Map, Country, Location
 from room.models.outcome import Outcome
-from room.models.unitTypes import Unit
+from room.models.unit import Unit
 from .broadcast import Broadcast
 
 

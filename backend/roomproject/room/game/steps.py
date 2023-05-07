@@ -4,7 +4,7 @@ from room.models.room import RoomStatus
 from room.models.order import Order, MoveType
 from room.models.outcome import Outcome
 from room.models.turn import Turn
-from room.models.unitTypes import Unit
+from room.models.unit import Unit
 from django.core.management import call_command
 
 class Step:

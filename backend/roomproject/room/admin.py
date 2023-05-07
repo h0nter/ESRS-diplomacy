@@ -4,7 +4,7 @@ from room.models.order import Order
 from room.models.turn import Turn
 from room.models.outcome import Outcome
 from room.models.player import Player
-from room.models.unitTypes import Unit
+from room.models.unit import Unit
 
 
 # Register your models here.

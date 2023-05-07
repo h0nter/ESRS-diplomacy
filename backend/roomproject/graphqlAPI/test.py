@@ -1,8 +1,11 @@
 from graphene_django.utils.testing import GraphQLTestCase
 import json
 
+from room.models.room import Room
 from room.models.locations import Map, Country, Location, Next_to
-from room.models.order import Unit, Turn, Order
+from room.models.order import Order
+from room.models.turn import Turn
+from room.models.unit import Unit
 
 class MyFancyTestCase(GraphQLTestCase):
 
@@ -18,7 +21,8 @@ class MyFancyTestCase(GraphQLTestCase):
         cls.nextToBA = Next_to.objects.create(location=cls.locationB, next_to=cls.locationA)
         cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)
         cls.turn = Turn.objects.create(year=1994)
-        cls.orderA = Order.objects.create(instruction='MVE', turn=cls.turn, target_unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
+        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
+        cls.orderA = Order.objects.create(instruction='MVE', turn=cls.turn, room=cls.room, unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
 
 
     def test_some_query(self):
