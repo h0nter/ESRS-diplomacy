@@ -1,5 +1,5 @@
 from room.game.steps import Step
-from room.models.room import Room, RoomStatus
+from room.models.room import RoomStatus
 
 
 
@@ -7,11 +7,7 @@ class Game(Step):
 
     @classmethod
     def __init__(cls, room_id: int):
-        cls.room = Room.objects.get(pk=room_id)
-        cls.status = cls.room.room_status
-        if cls.status == RoomStatus.INITIAL:  # Formating the room database
-            cls.initialize()
-            # sets RoomStatus to OPEN
+        super().__init__(room_id=room_id)
     
     @classmethod
     def factory(cls, room_name):

@@ -1,7 +1,6 @@
 aniso8601==9.0.1
 asgiref==3.6.0
 astroid==2.14.2
-certifi @ file:///C:/b/abs_85o_6fm0se/croot/certifi_1671487778835/work/certifi
 colorama==0.4.6
 dill==0.3.6
 Django==4.1.6

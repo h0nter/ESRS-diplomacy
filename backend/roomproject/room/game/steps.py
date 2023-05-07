@@ -1,6 +1,6 @@
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
-from room.models.room import RoomStatus
+from room.models.room import RoomStatus, Room
 from room.models.order import Order, MoveType
 from room.models.outcome import Outcome
 from room.models.turn import Turn
@@ -8,6 +8,13 @@ from room.models.unit import Unit
 from django.core.management import call_command
 
 class Step:
+    @classmethod
+    def __init__(cls, room_id: int):
+        cls.room = Room.objects.get(pk=room_id)
+        cls.status = cls.room.room_status
+        if cls.status == RoomStatus.REGISTERED:  # Formating the room database
+            cls.initialize()
+            # sets RoomStatus to OPEN
 
     # @classmethod
     # def room_factory(cls, room_id):
@@ -16,6 +23,11 @@ class Step:
     @classmethod
     def isFinished(cls) -> bool:
         return True
+    
+    @classmethod
+    def initializeUnits(cls):
+        for unit in Unit.objects.all():
+            pass
 
     @classmethod
     def initializeTurnOrders(cls):
@@ -34,16 +46,8 @@ class Step:
         cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False)
         cls.current_turn = cls.room.current_turn
 
-        cls.room.status = RoomStatus.OPEN
-        cls.room.save()
-
-    @classmethod
-    # wait for user to login the game, then call this.
-    def opening(cls) -> None:
-
+        cls.initializeUnits()
         cls.initializeTurnOrders()
-
-        # does anything need to go in here?
 
         cls.room.status = RoomStatus.WAITING
         cls.room.save()
@@ -57,10 +61,10 @@ class Step:
 
     @classmethod
     def resolve(cls) -> None:  # resolve orders
-        LegitamiseOrders(cls.current_turn)
-        ResolveOrders(cls.current_turn)
+        LegitamiseOrders(cls.current_turn,cls.room)
+        ResolveOrders(cls.current_turn,cls.room)
         # if some need to retreat
-        retreaters = Outcome.objects.get_outcomes_retreat(cls.current_turn)
+        retreaters = Outcome.objects.get_outcomes_retreat(cls.current_turn,cls.room)
         if len(retreaters) > 1:
             # increase to sub-turn
             if cls.current_turn.is_autumn:
@@ -97,8 +101,8 @@ class Step:
                                             is_autumn=retreat_turn.is_autumn,
                                             is_retreat_turn=False)
         # update unit positions
-        Outcome.objects.perform_move_operations(retreat_turn)
-        Outcome.objects.perform_move_operations(cls.current_turn)
+        Outcome.objects.perform_move_operations(retreat_turn,cls.room)
+        Outcome.objects.perform_move_operations(cls.current_turn,cls.room)
 
         if cls.current_turn.is_autumn:
             cls.room.status = RoomStatus.RESUPPLY

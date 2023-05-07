@@ -7,7 +7,6 @@ from .turn import Turn
 class RoomStatus(models.TextChoices):
 
     REGISTERED =  'REGISTERD', _('registered')
-    INITIAL = 'INIT', _('Formating the room database')
 
     # Loops
     WAITING = 'WAIT', _('Orders Incoming, Players Debating')
@@ -22,7 +21,7 @@ class RoomStatus(models.TextChoices):
 class Room(models.Model):
     room_name = models.CharField(max_length=30)
     current_turn = models.ForeignKey(Turn, null=True, on_delete=models.DO_NOTHING, related_name='current_turn')
-    status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.INITIAL)
+    status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
     close_time = models.DateTimeField(null=True)
 
      # set the close_time while save, automatactly add 2 hours
