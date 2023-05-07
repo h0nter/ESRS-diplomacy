@@ -11,7 +11,7 @@ class Host(models.Model):
         Initializing = 'Init', _('Initial')
         Waiting = 'Wait' , _('Waiting')
         Checking = 'Check', _('Checking')
-        retreating = 'Retreat', _('retreating ')
+        retreating = 'Retreat', _('retreating')
         Ending = 'End', _('Ending')
         Closed = 'Closed', _('Closed')
 
