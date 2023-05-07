@@ -1,5 +1,6 @@
 from django.db import models
-from room.models.locations import Country, Location
+from room.models.location import Location
+from room.models.country import Country
 from room.models.room import Room
 
 class Unit(models.Model):

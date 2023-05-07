@@ -5,13 +5,16 @@ from room.models.order import Order, MoveType
 from room.models.outcome import Outcome
 from room.models.turn import Turn
 from room.models.unit import Unit
+from room.models.location_owner import LocationOwner
 from django.core.management import call_command
+import json
 
 class Step:
     @classmethod
     def __init__(cls, room_id: int):
         cls.room = Room.objects.get(pk=room_id)
         cls.status = cls.room.room_status
+        cls.map = cls.room.map
         if cls.status == RoomStatus.REGISTERED:  # Formating the room database
             cls.initialize()
             # sets RoomStatus to OPEN
@@ -26,8 +29,31 @@ class Step:
     
     @classmethod
     def initializeUnits(cls):
-        for unit in Unit.objects.all():
-            pass
+        with open('./data/unit.json','r',encoding='utf-8') as j:
+            units = json.loads(j.read())
+        units = units[cls.map]
+        for unit in units:
+            unitModel = Unit(
+                owner=unit['unit_owner'],
+                room=cls.room,
+                location=unit['unit_location'],
+                can_float=unit['unit_can_float']
+            )
+            unitModel.save()
+
+    @classmethod
+    def initializeLocationOwners(cls):
+        with open('./data/location_owner.json','r',encoding='utf-8') as j:
+            location_owners = json.loads(j.read())
+        location_owners = location_owners[cls.map]
+        for location_owner in location_owners:
+            location_ownerModel = LocationOwner(
+                current_owner=location_owner['country_pk'],
+                room=cls.room,
+                location=location_owner['location_pk'],
+            )
+            location_ownerModel.save()
+            
 
     @classmethod
     def initializeTurnOrders(cls):
@@ -39,14 +65,15 @@ class Step:
             order.save()
 
     @classmethod
-    def initialize(cls) -> None:  # format the room database
+    def initialize(cls) -> None:  
+        # format the room database
         call_command('loaddata', 'room/fixtures/*json')
+        cls.initializeLocationOwners()
+        cls.initializeUnits()
 
         # set first turn
         cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False)
         cls.current_turn = cls.room.current_turn
-
-        cls.initializeUnits()
         cls.initializeTurnOrders()
 
         cls.room.status = RoomStatus.WAITING

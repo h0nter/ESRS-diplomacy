@@ -2,7 +2,9 @@ from graphene_django.utils.testing import GraphQLTestCase
 import json
 
 from room.models.room import Room
-from room.models.locations import Map, Country, Location, Next_to
+from room.models.location import Location, Next_to
+from room.models.map import Map
+from room.models.country import Country
 from room.models.order import Order
 from room.models.turn import Turn
 from room.models.unit import Unit
