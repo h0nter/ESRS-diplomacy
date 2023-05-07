@@ -14,14 +14,14 @@ class MyFancyTestCase(GraphQLTestCase):
     def setUpTestData(cls):
         # Set up data for the whole TestCase
         cls.map = Map.objects.create(name="A test map", max_countries=7)
+        cls.turn = Turn.objects.create(year=1994)
+        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
         cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
         cls.locationA = Location.objects.create(name="location A",map=cls.map)
         cls.locationB = Location.objects.create(name="location B",map=cls.map)
         cls.nextToAB = Next_to.objects.create(location=cls.locationA, next_to=cls.locationB)
         cls.nextToBA = Next_to.objects.create(location=cls.locationB, next_to=cls.locationA)
-        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)
-        cls.turn = Turn.objects.create(year=1994)
-        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
+        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA,room=cls.room)
         cls.orderA = Order.objects.create(instruction='MVE', turn=cls.turn, room=cls.room, unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
 
 
