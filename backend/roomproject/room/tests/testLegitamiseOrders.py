@@ -32,11 +32,11 @@ class room_app_test_legitamise_orders(TestCase):
         cls.nextToDC = Next_to.objects.create(location=cls.locationD, next_to=cls.locationC)
         cls.nextToED = Next_to.objects.create(location=cls.locationE, next_to=cls.locationD)
         cls.nextToDE = Next_to.objects.create(location=cls.locationD, next_to=cls.locationE)
-        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)        
-        cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationC)
-        cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB,can_float=True)
-        cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationD)
-        cls.unitE = Unit.objects.create(owner=cls.countryA,location=cls.locationE)
+        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA,room=cls.room)        
+        cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationC,room=cls.room)
+        cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB,can_float=True,room=cls.room)
+        cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationD,room=cls.room)
+        cls.unitE = Unit.objects.create(owner=cls.countryA,location=cls.locationE,room=cls.room)
 
         
 
@@ -157,7 +157,7 @@ class room_app_test_legitamise_orders(TestCase):
                                     reference_unit_new_location=self.locationB)
         self.assertTrue(cvy2.save())
         # legitamise them
-        LegitamiseOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
         # check outcomes
         mve_outcome = Outcome.objects.filter(order_reference=mve).first()
         self.assertIsInstance(mve_outcome,Outcome)

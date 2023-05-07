@@ -64,8 +64,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         order_2 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitB,current_location=self.locationC)
         self.assertTrue(order_2.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -84,8 +84,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         order_2 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitB,current_location=self.locationC)
         self.assertTrue(order_2.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -105,8 +105,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 unit=unitB,current_location=self.locationC,
                                 target_location=self.locationB)
         self.assertTrue(order_2.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -127,10 +127,10 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 unit=unitB,current_location=self.locationF,
                                 target_location=self.locationE)
         self.assertTrue(order_2.save())
-        LegitamiseOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
         #print(Outcome.objects.grab_mve_attacking_orders(self.locationE,self.turn))
         #print(Outcome.objects.grab_highest_attacking_mve(self.locationE,self.turn))
-        ResolveOrders(self.turn)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -156,8 +156,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitC,current_location=self.locationE)
         self.assertTrue(order_3.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -187,8 +187,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitC,current_location=self.locationE)
         self.assertTrue(order_3.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
@@ -218,8 +218,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 unit=unitC,current_location=self.locationE,
                                 target_location=self.locationF)
         self.assertTrue(order_3.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
@@ -248,8 +248,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitC,current_location=self.locationF)
         self.assertTrue(order_3.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -281,8 +281,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 unit=unitC,current_location=self.locationE,
                                 target_location=self.locationF)
         self.assertTrue(order_3.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
@@ -313,8 +313,8 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn, room=self.room,
                                 unit=unitC,current_location=self.locationJ)
         self.assertTrue(order_3.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -347,9 +347,9 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
                                 reference_unit_new_location=self.locationF)
         self.assertTrue(order_2.save())
         
-        LegitamiseOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
         #print('spt',Outcome.objects.grab_related_spt_orders(order_1,self.turn).first().validation)
-        ResolveOrders(self.turn)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
