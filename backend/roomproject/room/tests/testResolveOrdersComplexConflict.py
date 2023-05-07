@@ -90,10 +90,10 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         # F Tyn C A Tun–Nap - ncvy
         # F Ion–Tyn - maybe
         # F Nap S F Ion–Tyn - maybe 
-        unitA = Unit.objects.create(owner=self.france,location=self.locationTun)
-        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True)
-        unitC = Unit.objects.create(owner=self.italy,location=self.locationIon,can_float=True)
-        unitD = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
+        unitA = Unit.objects.create(owner=self.france,location=self.locationTun,room=self.room)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True,room=self.room)
+        unitC = Unit.objects.create(owner=self.italy,location=self.locationIon,can_float=True,room=self.room)
+        unitD = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True,room=self.room)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationTun,
@@ -116,8 +116,8 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
                                 reference_unit_current_location=self.locationIon,
                                 reference_unit_new_location=self.locationTyn)
         self.assertTrue(order_4.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -137,11 +137,11 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         # F Ion C A Tun–Nap - maybe 
         # F Rom–Tyn - bounce
         # F Nap S F Rom–Tyn - cut
-        unitA = Unit.objects.create(owner=self.france,location=self.locationTun)
-        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True)
-        unitC = Unit.objects.create(owner=self.france,location=self.locationIon,can_float=True)
-        unitD = Unit.objects.create(owner=self.italy,location=self.locationRom,can_float=True)
-        unitE = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
+        unitA = Unit.objects.create(owner=self.france,location=self.locationTun,room=self.room)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True,room=self.room)
+        unitC = Unit.objects.create(owner=self.france,location=self.locationIon,can_float=True,room=self.room)
+        unitD = Unit.objects.create(owner=self.italy,location=self.locationRom,can_float=True,room=self.room)
+        unitE = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True,room=self.room)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationTun,
@@ -170,8 +170,8 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
                                 reference_unit_current_location=self.locationRom,
                                 reference_unit_new_location=self.locationTyn)
         self.assertTrue(order_5.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.BOUNCE)
@@ -195,12 +195,12 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         # A Apu S A Tun–Nap - maybe
         # F Rom–Tyn - bounce
         # F Nap S F Rom–Tyn - cut then dislodge
-        unitA = Unit.objects.create(owner=self.france,location=self.locationTun)
-        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True)
-        unitC = Unit.objects.create(owner=self.france,location=self.locationIon,can_float=True)
-        unitD = Unit.objects.create(owner=self.france,location=self.locationApu)
-        unitE = Unit.objects.create(owner=self.italy,location=self.locationRom,can_float=True)
-        unitF = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
+        unitA = Unit.objects.create(owner=self.france,location=self.locationTun,room=self.room)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyn,can_float=True,room=self.room)
+        unitC = Unit.objects.create(owner=self.france,location=self.locationIon,can_float=True,room=self.room)
+        unitD = Unit.objects.create(owner=self.france,location=self.locationApu,room=self.room)
+        unitE = Unit.objects.create(owner=self.italy,location=self.locationRom,can_float=True,room=self.room)
+        unitF = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True,room=self.room)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationTun,
@@ -236,8 +236,8 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
                                 reference_unit_current_location=self.locationRom,
                                 reference_unit_new_location=self.locationTyn)
         self.assertTrue(order_6.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
@@ -264,12 +264,12 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         # A Ber S A Mun–Si - maybe
         # A War–Sil; - bounce
         # A Pru S A War–Sil - maybe
-        unitA = Unit.objects.create(owner=self.france,location=self.locationBoh)
-        unitB = Unit.objects.create(owner=self.france,location=self.locationTyr)
-        unitC = Unit.objects.create(owner=self.germany,location=self.locationMun)
-        unitD = Unit.objects.create(owner=self.germany,location=self.locationBer)
-        unitE = Unit.objects.create(owner=self.italy,location=self.locationWar)
-        unitF = Unit.objects.create(owner=self.italy,location=self.locationPru)
+        unitA = Unit.objects.create(owner=self.france,location=self.locationBoh,room=self.room)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationTyr,room=self.room)
+        unitC = Unit.objects.create(owner=self.germany,location=self.locationMun,room=self.room)
+        unitD = Unit.objects.create(owner=self.germany,location=self.locationBer,room=self.room)
+        unitE = Unit.objects.create(owner=self.italy,location=self.locationWar,room=self.room)
+        unitF = Unit.objects.create(owner=self.italy,location=self.locationPru,room=self.room)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationBoh,
@@ -303,8 +303,8 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
                                 reference_unit_current_location=self.locationWar,
                                 reference_unit_new_location=self.locationSil)
         self.assertTrue(order_6.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.MAYBE)
@@ -329,10 +329,10 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         # A Rum–Bul ->         A Sil-Mun
         # A Ser S A Rum–Bul -> A Boh S A Sil-Mun
         # A Sev–Rum ->         A War-Sil
-        unitA = Unit.objects.create(owner=self.france,location=self.locationMun)
-        unitB = Unit.objects.create(owner=self.germany,location=self.locationSil)
-        unitC = Unit.objects.create(owner=self.germany,location=self.locationBoh)
-        unitD = Unit.objects.create(owner=self.germany,location=self.locationWar)
+        unitA = Unit.objects.create(owner=self.france,location=self.locationMun,room=self.room)
+        unitB = Unit.objects.create(owner=self.germany,location=self.locationSil,room=self.room)
+        unitC = Unit.objects.create(owner=self.germany,location=self.locationBoh,room=self.room)
+        unitD = Unit.objects.create(owner=self.germany,location=self.locationWar,room=self.room)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationMun,
@@ -354,8 +354,8 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
                                 target_location=self.locationSil)
         self.assertTrue(order_4.save())
 
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.DISLODGED)
@@ -377,12 +377,12 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         # A Ser S A Rum–Bul;    -> A Mun S A Sil-Boh - maybe
         # A Sev–Rum             -> A Pru-Sil - maybe
 
-        unitA = Unit.objects.create(owner=self.france,location=self.locationBoh)
-        unitB = Unit.objects.create(owner=self.france,location=self.locationWar)
-        unitC = Unit.objects.create(owner=self.germany,location=self.locationSil)
-        unitD = Unit.objects.create(owner=self.germany,location=self.locationTyr)
-        unitE = Unit.objects.create(owner=self.germany,location=self.locationMun)
-        unitF = Unit.objects.create(owner=self.germany,location=self.locationPru)
+        unitA = Unit.objects.create(owner=self.france,location=self.locationBoh,room=self.room)
+        unitB = Unit.objects.create(owner=self.france,location=self.locationWar,room=self.room)
+        unitC = Unit.objects.create(owner=self.germany,location=self.locationSil,room=self.room)
+        unitD = Unit.objects.create(owner=self.germany,location=self.locationTyr,room=self.room)
+        unitE = Unit.objects.create(owner=self.germany,location=self.locationMun,room=self.room)
+        unitF = Unit.objects.create(owner=self.germany,location=self.locationPru,room=self.room)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn, room=self.room,
                                 unit=unitA,current_location=self.locationBoh,
@@ -415,8 +415,8 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
                                 unit=unitF,current_location=self.locationPru,
                                 target_location=self.locationSil)
         self.assertTrue(order_6.save())
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         outcome_1 = Outcome.objects.get(order_reference=order_1)
         if type(outcome_1) is Outcome:
             self.assertEqual(outcome_1.validation, OutcomeType.DISLODGED)

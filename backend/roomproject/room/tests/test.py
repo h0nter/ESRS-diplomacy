@@ -29,12 +29,13 @@ class room_app_unitTest1(TestCase):
         cls.nextToEB = Next_to.objects.create(location=cls.locationE, next_to=cls.locationB)
         cls.nextToDE = Next_to.objects.create(location=cls.locationD, next_to=cls.locationE)
         cls.nextToED = Next_to.objects.create(location=cls.locationE, next_to=cls.locationD)
-        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)
-        cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationC)
-        cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB)
-        cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationE,can_float=True)
         cls.turn = Turn.objects.create(year=1994)
         cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
+        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA,room=cls.room)
+        cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationC,room=cls.room)
+        cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB,room=cls.room)
+        cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationE,can_float=True,room=cls.room)
+        
         cls.orderMVEValid = Order.objects.create(instruction='MVE', turn=cls.turn, room=cls.room, unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
         cls.orderMVEInvalid = Order.objects.create(instruction='MVE', turn=cls.turn, room=cls.room, unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationC)
         cls.orderSPTValid = Order.objects.create(instruction='SPT', turn=cls.turn, room=cls.room, unit=cls.unitB, current_location=cls.locationC, reference_unit=cls.unitA,\

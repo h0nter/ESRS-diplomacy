@@ -50,15 +50,15 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
         cls.countryA = Country.objects.create(name="country A", map=cls.map,colour='red')
 
         # Unit
-        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA)
+        cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA,room=cls.room)
 
-        cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationB)
+        cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationB,room=cls.room)
 
-        cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationD)
-        cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationF)
+        cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationD,room=cls.room)
+        cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationF,room=cls.room)
 
-        cls.unitE = Unit.objects.create(owner=cls.countryA,location=cls.locationG)
-        cls.unitF = Unit.objects.create(owner=cls.countryA,location=cls.locationH,can_float=True)
+        cls.unitE = Unit.objects.create(owner=cls.countryA,location=cls.locationG,room=cls.room)
+        cls.unitF = Unit.objects.create(owner=cls.countryA,location=cls.locationH,can_float=True,room=cls.room)
 
         # Orders
         # Hold - no outside forces
@@ -97,15 +97,15 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
     
     def test_check_orders_legit(self):
         self.assertTrue(self.Order_5.save())
-        LegitamiseOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
         for outcome in Outcome.objects.filter(order_reference__turn=self.turn):
             if type(outcome) is Outcome:
                 #print('{0} {1}'.format(outcome.order_reference.unit.location,outcome.validation))
                 self.assertEqual(outcome.validation,OutcomeType.MAYBE) 
 
     def test_resolve(self):
-        LegitamiseOrders(self.turn)
-        ResolveOrders(self.turn)
+        LegitamiseOrders(self.turn,self.room)
+        ResolveOrders(self.turn,self.room)
         for outcome in Outcome.objects.filter(order_reference__turn=self.turn):
             if type(outcome) is Outcome:
                 #print('{0} {1}'.format(outcome.order_reference.unit.location,outcome.validation))
