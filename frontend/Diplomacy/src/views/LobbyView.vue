@@ -39,24 +39,24 @@
 </template>
 
 <script setup>
-let players = [
-  {
-    username: "Artur",
-  },
-  {
-    username: "Henry",
-  },
-  {
-    username: "Joe",
-  },
-  {
-    username: "Josh",
-  },
-  {
-    username: "Niels",
-  },
-  {
-    username: "Tym",
-  },
-];
+  let players = [
+    {
+      username: "Artur",
+    },
+    {
+      username: "Henry",
+    },
+    {
+      username: "Joe",
+    },
+    {
+      username: "Josh",
+    },
+    {
+      username: "Niels",
+    },
+    {
+      username: "Tym",
+    },
+  ];
 </script>

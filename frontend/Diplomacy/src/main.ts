@@ -6,6 +6,8 @@ import { apolloClient } from "@/apollo-config";
 import App from "./App.vue";
 import router from "./router";
 
+import { createPinia } from "pinia";
+
 import "./assets/main.css";
 
 import "./index.css";
@@ -20,6 +22,9 @@ const app = createApp({
 });
 
 app.use(router);
+
+const pinia = createPinia();
+app.use(pinia);
 
 app.component("Navigation-Bar", NavigationBar);
 

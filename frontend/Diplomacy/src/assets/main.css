@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
   width: 100vw;
@@ -21,6 +21,6 @@ a,
   }
 }
 
-body{
+body {
   @apply bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50;
 }

@@ -1,14 +1,15 @@
 <template>
-<RouterLink v-bind:to="url" class="btn btn-blue">
-  {{ text }}
-</RouterLink>
+  <RouterLink v-bind:to="url" class="btn btn-blue">
+    {{ text }}
+  </RouterLink>
 </template>
 
 <script setup>
-const props = defineProps({
-  url: String,
-  text: String
-})
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const props = defineProps({
+    url: String,
+    text: String,
+  });
 </script>
 
 <style scoped>
