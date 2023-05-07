@@ -33,27 +33,27 @@ class Order(models.Model):
     
     # will check moves are valid by themselves when submitted by player
     def _valid_order_given_no_others(self) -> bool:
-        if type(self.current_location) is Location and type(self.target_unit) is Unit and \
-            self.target_unit.location == self.current_location:
+        if type(self.current_location) is Location and type(self.unit) is Unit and \
+            self.unit.location == self.current_location:
             if self.instruction == MoveType.HOLD:
                 if self.target_location is None and \
                     self.reference_unit is None and \
                     self.reference_unit_current_location is None and \
                     self.reference_unit_new_location is None and \
-                    ((self.target_unit.can_float and (self.current_location.is_sea or self.current_location.is_coast)) or \
-                    (not self.target_unit.can_float and (not self.current_location.is_sea or self.current_location.is_coast))):
+                    ((self.unit.can_float and (self.current_location.is_sea or self.current_location.is_coast)) or \
+                    (not self.unit.can_float and (not self.current_location.is_sea or self.current_location.is_coast))):
                     return True
             elif self.instruction == MoveType.MOVE:
                 if type(self.target_location) is Location and \
                     self.reference_unit is None and \
                     self.reference_unit_current_location is None and \
                     self.reference_unit_new_location is None and \
-                    ((self.target_unit.can_float and 
+                    ((self.unit.can_float and 
                         (self.target_location.is_coast or self.target_location.is_sea) and 
                         len(Next_to.objects.filter(location=self.current_location)\
                         .filter(next_to=self.target_location)) == 1
                      ) or \
-                     (not self.target_unit.can_float and \
+                     (not self.unit.can_float and \
                       ((self.current_location.is_coast and self.target_location.is_coast) or \
                        ((not self.target_location.is_sea or (self.target_location.is_sea and self.target_location.is_coast)) and \
                         len(Next_to.objects.filter(location=self.current_location)\
@@ -66,9 +66,9 @@ class Order(models.Model):
                     type(self.reference_unit) is Unit and \
                     type(self.reference_unit_current_location) is Location and \
                     type(self.reference_unit_new_location) is Location and \
-                    ((self.target_unit.can_float and 
+                    ((self.unit.can_float and 
                         (self.reference_unit_new_location.is_coast or self.reference_unit_new_location.is_sea)) or \
-                     (not self.target_unit.can_float and 
+                     (not self.unit.can_float and 
                         (self.reference_unit_new_location.is_coast or not self.reference_unit_new_location.is_sea))
                      ) and \
                     len(Next_to.objects.filter(location=self.current_location)\
@@ -78,7 +78,7 @@ class Order(models.Model):
                     return True
             elif self.instruction == MoveType.CONVOY:
                 if self.target_location is None and \
-                    self.target_unit.can_float and \
+                    self.unit.can_float and \
                     self.current_location.is_sea and \
                     type(self.reference_unit) is Unit and \
                     not self.reference_unit.can_float and \

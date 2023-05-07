@@ -9,9 +9,9 @@ from django.core.management import call_command
 
 class Step:
 
-    @classmethod
-    def room_factory(cls, room_id):
-        return cls(room_id)
+    # @classmethod
+    # def room_factory(cls, room_id):
+    #     return cls(room_id)
 
     @classmethod
     def isFinished(cls) -> bool:

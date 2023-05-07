@@ -1,9 +1,10 @@
 # Create your tests here.
 from django.test import TestCase
-from room.game.unitTypes import Unit
+from room.models.unitTypes import Unit
 # from room.game.unit.abstract_unit import AbstractUnit
 from room.models.locations import Map,Country,Location,Next_to
-from room.models.order import Order,Outcome,Turn
+from room.models.order import Order
+from room.models.turn import Turn
 
 # https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_unitTest1(TestCase):
@@ -33,19 +34,19 @@ class room_app_unitTest1(TestCase):
         cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB)
         cls.unitD = Unit.objects.create(owner=cls.countryA,location=cls.locationE,can_float=True)
         cls.turn = Turn.objects.create(year=1994)
-        cls.orderMVEValid = Order.objects.create(instruction='MVE', turn=cls.turn, target_unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
-        cls.orderMVEInvalid = Order.objects.create(instruction='MVE', turn=cls.turn, target_unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationC)
-        cls.orderSPTValid = Order.objects.create(instruction='SPT', turn=cls.turn, target_unit=cls.unitB, current_location=cls.locationC, reference_unit=cls.unitA,\
+        cls.orderMVEValid = Order.objects.create(instruction='MVE', turn=cls.turn, unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationB)
+        cls.orderMVEInvalid = Order.objects.create(instruction='MVE', turn=cls.turn, unit=cls.unitA, current_location=cls.locationA, target_location=cls.locationC)
+        cls.orderSPTValid = Order.objects.create(instruction='SPT', turn=cls.turn, unit=cls.unitB, current_location=cls.locationC, reference_unit=cls.unitA,\
                                                   reference_unit_current_location=cls.locationA, reference_unit_new_location=cls.locationB)
-        cls.orderSPTInvalid = Order.objects.create(instruction='SPT', turn=cls.turn, target_unit=cls.unitB, current_location=cls.locationC, reference_unit=cls.unitA,\
+        cls.orderSPTInvalid = Order.objects.create(instruction='SPT', turn=cls.turn, unit=cls.unitB, current_location=cls.locationC, reference_unit=cls.unitA,\
                                                   reference_unit_current_location=cls.locationA, reference_unit_new_location=cls.locationD)
-        cls.orderMVECVYValid = Order.objects.create(instruction='MVE', turn=cls.turn, target_unit=cls.unitC, current_location=cls.locationB, target_location=cls.locationD)
-        cls.orderCVYValid = Order.objects.create(instruction='CVY', turn=cls.turn, target_unit=cls.unitD, current_location=cls.locationE, reference_unit=cls.unitC,\
+        cls.orderMVECVYValid = Order.objects.create(instruction='MVE', turn=cls.turn, unit=cls.unitC, current_location=cls.locationB, target_location=cls.locationD)
+        cls.orderCVYValid = Order.objects.create(instruction='CVY', turn=cls.turn, unit=cls.unitD, current_location=cls.locationE, reference_unit=cls.unitC,\
                                                   reference_unit_current_location=cls.locationB, reference_unit_new_location=cls.locationD)    
         
 
     def test_build(self):
-        army = self.orderMVEValid.target_unit
+        army = self.orderMVEValid.unit
         self.assertTrue(type(army) is Unit)
         self.assertTrue(army == self.unitA)
         self.assertFalse(army.can_float)

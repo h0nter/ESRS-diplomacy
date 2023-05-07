@@ -1,9 +1,11 @@
 # Create your tests here.
 from django.test import TestCase
 from room.game.legitamiseOrders import LegitamiseOrders
-from room.game.unitTypes import Unit
+from room.models.unitTypes import Unit
 from room.models.locations import Map,Country,Location,Next_to
-from room.models.order import Order,Outcome,Turn,OutcomeType,MoveType
+from room.models.order import Order, MoveType
+from room.models.outcome import Outcome, OutcomeType
+from room.models.turn import Turn
 
 # https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_test_legitamise_orders(TestCase):
@@ -38,30 +40,30 @@ class room_app_test_legitamise_orders(TestCase):
 
     def test_valid_hold(self):
         hold = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                    target_unit=self.unitA,current_location=self.locationA)
+                                    unit=self.unitA,current_location=self.locationA)
         self.assertTrue(hold.save())
 
 
     def test_invalid_hold(self):
         try:
             hold = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                     target_unit=self.unitA,current_location='locationA')
+                                     unit=self.unitA,current_location='locationA')
         except Exception as e:
             self.assertRaisesMessage(ValueError,str(e))
 
     def test_invalid_hold2(self):
         hold = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                     target_unit=self.unitA,current_location=self.locationE)
+                                     unit=self.unitA,current_location=self.locationE)
         self.assertFalse(hold.save())
 
     def test_invalid_hold3(self):
         hold = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                     target_unit=self.unitE,current_location=self.locationE)
+                                     unit=self.unitE,current_location=self.locationE)
         self.assertFalse(hold.save())
     
     def test_valid_mve(self):
         mve = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                    target_unit=self.unitA,
+                                    unit=self.unitA,
                                     current_location=self.locationA,
                                     target_location=self.locationB)
         self.assertTrue(mve.save())
@@ -69,7 +71,7 @@ class room_app_test_legitamise_orders(TestCase):
     def test_invalid_mve(self):
         try:
             mve = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                    target_unit=self.unitA,
+                                    unit=self.unitA,
                                     current_location=self.locationA,
                                     target_location='locationB')
         except Exception as e:
@@ -77,14 +79,14 @@ class room_app_test_legitamise_orders(TestCase):
 
     def test_invalid_mve2(self):
         mve = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                    target_unit=self.unitD,
+                                    unit=self.unitD,
                                     current_location=self.locationD,
                                     target_location=self.locationE)
         self.assertFalse(mve.save())
 
     def test_valid_spt(self):
         spt = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                    target_unit=self.unitB,
+                                    unit=self.unitB,
                                     current_location=self.locationC,
                                     reference_unit=self.unitA,
                                     reference_unit_current_location=self.locationA,
@@ -93,14 +95,14 @@ class room_app_test_legitamise_orders(TestCase):
 
     def test_invalid_spt(self):
         spt = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                    target_unit=self.unitB,
+                                    unit=self.unitB,
                                     current_location=self.locationC,
                                     reference_unit=self.unitA)
         self.assertFalse(spt.save())
 
     def test_valid_cvy(self):
         cvy = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                    target_unit=self.unitC,
+                                    unit=self.unitC,
                                     current_location=self.locationB,
                                     reference_unit=self.unitA,
                                     reference_unit_current_location=self.locationA,
@@ -109,7 +111,7 @@ class room_app_test_legitamise_orders(TestCase):
 
     def test_invalid_cvy(self):
         cvy = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                    target_unit=self.unitB,
+                                    unit=self.unitB,
                                     current_location=self.locationC,
                                     reference_unit=self.unitA)
         self.assertFalse(cvy.save())
@@ -117,36 +119,36 @@ class room_app_test_legitamise_orders(TestCase):
     def test_legit_orders(self):
         # create orders
         mve = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                    target_unit=self.unitA,
+                                    unit=self.unitA,
                                     current_location=self.locationA,
                                     target_location=self.locationB)
         self.assertTrue(mve.save())
         hold = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                    target_unit=self.unitA,current_location=self.locationA)
+                                    unit=self.unitA,current_location=self.locationA)
         self.assertTrue(hold.save())
         spt = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                    target_unit=self.unitB,
+                                    unit=self.unitB,
                                     current_location=self.locationC,
                                     reference_unit=self.unitA,
                                     reference_unit_current_location=self.locationA,
                                     reference_unit_new_location=self.locationB)
         self.assertTrue(spt.save())
         spt2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                    target_unit=self.unitD,
+                                    unit=self.unitD,
                                     current_location=self.locationD,
                                     reference_unit=self.unitA,
                                     reference_unit_current_location=self.locationA,
                                     reference_unit_new_location=self.locationC)
         self.assertTrue(spt2.save())
         cvy = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                    target_unit=self.unitC,
+                                    unit=self.unitC,
                                     current_location=self.locationB,
                                     reference_unit=self.unitA,
                                     reference_unit_current_location=self.locationA,
                                     reference_unit_new_location=self.locationC)
         self.assertTrue(cvy.save())
         cvy2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                    target_unit=self.unitC,
+                                    unit=self.unitC,
                                     current_location=self.locationB,
                                     reference_unit=self.unitA,
                                     reference_unit_current_location=self.locationA,

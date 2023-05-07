@@ -1,10 +1,13 @@
 # Create your tests here.
 from django.test import TestCase
-from room.game.unitTypes import Unit
+from room.models.room import Room
+from room.models.unitTypes import Unit
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
 from room.models.locations import Country, Map, Location, Next_to
-from room.models.order import MoveType, Order, Outcome, OutcomeType, Turn
+from room.models.order import MoveType, Order
+from room.models.outcome import Outcome, OutcomeType
+from room.models.turn import Turn
 
 # https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_test_resolve_orders_no_conflict(TestCase):
@@ -12,6 +15,7 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.turn = Turn.objects.create(year=1994)
+        cls.room = Room(current_turn=cls.turn,room_name='test Room')
         cls.map = Map.objects.create(name="A test map", max_countries=7)
 
         # Locations
@@ -59,31 +63,31 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
         # Orders
         # Hold - no outside forces
         cls.Order_1 = Order(instruction=MoveType.HOLD,turn=cls.turn,
-                                    target_unit=cls.unitA,current_location=cls.locationA)
+                                    unit=cls.unitA,current_location=cls.locationA)
         cls.Order_1.save()
         # Move - no outside forces
         cls.Order_2 = Order(instruction=MoveType.MOVE,turn=cls.turn,
-                                    target_unit=cls.unitB,current_location=cls.locationB,
+                                    unit=cls.unitB,current_location=cls.locationB,
                                     target_location=cls.locationC)
         cls.Order_2.save()
         # Support - no outside forces
         cls.Order_3 = Order(instruction=MoveType.MOVE,turn=cls.turn,
-                                    target_unit=cls.unitC,current_location=cls.locationD,
+                                    unit=cls.unitC,current_location=cls.locationD,
                                     target_location=cls.locationE)
         cls.Order_3.save()
         cls.Order_4 = Order(instruction=MoveType.SUPPORT,turn=cls.turn,
-                                    target_unit=cls.unitD,current_location=cls.locationF,
+                                    unit=cls.unitD,current_location=cls.locationF,
                                     reference_unit=cls.unitC,
                                     reference_unit_current_location=cls.locationD,
                                     reference_unit_new_location=cls.locationE)
         cls.Order_4.save()
         # Convoy - no outside forces
         cls.Order_5 = Order(instruction=MoveType.MOVE,turn=cls.turn,
-                                    target_unit=cls.unitE,current_location=cls.locationG,
+                                    unit=cls.unitE,current_location=cls.locationG,
                                     target_location=cls.locationJ)
         cls.Order_5.save()
         cls.Order_6 = Order(instruction=MoveType.CONVOY,turn=cls.turn,
-                                    target_unit=cls.unitF,current_location=cls.locationH,
+                                    unit=cls.unitF,current_location=cls.locationH,
                                     reference_unit=cls.unitE,
                                     reference_unit_current_location=cls.locationG,
                                     reference_unit_new_location=cls.locationJ)
@@ -96,7 +100,7 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
         LegitamiseOrders(self.turn)
         for outcome in Outcome.objects.filter(order_reference__turn=self.turn):
             if type(outcome) is Outcome:
-                #print('{0} {1}'.format(outcome.order_reference.target_unit.location,outcome.validation))
+                #print('{0} {1}'.format(outcome.order_reference.unit.location,outcome.validation))
                 self.assertEqual(outcome.validation,OutcomeType.MAYBE) 
 
     def test_resolve(self):
@@ -104,5 +108,5 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
         ResolveOrders(self.turn)
         for outcome in Outcome.objects.filter(order_reference__turn=self.turn):
             if type(outcome) is Outcome:
-                #print('{0} {1}'.format(outcome.order_reference.target_unit.location,outcome.validation))
+                #print('{0} {1}'.format(outcome.order_reference.unit.location,outcome.validation))
                 self.assertEqual(outcome.validation,OutcomeType.MAYBE) 

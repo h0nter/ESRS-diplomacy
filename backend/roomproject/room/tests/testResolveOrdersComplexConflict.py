@@ -1,10 +1,12 @@
 # Create your tests here.
 from django.test import TestCase
-from room.game.unitTypes import Unit
+from room.models.unitTypes import Unit
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
 from room.models.locations import Country, Map, Location, Next_to
-from room.models.order import MoveType, Order, Outcome, OutcomeType, Turn
+from room.models.order import MoveType, Order
+from room.models.outcome import Outcome, OutcomeType
+from room.models.turn import Turn
 
 # https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_test_resolve_orders_complex_conflict(TestCase):
@@ -92,22 +94,22 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         unitD = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationTun,
+                                unit=unitA,current_location=self.locationTun,
                                 target_location=self.locationNap)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationTyn,
+                                unit=unitB,current_location=self.locationTyn,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationTun,
                                 reference_unit_new_location=self.locationNap)
         self.assertTrue(order_2.save())
 
         order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationIon,
+                                unit=unitC,current_location=self.locationIon,
                                 target_location=self.locationTyn)
         self.assertTrue(order_3.save())
         order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitD,current_location=self.locationNap,
+                                unit=unitD,current_location=self.locationNap,
                                 reference_unit=unitC,
                                 reference_unit_current_location=self.locationIon,
                                 reference_unit_new_location=self.locationTyn)
@@ -140,28 +142,28 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         unitE = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationTun,
+                                unit=unitA,current_location=self.locationTun,
                                 target_location=self.locationNap)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationTyn,
+                                unit=unitB,current_location=self.locationTyn,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationTun,
                                 reference_unit_new_location=self.locationNap)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationIon,
+                                unit=unitC,current_location=self.locationIon,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationTun,
                                 reference_unit_new_location=self.locationNap)
         self.assertTrue(order_3.save())
 
         order_4 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitD,current_location=self.locationRom,
+                                unit=unitD,current_location=self.locationRom,
                                 target_location=self.locationTyn)
         self.assertTrue(order_4.save())
         order_5 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitE,current_location=self.locationNap,
+                                unit=unitE,current_location=self.locationNap,
                                 reference_unit=unitD,
                                 reference_unit_current_location=self.locationRom,
                                 reference_unit_new_location=self.locationTyn)
@@ -199,23 +201,23 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         unitF = Unit.objects.create(owner=self.italy,location=self.locationNap,can_float=True)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationTun,
+                                unit=unitA,current_location=self.locationTun,
                                 target_location=self.locationNap)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationTyn,
+                                unit=unitB,current_location=self.locationTyn,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationTun,
                                 reference_unit_new_location=self.locationNap)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationIon,
+                                unit=unitC,current_location=self.locationIon,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationTun,
                                 reference_unit_new_location=self.locationNap)
         self.assertTrue(order_3.save())
         order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitD,current_location=self.locationApu,
+                                unit=unitD,current_location=self.locationApu,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationTun,
                                 reference_unit_new_location=self.locationNap)
@@ -223,11 +225,11 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
     
 
         order_5 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitE,current_location=self.locationRom,
+                                unit=unitE,current_location=self.locationRom,
                                 target_location=self.locationTyn)
         self.assertTrue(order_5.save())
         order_6 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitF,current_location=self.locationNap,
+                                unit=unitF,current_location=self.locationNap,
                                 reference_unit=unitE,
                                 reference_unit_current_location=self.locationRom,
                                 reference_unit_new_location=self.locationTyn)
@@ -268,33 +270,33 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         unitF = Unit.objects.create(owner=self.italy,location=self.locationPru)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationBoh,
+                                unit=unitA,current_location=self.locationBoh,
                                 target_location=self.locationMun)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationTyr,
+                                unit=unitB,current_location=self.locationTyr,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationBoh,
                                 reference_unit_new_location=self.locationMun)
         self.assertTrue(order_2.save())
 
         order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationMun,
+                                unit=unitC,current_location=self.locationMun,
                                 target_location=self.locationSil)
         self.assertTrue(order_3.save())
         order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitD,current_location=self.locationBer,
+                                unit=unitD,current_location=self.locationBer,
                                 reference_unit=unitC,
                                 reference_unit_current_location=self.locationMun,
                                 reference_unit_new_location=self.locationSil)
         self.assertTrue(order_4.save())
 
         order_5 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitE,current_location=self.locationWar,
+                                unit=unitE,current_location=self.locationWar,
                                 target_location=self.locationSil)
         self.assertTrue(order_5.save())
         order_6 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitF,current_location=self.locationPru,
+                                unit=unitF,current_location=self.locationPru,
                                 reference_unit=unitE,
                                 reference_unit_current_location=self.locationWar,
                                 reference_unit_new_location=self.locationSil)
@@ -331,22 +333,22 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         unitD = Unit.objects.create(owner=self.germany,location=self.locationWar)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationMun,
+                                unit=unitA,current_location=self.locationMun,
                                 target_location=self.locationSil)
         self.assertTrue(order_1.save())
 
         order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationSil,
+                                unit=unitB,current_location=self.locationSil,
                                 target_location=self.locationMun)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationBoh,
+                                unit=unitC,current_location=self.locationBoh,
                                 reference_unit=unitB,
                                 reference_unit_current_location=self.locationSil,
                                 reference_unit_new_location=self.locationMun)
         self.assertTrue(order_3.save())
         order_4 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitD,current_location=self.locationWar,
+                                unit=unitD,current_location=self.locationWar,
                                 target_location=self.locationSil)
         self.assertTrue(order_4.save())
 
@@ -381,34 +383,34 @@ class room_app_test_resolve_orders_complex_conflict(TestCase):
         unitF = Unit.objects.create(owner=self.germany,location=self.locationPru)
 
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationBoh,
+                                unit=unitA,current_location=self.locationBoh,
                                 target_location=self.locationSil)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationWar,
+                                unit=unitB,current_location=self.locationWar,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationBoh,
                                 reference_unit_new_location=self.locationSil)
         self.assertTrue(order_2.save())
 
         order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationSil,
+                                unit=unitC,current_location=self.locationSil,
                                 target_location=self.locationBoh)
         self.assertTrue(order_3.save())
         order_4 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitD,current_location=self.locationTyr,
+                                unit=unitD,current_location=self.locationTyr,
                                 reference_unit=unitC,
                                 reference_unit_current_location=self.locationSil,
                                 reference_unit_new_location=self.locationBoh)
         self.assertTrue(order_4.save())
         order_5 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitE,current_location=self.locationMun,
+                                unit=unitE,current_location=self.locationMun,
                                 reference_unit=unitC,
                                 reference_unit_current_location=self.locationSil,
                                 reference_unit_new_location=self.locationBoh)
         self.assertTrue(order_5.save())
         order_6 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitF,current_location=self.locationPru,
+                                unit=unitF,current_location=self.locationPru,
                                 target_location=self.locationSil)
         self.assertTrue(order_6.save())
         LegitamiseOrders(self.turn)

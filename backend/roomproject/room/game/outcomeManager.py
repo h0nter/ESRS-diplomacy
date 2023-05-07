@@ -223,8 +223,7 @@ class OutcomeManager(models.Manager):
             # convoy success regardless of location, means alternative route
             return self._convoy_dfs(order.current_location.pk,order.target_location.pk,graph)
         else:
-            raise TypeError('location Type:{} should be Location and turn Type:{} should be Turn' +
-                             ' and order Type{} should be Order'.format(type(location),type(turn),type(order)))
+            raise TypeError('location Type:{} should be Location and turn Type:{} should be Turn and order Type{} should be Order'.format(type(location),type(turn),type(order)))
         
     def grab_all_cvy_mve_orders(self,turn,add_marked=False):
         from room.models.turn import Turn
@@ -255,7 +254,7 @@ class OutcomeManager(models.Manager):
             cvy_mves = self.grab_all_cvy_mve_orders(turn).values_list('order_reference__unit',flat=True)
             all_mve_orders: models.QuerySet[Outcome] = self.grab_all_mve_orders(turn)
 
-            return all_mve_orders.exclude(order_reference__target_unit__in = cvy_mves)
+            return all_mve_orders.exclude(order_reference__unit__in = cvy_mves)
         else:
             raise TypeError('Type should be Turn')
         

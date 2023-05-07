@@ -43,7 +43,7 @@ class LegitamiseOrders():
                 pass
             elif order.instruction == MoveType.SUPPORT:
                 reference_unit_order = Order.objects.filter(turn=turn)\
-                .filter(target_unit=order.reference_unit)\
+                .filter(unit=order.reference_unit)\
                 .filter(current_location=order.reference_unit_current_location)\
                 .filter(target_location=order.reference_unit_new_location)\
                 .filter(instruction=MoveType.MOVE).first()
@@ -53,14 +53,14 @@ class LegitamiseOrders():
                         order.reference_unit_new_location,turn).first()
                 same_owner = False
                 if type(new_location) is Outcome:
-                    same_owner = new_location.order_reference.target_unit.owner == order.target_unit.owner
+                    same_owner = new_location.order_reference.unit.owner == order.unit.owner
                 if type(reference_unit_order) is None or same_owner:
                     # spt void but unit acts like hld
                     current_outcome.validation = OutcomeType.VOID
                     current_outcome.save()
             elif order.instruction == MoveType.CONVOY:
                 reference_unit_order = Order.objects.filter(turn=turn)\
-                .filter(target_unit=order.reference_unit)\
+                .filter(unit=order.reference_unit)\
                 .filter(current_location=order.reference_unit_current_location)\
                 .filter(target_location=order.reference_unit_new_location)\
                 .filter(instruction=MoveType.MOVE)
@@ -83,7 +83,7 @@ class LegitamiseOrders():
                 related_convoys = Outcome.objects.filter(validation=OutcomeType.MAYBE)\
                                     .filter(order_reference__turn=turn)\
                                     .filter(order_reference__instruction=MoveType.CONVOY)\
-                                    .filter(order_reference__reference_unit=outcome.order_reference.target_unit)
+                                    .filter(order_reference__reference_unit=outcome.order_reference.unit)
                 graph = {}
                 # add current and last locations
                 graph[outcome.order_reference.current_location.pk] = \

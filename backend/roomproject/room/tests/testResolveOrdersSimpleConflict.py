@@ -1,10 +1,12 @@
 # Create your tests here.
 from django.test import TestCase
-from room.game.unitTypes import Unit
+from room.models.unitTypes import Unit
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
 from room.models.locations import Country, Map, Location, Next_to
-from room.models.order import MoveType, Order, Outcome, OutcomeType, Turn
+from room.models.order import MoveType, Order
+from room.models.outcome import Outcome, OutcomeType
+from room.models.turn import Turn
 
 # https://docs.djangoproject.com/en/4.1/topics/testing/tools/#django.test.TestCase 
 class room_app_test_resolve_orders_simple_conflict(TestCase):
@@ -54,11 +56,11 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitA = Unit.objects.create(owner=self.countryA,location=self.locationB)
         unitB = Unit.objects.create(owner=self.countryA,location=self.locationC)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationB,
+                                unit=unitA,current_location=self.locationB,
                                 target_location=self.locationC)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationC)
+                                unit=unitB,current_location=self.locationC)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
         ResolveOrders(self.turn)
@@ -74,11 +76,11 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitA = Unit.objects.create(owner=self.countryA,location=self.locationB)
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationC)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationB,
+                                unit=unitA,current_location=self.locationB,
                                 target_location=self.locationC)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationC)
+                                unit=unitB,current_location=self.locationC)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
         ResolveOrders(self.turn)
@@ -94,11 +96,11 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitA = Unit.objects.create(owner=self.countryA,location=self.locationB)
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationC)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationB,
+                                unit=unitA,current_location=self.locationB,
                                 target_location=self.locationC)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationC,
+                                unit=unitB,current_location=self.locationC,
                                 target_location=self.locationB)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
@@ -116,11 +118,11 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitA = Unit.objects.create(owner=self.countryA,location=self.locationD)
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationF,
+                                unit=unitB,current_location=self.locationF,
                                 target_location=self.locationE)
         self.assertTrue(order_2.save())
         LegitamiseOrders(self.turn)
@@ -142,15 +144,15 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
         unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationF,
+                                unit=unitB,current_location=self.locationF,
                                 target_location=self.locationE)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationE)
+                                unit=unitC,current_location=self.locationE)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
         ResolveOrders(self.turn)
@@ -171,17 +173,17 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
         unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationF,
+                                unit=unitB,current_location=self.locationF,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationD,
                                 reference_unit_new_location=self.locationE)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationE)
+                                unit=unitC,current_location=self.locationE)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
         ResolveOrders(self.turn)
@@ -203,15 +205,15 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
         unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationF,
+                                unit=unitB,current_location=self.locationF,
                                 target_location=self.locationD)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationE,
+                                unit=unitC,current_location=self.locationE,
                                 target_location=self.locationF)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
@@ -234,15 +236,15 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationE)
         unitC = Unit.objects.create(owner=self.countryC,location=self.locationF)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationE,
+                                unit=unitB,current_location=self.locationE,
                                 target_location=self.locationF)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationF)
+                                unit=unitC,current_location=self.locationF)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
         ResolveOrders(self.turn)
@@ -264,17 +266,17 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationF)
         unitC = Unit.objects.create(owner=self.countryC,location=self.locationE)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationE)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationF,
+                                unit=unitB,current_location=self.locationF,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationD,
                                 reference_unit_new_location=self.locationE)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationE,
+                                unit=unitC,current_location=self.locationE,
                                 target_location=self.locationF)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
@@ -297,17 +299,17 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitB = Unit.objects.create(owner=self.countryB,location=self.locationH,can_float=True)
         unitC = Unit.objects.create(owner=self.countryC,location=self.locationJ)
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationG,
+                                unit=unitA,current_location=self.locationG,
                                 target_location=self.locationJ)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.CONVOY,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationH,
+                                unit=unitB,current_location=self.locationH,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationG,
                                 reference_unit_new_location=self.locationJ)
         self.assertTrue(order_2.save())
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationJ)
+                                unit=unitC,current_location=self.locationJ)
         self.assertTrue(order_3.save())
         LegitamiseOrders(self.turn)
         ResolveOrders(self.turn)
@@ -330,14 +332,14 @@ class room_app_test_resolve_orders_simple_conflict(TestCase):
         unitC = Unit.objects.create(owner=self.countryB,location=self.locationF)
 
         order_3 = Order(instruction=MoveType.HOLD,turn=self.turn,
-                                target_unit=unitC,current_location=self.locationF)
+                                unit=unitC,current_location=self.locationF)
         self.assertTrue(order_3.save())
         order_1 = Order(instruction=MoveType.MOVE,turn=self.turn,
-                                target_unit=unitA,current_location=self.locationD,
+                                unit=unitA,current_location=self.locationD,
                                 target_location=self.locationF)
         self.assertTrue(order_1.save())
         order_2 = Order(instruction=MoveType.SUPPORT,turn=self.turn,
-                                target_unit=unitB,current_location=self.locationE,
+                                unit=unitB,current_location=self.locationE,
                                 reference_unit=unitA,
                                 reference_unit_current_location=self.locationD,
                                 reference_unit_new_location=self.locationF)

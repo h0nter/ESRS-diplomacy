@@ -88,8 +88,8 @@ class ResolveOrders():
                 support_to_cut.validation != OutcomeType.VOID and \
                 support_to_cut.order_reference.instruction == MoveType.SUPPORT:
             if (# EXCEPTION A: CANNOT CUT SUPPORT YOU YOURSELF ARE GIVING
-                    support_to_cut.order_reference.target_unit.owner != \
-                    outcome.order_reference.target_unit.owner) and \
+                    support_to_cut.order_reference.unit.owner != \
+                    outcome.order_reference.unit.owner) and \
                     (# EXCEPTION B: CANNOT CUT SUPPORT FOR A MOVE AGAINST YOUR LOCATION
                     support_to_cut.order_reference.reference_unit_new_location != \
                     outcome.order_reference.current_location
@@ -204,8 +204,8 @@ class ResolveOrders():
                         outcome_at_destination.order_reference.instruction == MoveType.MOVE:
                         # if looking at each other boing
                         # if same owner boing
-                        same_owner = mve_outcome.order_reference.target_unit.owner == \
-                            outcome_at_destination.order_reference.target_unit.owner
+                        same_owner = mve_outcome.order_reference.unit.owner == \
+                            outcome_at_destination.order_reference.unit.owner
                         attacking_mve_outcome = len(Outcome.objects.grab_attacking_strength_of_order(mve_outcome.order_reference,self.turn))
                         defending_mve_outcome = len(Outcome.objects.grab_all_defence_orders(mve_outcome.order_reference.current_location,self.turn))
                         attacking_outcome_at_destination = len(Outcome.objects.grab_attacking_strength_of_order(outcome_at_destination.order_reference,self.turn))
@@ -254,7 +254,7 @@ class ResolveOrders():
                     bounced = 1
                 # other_attacks on same location see if current order bounces with them
                 other_attacks = Outcome.objects.grab_mve_attacking_orders(outcome.order_reference.target_location,self.turn)\
-                    .exclude(order_reference__target_unit=outcome.order_reference.target_unit)
+                    .exclude(order_reference__unit=outcome.order_reference.unit)
                 for other_attack in other_attacks:
                     if type(other_attack) is not Outcome: raise TypeError('other_attack should be Outcome')
                     attacking_other_attack = len(Outcome.objects.grab_attacking_strength_of_order(other_attack.order_reference,self.turn))
@@ -295,8 +295,8 @@ class ResolveOrders():
                 # if there is no order at location skip
                 if type(order_at_location) is not Outcome: continue
                 # if order has same owner 
-                if order_at_location.order_reference.target_unit.owner ==\
-                    outcome.order_reference.target_unit.owner:
+                if order_at_location.order_reference.unit.owner ==\
+                    outcome.order_reference.unit.owner:
                     # bounce attack
                     outcome.validation = OutcomeType.BOUNCE
                     outcome.save()
@@ -360,7 +360,7 @@ class ResolveOrders():
             # mark support for self-dislodgement as void
             for supporting_unit in Outcome.objects._grab_spt_attacking_orders(
                 outcome_location,self.turn).filter(
-                order_reference__reference_unit = outcome.order_reference.target_unit):
+                order_reference__reference_unit = outcome.order_reference.unit):
                 if type(supporting_unit) is not Outcome: raise TypeError('outcome should be of type Outcome')
                 supporting_unit.validation = OutcomeType.VOID
                 supporting_unit.save()
