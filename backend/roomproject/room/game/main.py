@@ -1,5 +1,5 @@
 from room.game.steps import Step
-from room.models.broadcast import Room, RoomStatus
+from room.models.room import Room, RoomStatus
 
 
 
