@@ -26,7 +26,7 @@ class MyFancyTestCase(GraphQLTestCase):
 
 
     def test_some_query(self):
-        for tableName in ['turns', 'units', 'orders', 'locations']:
+        for tableName in ['turn', 'unit', 'order', 'location']:
             querySyntax = "query{ " + tableName + " {id} }"
             response = self.query(querySyntax)
             content = json.loads(response.content)

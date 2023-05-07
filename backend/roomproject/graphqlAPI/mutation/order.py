@@ -63,7 +63,7 @@ class CreateOrder(graphene.Mutation):
         turn = Turn.objects.get(pk=input.turn_id)
         room = Room.objects.get(pk=input.room_id)
         if turn == None:
-            turn = Turn.objects.create(room.current_turn)
+            turn = Turn.objects.create(year=room.current_turn)
 
         order = Order.objects.create(
                                     instruction = input.instruction,
