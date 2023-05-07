@@ -28,7 +28,7 @@ class LegitamiseOrders():
 
     # remove orders that are theoritcally impossible
     def _legitamise_orders(self,turn,room):
-        from room.models.locations import Next_to, Location
+        from room.models.location import Next_to, Location
         from room.models.order import Order, MoveType
         from room.models.outcome import Outcome, OutcomeType
         all_moves_requiring_convoys = []

@@ -1,0 +1,92 @@
+{
+    "1": [
+        {
+            "location_pk": 6,
+            "country_pk": 7
+        },
+        {
+            "location_pk": 12,
+            "country_pk": 3
+        },
+        {
+            "location_pk": 15,
+            "country_pk": 2
+        },
+        {
+            "location_pk": 16,
+            "country_pk": 5
+        },
+        {
+            "location_pk": 20,
+            "country_pk": 7
+        },
+        {
+            "location_pk": 23,
+            "country_pk": 1
+        },
+        {
+            "location_pk": 35,
+            "country_pk": 3
+        },
+        {
+            "location_pk": 36,
+            "country_pk": 1
+        },
+        {
+            "location_pk": 38,
+            "country_pk": 1
+        },
+        {
+            "location_pk": 39,
+            "country_pk": 2
+        },
+        {
+            "location_pk": 41,
+            "country_pk": 6
+        },
+        {
+            "location_pk": 42,
+            "country_pk": 3
+        },
+        {
+            "location_pk": 43,
+            "country_pk": 4
+        },
+        {
+            "location_pk": 47,
+            "country_pk": 2
+        },
+        {
+            "location_pk": 52,
+            "country_pk": 4
+        },
+        {
+            "location_pk": 56,
+            "country_pk": 6
+        },
+        {
+            "location_pk": 59,
+            "country_pk": 7
+        },
+        {
+            "location_pk": 61,
+            "country_pk": 6
+        },
+        {
+            "location_pk": 64,
+            "country_pk": 5
+        },
+        {
+            "location_pk": 70,
+            "country_pk": 4
+        },
+        {
+            "location_pk": 71,
+            "country_pk": 5
+        },
+        {
+            "location_pk": 73,
+            "country_pk": 6
+        }
+    ]
+}

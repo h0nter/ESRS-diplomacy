@@ -1,7 +1,9 @@
 # Create your tests here.
 from django.test import TestCase
 from room.models.unit import Unit
-from room.models.locations import Map,Country,Location,Next_to
+from room.models.location import Location,Next_to
+from room.models.map import Map
+from room.models.country import Country
 from room.models.order import Order
 from room.models.turn import Turn
 from room.models.room import Room
@@ -30,7 +32,7 @@ class room_app_unitTest1(TestCase):
         cls.nextToDE = Next_to.objects.create(location=cls.locationD, next_to=cls.locationE)
         cls.nextToED = Next_to.objects.create(location=cls.locationE, next_to=cls.locationD)
         cls.turn = Turn.objects.create(year=1994)
-        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
+        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room',map=cls.map)
         cls.unitA = Unit.objects.create(owner=cls.countryA,location=cls.locationA,room=cls.room)
         cls.unitB = Unit.objects.create(owner=cls.countryA,location=cls.locationC,room=cls.room)
         cls.unitC = Unit.objects.create(owner=cls.countryA,location=cls.locationB,room=cls.room)

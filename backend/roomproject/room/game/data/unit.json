@@ -1,0 +1,114 @@
+{
+    "1": [
+        {
+            "unit_owner": 1,
+            "unit_location": 23,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 1,
+            "unit_location": 36,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 1,
+            "unit_location": 38,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 2,
+            "unit_location": 15,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 2,
+            "unit_location": 47,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 2,
+            "unit_location": 39,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 3,
+            "unit_location": 35,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 3,
+            "unit_location": 12,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 3,
+            "unit_location": 42,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 4,
+            "unit_location": 70,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 4,
+            "unit_location": 52,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 4,
+            "unit_location": 43,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 5,
+            "unit_location": 71,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 5,
+            "unit_location": 64,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 5,
+            "unit_location": 16,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 6,
+            "unit_location": 73,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 6,
+            "unit_location": 61,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 6,
+            "unit_location": 41,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 6,
+            "unit_location": 56,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 7,
+            "unit_location": 20,
+            "unit_can_float": false
+        },
+        {
+            "unit_owner": 7,
+            "unit_location": 6,
+            "unit_can_float": true
+        },
+        {
+            "unit_owner": 7,
+            "unit_location": 59,
+            "unit_can_float": false
+        }
+    ]
+}

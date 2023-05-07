@@ -1,5 +1,7 @@
 from django.contrib import admin
-from room.models.locations import Location, Next_to, Map_Polygon, Map, Country
+from room.models.location import Location, Next_to, Map_Polygon
+from room.models.map import Map
+from room.models.country import Country
 from room.models.order import Order
 from room.models.turn import Turn
 from room.models.outcome import Outcome
