@@ -47,9 +47,14 @@ class Location(models.Model):
 
 
 class Map_Polygon(models.Model):
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    class Polygon_Colour(models.TextChoices):
+        LAND = 'LAND', _('LAND')
+        AQUA = 'AQUA', _('AQUA')
+        HASH = 'HASH', _('HASH')
+
+    location = models.ForeignKey(Location,on_delete=models.CASCADE,related_name='polygons')
     polygon = models.CharField(max_length=500)
-    colour = models.CharField(max_length=10)
+    colour = models.CharField(max_length=4,choices=Polygon_Colour.choices,default=Polygon_Colour.LAND)
 
     class Meta:
         verbose_name_plural = 'Map_Polygons'
