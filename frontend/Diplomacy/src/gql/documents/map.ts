@@ -2,7 +2,7 @@ import { gql } from "@apollo/client/core";
 
 export const INITIAL_MAP_SETUP = gql`
   query {
-    locations {
+    location {
       id
       name
       isCoast
@@ -15,12 +15,14 @@ export const INITIAL_MAP_SETUP = gql`
         polygon
         colour
       }
-      currentOwner {
-        name
-        colour
+      locationForPlayer {
+        currentOwner {
+          name
+          colour
+        }
       }
     }
-    units {
+    unit {
       id
       canFloat
       owner {
@@ -41,7 +43,7 @@ export const INITIAL_MAP_SETUP = gql`
 
 export const UNITS = gql`
   query {
-    units {
+    unit {
       id
       canFloat
       owner {
@@ -56,13 +58,13 @@ export const UNITS = gql`
 
 export const PLAYER_ORDERS = gql`
   query {
-    orders {
+    order {
       id
       instruction
       turn {
         id
       }
-      targetUnit {
+      unit {
         id
       }
       currentLocation {
@@ -94,7 +96,7 @@ export const PLAYER_ORDERS = gql`
 
 export const TURNS = gql`
   query {
-    turns {
+    turn {
       id
       isAutumn
     }
@@ -103,26 +105,26 @@ export const TURNS = gql`
 
 export const UPDATE_ORDER = gql`
   mutation UpdateOrder(
-    $unitID: Int!
+    $unitID: ID!
     $instruction: String!
-    $turnID: Int!
-    $currentLocation: Int!
+    $turnID: ID!
     $orderID: ID!
-    $targetLocation: Int = null
-    $referenceUnitID: Int = null
-    $referenceUnitCurrentLocation: Int = null
-    $referenceUnitTargetLocation: Int = null
+    $roomID: ID = 1
+    $targetLocation: ID = null
+    $referenceUnitID: ID = null
+    $referenceUnitCurrentLocation: ID = null
+    $referenceUnitTargetLocation: ID = null
   ) {
     updateOrder(
       input: {
         instruction: $instruction
-        targetUnit: $unitID
-        turn: $turnID
-        currentLocation: $currentLocation
-        targetLocation: $targetLocation
-        referenceUnitPk: $referenceUnitID
-        referenceUnitCurrentLocationPk: $referenceUnitCurrentLocation
-        referenceUnitNewLocationPk: $referenceUnitTargetLocation
+        unitId: $unitID
+        turnId: $turnID
+        roomId: $roomID
+        targetLocationId: $targetLocation
+        referenceUnitId: $referenceUnitID
+        referenceUnitCurrentLocationId: $referenceUnitCurrentLocation
+        referenceUnitNewLocationId: $referenceUnitTargetLocation
       }
       id: $orderID
     ) {
@@ -133,7 +135,7 @@ export const UPDATE_ORDER = gql`
         turn {
           id
         }
-        targetUnit {
+        unit {
           id
         }
         currentLocation {

@@ -18,9 +18,9 @@
             placeholder="Game name"
           >
             <option value="">Europe</option>
-            <option value="">Asia</option>
-            <option value="">America</option>
-            <option value="">World</option>
+            <option value="" disabled>Asia</option>
+            <option value="" disabled>America</option>
+            <option value="" disabled>World</option>
           </select>
         </div>
         <div>
@@ -49,7 +49,9 @@
           <p class="pl-3">Max players:</p>
           <input
             type="number"
-            value="8"
+            min="2"
+            max="7"
+            value="7"
             class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
             placeholder="0"
           />
