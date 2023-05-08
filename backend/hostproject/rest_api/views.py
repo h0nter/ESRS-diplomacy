@@ -1,8 +1,8 @@
 from django.contrib.auth import login, authenticate
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from host.models import Host, RoomStatus, UserRoom
-from .speaker import add_player, add_room
+from host.models import Host, RoomStatus, UserHost
+from .speaker import add_player, add_room, initialize
 
 @api_view()
 def hello_world(request):
@@ -18,9 +18,11 @@ def start_game(request):
         room.room_id = response_data['data']['createRoom']['room']['id']
         room.save()
         
-        for user in UserRoom.objects.filter(room=room):
-            add_player(port=room.port, user_id=user.user.pk, room_id=room.pk)
+        for user in UserHost.objects.filter(room=room):
+            add_player(port=room.port, user_id=user.user.pk, room_id=room.room_id)
         
+        initialize(room_id=room.room_id)
+
         return Response(response_data)
 
     

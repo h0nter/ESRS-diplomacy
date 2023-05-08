@@ -46,9 +46,9 @@ class Host(models.Model):
         super(Host, self).save(*args, **kwargs)
 
 
-class UserRoom(models.Model):
+class UserHost(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='joined_player')
-    room = models.ForeignKey(Host, on_delete=models.DO_NOTHING, related_name='joined_room')
+    host = models.ForeignKey(Host, on_delete=models.DO_NOTHING, related_name='joined_room')
 
     def __str__(self):
         return self.player.get_username()
