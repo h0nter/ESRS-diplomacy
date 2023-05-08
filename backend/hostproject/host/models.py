@@ -34,9 +34,6 @@ class Host(models.Model):
     ip = models.GenericIPAddressField(default='127.0.0.1')
     port = models.PositiveSmallIntegerField(default=8080)
 
-    class Meta:
-        verbose_name_plural = 'Room'
-
     def __str__(self):
         return str(self.pk)
 

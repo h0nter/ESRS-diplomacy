@@ -22,14 +22,14 @@ class CreateRoom(Mutation):
 class InitialRoom(Mutation):
     class Arguments:
         room_id = ID(required=True)
+
     
     room = graphene.Field(RoomType)
 
     @staticmethod
     def mutate(root, info, room_id):
-
-        room = Room.objects.get(room_id=room_id)
-        room.status = RoomStatus.INITIALIZE
+        room = Room.objects.get(pk=room_id)
+        room.status = 'INITIALIZE'
         room.save()
-
         return InitialRoom(room=room)
+    

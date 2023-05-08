@@ -8,7 +8,7 @@ from .models import UserHost, RoomStatus
 def post_save_receiver(sender, instance, created, **kwargs):
     if created:
         # Room be created
-        UserHost.objects.create(user=instance.hoster, room=instance).save()
+        UserHost.objects.create(user=instance.hoster, host=instance).save()
     else:
         if instance.status == RoomStatus.CLOSED:
             print(instance.room_name,' room closed')
