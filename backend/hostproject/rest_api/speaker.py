@@ -1,7 +1,7 @@
 import requests
 
 
-def game_triger(port, room_name:str) -> int:
+def game_trigger(port, room_name:str):
     url = "http://127.0.0.1:"+str(port)+"/graphql"
     query_template = '''
     mutation{

@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from host.models import Host, RoomStatus, UserRoom
-from .speaker import add_player, game_triger
+from .speaker import add_player, game_trigger
 
 @api_view()
 def hello_world(request):
@@ -15,7 +15,7 @@ def start_game(request):
     if request.method == 'POST':
         room = Host.objects.get(pk=request.POST.get("room_id"))
         room.room_name = RoomStatus.WAITING
-        response_data = game_triger(port=room.port, room_name=room.room_name)
+        response_data = game_trigger(port=room.port, room_name=room.room_name)
         room.room_id = response_data['data']['createRoom']['room']['id']
         room.save()
         
