@@ -22,41 +22,49 @@
     <!-- DO NOTE, CAN USE MAX WIDTH TO ANIMATE INSTEAD -->
     <div>
       <router-link
-        v-if="true"
+        v-if="!authStore.userID"
+        to="/"
+        class="navbar-link"
+        @click="closeMenu"
+        >Home</router-link
+      >
+      <router-link
+        v-if="!authStore.userID"
         to="/login"
         class="navbar-link"
         @click="closeMenu"
         >Log In</router-link
       >
       <router-link
-        v-if="true"
+        v-if="!authStore.userID"
         to="/register"
         class="navbar-link"
         @click="closeMenu"
         >Register</router-link
       >
-      <router-link v-if="true" to="/" class="navbar-link" @click="closeMenu"
-        >Home</router-link
-      >
-      <router-link v-if="true" to="/join" class="navbar-link" @click="closeMenu"
+      <router-link
+        v-if="authStore.userID"
+        to="/join"
+        class="navbar-link"
+        @click="closeMenu"
         >Join Game</router-link
       >
       <router-link
-        v-if="true"
+        v-if="authStore.userID"
         to="/create"
         class="navbar-link"
         @click="closeMenu"
         >Create Game</router-link
       >
       <router-link
-        v-if="true"
+        v-if="authStore.userID"
         to="/active"
         class="navbar-link"
         @click="closeMenu"
         >Active Games</router-link
       >
       <router-link
-        v-if="true"
+        v-if="authStore.userID"
         to="/settings"
         class="navbar-link"
         @click="closeMenu"
@@ -64,33 +72,35 @@
       >
     </div>
     <div>
-      <router-link
-        v-if="true"
-        to="/settings"
-        class="navbar-link"
-        @click="closeMenu"
-        >Log Out</router-link
-      >
+      <button v-if="authStore.userID" class="navbar-link" @click="logout">
+        Log Out
+      </button>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    data() {
-      return {
-        isMenuOpen: false,
-      };
-    },
-    methods: {
-      toggleMenu() {
-        this.isMenuOpen = !this.isMenuOpen;
-      },
-      closeMenu() {
-        this.isMenuOpen = false;
-      },
-    },
-  };
+<script setup lang="ts">
+  import { ref } from "vue";
+  import { useAuthStore } from "@/stores/AuthStore";
+  import { useRouter } from "vue-router";
+
+  let isMenuOpen = ref(false);
+  const authStore = useAuthStore();
+  const router = useRouter();
+
+  function toggleMenu() {
+    isMenuOpen.value = !isMenuOpen.value;
+  }
+
+  function closeMenu() {
+    isMenuOpen.value = false;
+  }
+
+  function logout() {
+    closeMenu();
+    authStore.logout();
+    router.push("/");
+  }
 </script>
 
 <style scoped>
@@ -121,17 +131,10 @@
   }
 
   .navbar-link {
-    @apply text-white block font-bold whitespace-nowrap py-4 px-6;
+    @apply text-white block font-bold whitespace-nowrap py-4 px-6 w-full text-left;
   }
 
   .navbar-link:hover {
     @apply bg-slate-500;
-  }
-
-  .arrow {
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 3px;
   }
 </style>
