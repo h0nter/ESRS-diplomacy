@@ -30,7 +30,7 @@
     </div>
 
     <div
-      v-if="!loading && !error && games.length == 0"
+      v-if="!loading && !error && games.length === 0"
       class="w-1/3 mt-4 bg-slate-700 p-6 shadow-md rounded-lg flex flex-col items-center gap-4"
     >
       <p class="text-center">
@@ -99,7 +99,7 @@
   const authStore = useAuthStore();
   const router = useRouter();
 
-  var config = {
+  const config = {
     method: "get",
     url: "http://127.0.0.1:8000/api/host/",
   };
@@ -108,7 +108,7 @@
     .then((response) => {
       let loadedGames: Array<game> = [];
       response.data.forEach((data) => {
-        if (data.room_status != "REGISTERD") {
+        if (data.status != "REGISTERD") {
           return;
         }
         let newGame = {
@@ -133,11 +133,11 @@
     });
 
   function joinGame(id: string) {
-    var data = new FormData();
+    const data = new FormData();
     data.append("room", id);
     data.append("user", authStore.userID);
 
-    var config = {
+    const config = {
       method: "post",
       url: "http://127.0.0.1:8000/api/player/",
       data: data,
