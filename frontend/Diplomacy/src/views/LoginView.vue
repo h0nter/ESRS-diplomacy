@@ -8,7 +8,7 @@
           <input
             type="text"
             placeholder="Username"
-            v-model="username"
+            v-model.trim="username"
             class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
           />
         </div>
@@ -59,6 +59,11 @@
   const router = useRouter();
 
   let login = async () => {
+    if (username.value === "") {
+      error.value = true;
+      return;
+    }
+
     loading.value = true;
 
     try {

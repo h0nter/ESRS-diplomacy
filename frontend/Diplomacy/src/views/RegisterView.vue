@@ -8,7 +8,7 @@
           <input
             type="text"
             placeholder="Email"
-            v-model="email"
+            v-model.trim="email"
             class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
           />
         </div>
@@ -17,7 +17,7 @@
           <input
             type="text"
             placeholder="Username"
-            v-model="username"
+            v-model.trim="username"
             class="bg-slate-600 focus:bg-slate-500 focus:outline-none p-3 w-full rounded-lg"
           />
         </div>
