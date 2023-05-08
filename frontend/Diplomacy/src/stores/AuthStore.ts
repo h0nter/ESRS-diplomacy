@@ -7,11 +7,11 @@ export const useAuthStore = defineStore("AuthStore", () => {
   const userID = ref<string | null>(null);
 
   const login = async (username: string, password: string) => {
-    let data = new FormData();
+    const data = new FormData();
     data.append("username", username);
     data.append("password", password);
 
-    let config = {
+    const config = {
       method: "post",
       url: "http://127.0.0.1:8000/api/get_login/",
       data: data,
@@ -20,7 +20,7 @@ export const useAuthStore = defineStore("AuthStore", () => {
     const response = await axios(config);
 
     if (response.data === "not authenticated") {
-      let error = new Error("Not authenticated");
+      const error = new Error("Not authenticated");
       throw error;
     }
 
@@ -36,14 +36,14 @@ export const useAuthStore = defineStore("AuthStore", () => {
     username: string,
     password: string
   ) => {
-    let data = new FormData();
+    const data = new FormData();
     data.append("email", email);
     data.append("username", username);
     data.append("password", password);
     data.append("first_name", "");
     data.append("last_name", "");
 
-    let config = {
+    const config = {
       method: "post",
       url: "http://127.0.0.1:8000/api/register/",
       data: data,
@@ -54,9 +54,9 @@ export const useAuthStore = defineStore("AuthStore", () => {
     try {
       response = await axios(config);
     } catch (error) {
-      let errors = JSON.parse(error.request.response);
+      const errors = JSON.parse(error.request.response);
       let errorString = "";
-      for (let key in errors) {
+      for (const key in errors) {
         errorString += key + ": " + errors[key] + "<br>";
       }
       throw errorString;
