@@ -80,7 +80,7 @@
             "text_pos_x": 510,
             "text_pos_y":  455,
             "map": 1,
-            "current_owner": 7,
+            
             "abbreviation": "Ank"
         }
     },
@@ -165,7 +165,7 @@
             "text_pos_x": 272,
             "text_pos_y":  292,
             "map": 1,
-            "current_owner": 3,
+            
             "abbreviation": "Ber"
         }
     },
@@ -208,7 +208,7 @@
             "text_pos_x": 130,
             "text_pos_y":  345,
             "map": 1,
-            "current_owner": 2,
+            
             "abbreviation": "Bre"
         }
     },
@@ -223,7 +223,7 @@
             "text_pos_x": 350,
             "text_pos_y":  390,
             "map": 1,
-            "current_owner": 5,
+            
             "abbreviation": "Bud"
         }
     },
@@ -280,7 +280,7 @@
             "text_pos_x": 435,
             "text_pos_y":  483,
             "map": 1,
-            "current_owner": 7,
+            
             "abbreviation": "Con"
         }
     },
@@ -323,7 +323,7 @@
             "text_pos_x": 152,
             "text_pos_y":  202,
             "map": 1,
-            "current_owner": 1,
+            
             "abbreviation": "Edi"
         }
     },
@@ -492,7 +492,7 @@
             "text_pos_x": 237,
             "text_pos_y":  285,
             "map": 1,
-            "current_owner": 3,
+            
             "abbreviation": "Kie"
         }
     },
@@ -507,7 +507,7 @@
             "text_pos_x": 138,
             "text_pos_y":  230,
             "map": 1,
-            "current_owner": 1,
+            
             "abbreviation": "Lvp"
         }
     },
@@ -536,7 +536,7 @@
             "text_pos_x": 160,
             "text_pos_y":  280,
             "map": 1,
-            "current_owner": 1,
+            
             "abbreviation": "Lon"
         }
     },
@@ -551,7 +551,7 @@
             "text_pos_x": 173,
             "text_pos_y":  412,
             "map": 1,
-            "current_owner": 2,
+            
             "abbreviation": "Mar"
         }
     },
@@ -580,7 +580,7 @@
             "text_pos_x": 460,
             "text_pos_y":  265,
             "map": 1,
-            "current_owner": 6,
+            
             "abbreviation": "Mos"
         }
     },
@@ -595,7 +595,7 @@
             "text_pos_x": 235,
             "text_pos_y":  360,
             "map": 1,
-            "current_owner": 3,
+            
             "abbreviation": "Mun"
         }
     },
@@ -610,7 +610,7 @@
             "text_pos_x": 293,
             "text_pos_y":  493,
             "map": 1,
-            "current_owner": 4,
+            
             "abbreviation": "Nap"
         }
     },
@@ -667,7 +667,7 @@
             "text_pos_x": 155,
             "text_pos_y":  358,
             "map": 1,
-            "current_owner": 2,
+            
             "abbreviation": "Par"
         }
     },
@@ -738,7 +738,7 @@
             "text_pos_x": 257,
             "text_pos_y":  452,
             "map": 1,
-            "current_owner": 4,
+            
             "abbreviation": "Rom"
         }
     },
@@ -795,7 +795,7 @@
             "text_pos_x": 540,
             "text_pos_y":  350,
             "map": 1,
-            "current_owner": 6,
+            
             "abbreviation": "Sev"
         }
     },
@@ -838,7 +838,7 @@
             "text_pos_x": 460,
             "text_pos_y":  510,
             "map": 1,
-            "current_owner": 7,
+            
             "abbreviation": "Smy"
         }
     },
@@ -867,7 +867,7 @@
             "text_pos_x": 460,
             "text_pos_y":  149,
             "map": 1,
-            "current_owner": 6,
+            
             "abbreviation": "Stp"
         }
     },
@@ -910,7 +910,7 @@
             "text_pos_x": 305,
             "text_pos_y":  425,
             "map": 1,
-            "current_owner": 5,
+            
             "abbreviation": "Tri"
         }
     },
@@ -995,7 +995,7 @@
             "text_pos_x": 245,
             "text_pos_y":  407,
             "map": 1,
-            "current_owner": 4,
+            
             "abbreviation": "Ven"
         }
     },
@@ -1010,7 +1010,7 @@
             "text_pos_x": 307,
             "text_pos_y":  370,
             "map": 1,
-            "current_owner": 5,
+            
             "abbreviation": "Vie"
         }
     },
@@ -1039,7 +1039,7 @@
             "text_pos_x": 355,
             "text_pos_y":  304,
             "map": 1,
-            "current_owner": 6,
+            
             "abbreviation": "War"
         }
     },
