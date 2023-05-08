@@ -28,7 +28,7 @@ class Host(models.Model):
     hoster = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='hoster')
     room_name = models.CharField(max_length=30)
     room_code = models.CharField(max_length=6, default='')
-    room_status = models.CharField(max_length=10,choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
+    status = models.CharField(max_length=10,choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
     room_id = models.PositiveIntegerField(null=True)
     max_players = models.PositiveSmallIntegerField(default=7)
     ip = models.GenericIPAddressField(default='127.0.0.1')
