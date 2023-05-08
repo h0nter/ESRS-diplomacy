@@ -7,6 +7,7 @@ from room.models.turn import Turn
 from room.models.unit import Unit
 from room.models.country import Country
 from room.models.location import Location
+from room.models.location import Map
 from room.models.location_owner import LocationOwner
 from django.core.management import call_command, base
 from django.core.management.commands import loaddata
@@ -111,6 +112,8 @@ class Step:
         cls.current_turn = cls.room.current_turn
         cls.initializeTurnOrders()
         cls.room.status = RoomStatus.WAITING
+        if cls.room.map is None:
+            cls.room.map = Map.objects.get(pk=1)
         cls.room.save()
 
     @classmethod
