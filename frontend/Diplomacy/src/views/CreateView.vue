@@ -145,7 +145,7 @@
     axios(config)
       .then((response) => {
         let data = new FormData();
-        data.append("room_id", response.data.id);
+        data.append("host_id", response.data.id);
 
         var config = {
           method: "post",
