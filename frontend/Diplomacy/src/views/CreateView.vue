@@ -144,7 +144,26 @@
 
     axios(config)
       .then((response) => {
-        router.push("/lobby/" + response.data.id);
+        let data = new FormData();
+        data.append("room_id", response.data.id);
+
+        var config = {
+          method: "post",
+          url: "http://127.0.0.1:8000/api/start_game/",
+          data: data,
+        };
+
+        axios(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+            router.push("/lobby/" + response.data.id);
+          })
+          .catch((err) => {
+            error.value = true;
+            errorM.value = err;
+            console.log(err);
+            loading.value = false;
+          });
       })
       .catch((err) => {
         error.value = true;
