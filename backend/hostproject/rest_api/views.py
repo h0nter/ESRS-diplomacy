@@ -1,44 +1,27 @@
-import requests
 from django.contrib.auth import login, authenticate
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from host.models import Host, RoomStatus
+from host.models import Host, RoomStatus, UserRoom
+from .speaker import add_player, game_triger
 
 @api_view()
 def hello_world(request):
     return Response({"message": "Hello, world!"})
 
 
-def game_triger(port, room_name) -> int:
-    url = "http://127.0.0.1:"+str(port)+"/graphql"
-    query_template = '''
-    mutation{
-        createRoom(roomName:" %s "){
-            room{
-                id,
-                roomName
-            }
-        }
-    }
-    '''
-    query = query_template % room_name
-    headers = { 'Content-Type': 'application/json' }
-    data = {'query': query}
-
-    return requests.post(url, headers=headers, json=data).json()
-
 
 @api_view(["POST"])
 def start_game(request):
-    #    if request.method == 'POST':
+    if request.method == 'POST':
         room = Host.objects.get(pk=request.POST.get("room_id"))
-        # room = Host.objects.get(pk=2)
         room.room_name = RoomStatus.WAITING
-        room.save()
-        response_data=game_triger(room.port, room.room_name)
+        response_data = game_triger(port=room.port, room_name=room.room_name)
         room.room_id = response_data['data']['createRoom']['room']['id']
         room.save()
-
+        
+        for user in UserRoom.objects.filter(room=room):
+            add_player(port=room.port, user_id=user.pk, room_id=room.pk)
+        
         return Response(response_data)
 
     
