@@ -108,8 +108,7 @@
     .then((response) => {
       let loadedGames: Array<game> = [];
       response.data.forEach((data) => {
-        //if (data.room_status != "REGISTERD") {
-        if (data.room_status != "Register") {
+        if (data.room_status != "REGISTERD") {
           return;
         }
         let newGame = {
