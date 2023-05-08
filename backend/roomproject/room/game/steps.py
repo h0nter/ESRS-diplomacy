@@ -16,13 +16,10 @@ class Step:
         cls.room = Room.objects.get(pk=room_id)
         cls.status = cls.room.status
         cls.map = cls.room.map
-        if cls.status == RoomStatus.REGISTERED:  # Formating the room database
-            cls.initialize()
-            # sets RoomStatus to OPEN
 
-    # @classmethod
-    # def room_factory(cls, room_id):
-    #     return cls(room_id)
+        # if cls.status == RoomStatus.REGISTERED:  # Formating the room database
+        #     cls.initialize()
+            # sets RoomStatus to OPEN
 
     @classmethod
     def isFinished(cls) -> bool:

@@ -12,5 +12,6 @@ class CreateRoom(Mutation):
     @staticmethod
     def mutate(root, info, room_name):
         room = Room.objects.create(room_name=room_name)
+        room.save()
 
         return CreateRoom(room=room)
