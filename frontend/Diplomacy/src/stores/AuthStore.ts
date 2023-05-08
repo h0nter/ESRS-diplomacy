@@ -58,12 +58,9 @@ export const useAuthStore = defineStore("AuthStore", () => {
       let errorString = "";
       for (let key in errors) {
         errorString += key + ": " + errors[key] + "<br>";
-        console.log(errorString);
       }
       throw errorString;
     }
-
-    console.log(response);
 
     localStorage.setItem("token", response.data.id);
     localStorage.setItem("userID", response.data.id);
