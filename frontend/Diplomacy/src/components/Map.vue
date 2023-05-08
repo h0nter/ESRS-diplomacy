@@ -21,7 +21,7 @@
         :key="territory.id"
         :location_id="territory.id"
         :name="territory.name"
-        :countryColor="territory.currentOwner?.colour"
+        :countryColor="territory.locationForPlayer[0]?.currentOwner?.colour"
         :polygons="territory.polygons"
         :text="territory.abbreviation"
         :textX="territory.textPosX"
@@ -102,8 +102,8 @@
   let units: UnitType[] = [];
 
   watchEffect(() => {
-    territories = computed(() => init_return.value?.locations).value;
-    units = computed(() => init_return.value?.units).value;
+    territories = computed(() => init_return.value?.location).value;
+    units = computed(() => init_return.value?.unit).value;
   });
 </script>
 

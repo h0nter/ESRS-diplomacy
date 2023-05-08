@@ -52,11 +52,11 @@
       required: true,
     },
     locationIsSea: {
-      type: String,
+      type: Boolean,
       required: true,
     },
     locationIsCoast: {
-      type: String,
+      type: Boolean,
       required: true,
     },
     positionX: {
