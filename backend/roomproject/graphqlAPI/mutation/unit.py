@@ -1,17 +1,19 @@
 import graphene
-from graphene import Mutation, Int, Boolean
+from graphene import Mutation, Boolean, ID
 from graphqlAPI.query.table_type import UnitType
 from room.models.unit import Unit
 
 class CreateUnit(Mutation):
     class Arguments:
-        year = Int(required=True)
-        is_autumn = Boolean()
+        owner = ID()
+        room = ID()
+        location = ID()
+        can_float =Boolean
     
-    turn = graphene.Field(UnitType)
+    unit = graphene.Field(UnitType)
 
     @staticmethod
-    def mutate( root, info, year, is_autumn=False):
-        turn = Unit.objects.create(year=year, is_autumn=is_autumn)
+    def mutate( root, info, owner, room,location,can_float=False):
+        unit = Unit.objects.create(owner=owner, room=room, location=location, can_float=can_float)
 
-        return CreateUnit(turn=turn)
+        return CreateUnit(unit=unit)
