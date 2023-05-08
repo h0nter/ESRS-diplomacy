@@ -12,7 +12,7 @@ def hello_world(request):
 @api_view(["POST"])
 def start_game(request):
     if request.method == 'POST':
-        host = Host.objects.get(pk=request.POST.get("room_id")) # need to communicate with frount-end, change room_id to host_id
+        host = Host.objects.get(pk=request.POST.get("host_id")) # need to communicate with frount-end, change room_id to host_id
         host.status = RoomStatus.INITIALIZE
         response_data = add_room(port=host.port, room_name=host.room_name)
         host.room_id = response_data['data']['createRoom']['room']['id']
