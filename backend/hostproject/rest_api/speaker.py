@@ -46,8 +46,9 @@ def initialize(port:int, room_id:int):
     query_template = '''
         mutation{
             initilizeRoom(roomId: %s){
-                player{
-                    id
+                room{
+                    id,
+                    status
                 }
             }
         }

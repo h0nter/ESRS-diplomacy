@@ -2,7 +2,7 @@ import requests
 import threading
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from room.models.room import Room
+from room.models.room import Room, RoomStatus
 from room.game.main import Game
 
 
@@ -17,11 +17,9 @@ from room.game.main import Game
 @receiver(post_save, sender=Room)
 def post_save_receiver(sender, instance, created, **kwargs):
     if created:
-        # print('before calling.')
-        # game_thread = threading.Thread(target=Game(instance.pk).start())
-        # game_thread.start()
-        # print('after calling')
-        pass
-    else:
-        # update_room_status(instance)
-        pass
+        print('room id: ',instance.pk, 'room status: ', instance.status)
+    elif instance.status == RoomStatus.INITIALIZE:
+        print('before calling.')
+        game_thread = threading.Thread(target=Game(instance.pk).start())
+        game_thread.start()
+        print('after calling')
