@@ -155,8 +155,8 @@
 
         axios(config)
           .then((response) => {
-            console.log(JSON.stringify(response.data));
-            router.push("/lobby/" + response.data.id);
+            console.log(response.data.data.createRoom.room.id);
+            router.push("/lobby/" + response.data.data.createRoom.room.id);
           })
           .catch((err) => {
             error.value = true;
