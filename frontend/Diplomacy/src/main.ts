@@ -13,6 +13,7 @@ import "./assets/main.css";
 import "./index.css";
 
 import NavigationBar from "@/components/NavigationBar.vue";
+import Spinner from "@/components/Spinner.vue";
 
 const app = createApp({
   setup() {
@@ -27,5 +28,6 @@ const pinia = createPinia();
 app.use(pinia);
 
 app.component("Navigation-Bar", NavigationBar);
+app.component("Spinner", Spinner);
 
 app.mount("#app");
