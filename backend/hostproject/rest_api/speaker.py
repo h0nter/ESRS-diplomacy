@@ -2,7 +2,7 @@ import requests
 
 
 def game_trigger(port, room_name:str):
-    url = "http://127.0.0.1:"+str(port)+"/graphql"
+    url = "http://127.0.0.1:"+str(port)+"/graphql/"
     query_template = '''
     mutation{
         createRoom(roomName:" %s "){
@@ -23,7 +23,7 @@ def game_trigger(port, room_name:str):
 
 
 def add_player(port:int, user_id:int, room_id:int):
-    url = "http://127.0.0.1:"+str(port)+"/graphql"
+    url = "http://127.0.0.1:"+str(port)+"/graphql/"
     query_template = '''
         mutation{
             createPlayer(userId: %s, roomId: %s){
