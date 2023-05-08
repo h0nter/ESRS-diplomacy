@@ -4,8 +4,7 @@ from room.models.room import RoomStatus
 
 
 class Game(Step):
-
-
+    @classmethod
     def __init__(cls, room_id: int):
         super().__init__(room_id=room_id)
     
