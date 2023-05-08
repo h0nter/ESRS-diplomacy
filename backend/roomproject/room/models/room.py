@@ -8,6 +8,7 @@ from .map import Map
 class RoomStatus(models.TextChoices):
 
     REGISTERED =  'REGISTERD', _('registered')
+    INITIALIZE =  'INITIALIZE', _('initialize')
 
     # Loops
     WAITING = 'WAIT', _('Orders Incoming, Players Debating')
@@ -22,7 +23,7 @@ class RoomStatus(models.TextChoices):
 class Room(models.Model):
     room_name = models.CharField(max_length=30)
     current_turn = models.ForeignKey(Turn, null=True, on_delete=models.DO_NOTHING, related_name='current_turn')
-    status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
+    status = models.CharField(max_length=10, choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
     close_time = models.DateTimeField(null=True)
     map = models.ForeignKey(Map,on_delete=models.DO_NOTHING, related_name='room_map', null=True)
 
