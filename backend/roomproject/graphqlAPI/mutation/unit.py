@@ -8,7 +8,7 @@ class CreateUnit(Mutation):
         owner = ID()
         room = ID()
         location = ID()
-        can_float =Boolean
+        can_float =Boolean()
     
     unit = graphene.Field(UnitType)
 

@@ -12,7 +12,7 @@ class Mutation(graphene.ObjectType):
     create_order = CreateOrder.Field()
     create_player = CreatePlayer.Field()
     create_room = CreateRoom.Field()
-    create_trun = CreateTurn.Field()
+    create_turn = CreateTurn.Field()
     create_unit = CreateUnit.Field()
 
 

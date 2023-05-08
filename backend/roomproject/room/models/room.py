@@ -24,7 +24,7 @@ class Room(models.Model):
     current_turn = models.ForeignKey(Turn, null=True, on_delete=models.DO_NOTHING, related_name='current_turn')
     status = models.CharField(max_length=9, choices=RoomStatus.choices,default=RoomStatus.REGISTERED)
     close_time = models.DateTimeField(null=True)
-    map = models.ForeignKey(Map,on_delete=models.DO_NOTHING, related_name='room_map', default=1)
+    map = models.ForeignKey(Map,on_delete=models.DO_NOTHING, related_name='room_map', null=True)
 
      # set the close_time while save, automatactly add 2 hours
     def set_close_time(self):
