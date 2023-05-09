@@ -228,6 +228,11 @@ export type Query = {
 };
 
 
+export type QueryLocationArgs = {
+  roomId?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryLocationOwnerArgs = {
   roomId?: InputMaybe<Scalars['ID']>;
 };
@@ -239,9 +244,9 @@ export type QueryMapArgs = {
 
 
 export type QueryOrderArgs = {
-  roomId?: InputMaybe<Scalars['Int']>;
-  turnId?: InputMaybe<Scalars['Int']>;
-  unitId?: InputMaybe<Scalars['Int']>;
+  roomId?: InputMaybe<Scalars['ID']>;
+  turnId?: InputMaybe<Scalars['ID']>;
+  unitId?: InputMaybe<Scalars['ID']>;
 };
 
 

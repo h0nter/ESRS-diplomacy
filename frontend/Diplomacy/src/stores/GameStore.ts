@@ -12,6 +12,8 @@ export const useGameStore = defineStore("GameStore", () => {
   const client = resolveClient();
 
   const roomID = ref<number>(0);
+  const turnID = ref<number>(0);
+  const activePlayerID = ref<string>("0");
 
   const activeUnitID = ref<number>(0);
   const currentLocationID = ref<number>(0);
@@ -42,11 +44,20 @@ export const useGameStore = defineStore("GameStore", () => {
 
   const updateOrder = async (instruction: RoomOrderInstructionChoices) => {
     // Get the order id for the current unit and turn
-    const currOrderID = orders.value.find(
-      (o) =>
-        parseInt(o.unit!.id) === activeUnitID.value &&
-        o.turn!.id === turns.value[0].id
-    )?.id;
+    const currOrderResponse = await client.query({
+      query: PLAYER_ORDERS,
+      variables: () => {
+        return {
+          roomID: roomID.value,
+          unitID: activeUnitID.value,
+          turnID: parseInt(turns.value[0].id),
+        };
+      },
+    });
+
+    const currOrderID = parseInt(currOrderResponse.data?.order[0].id);
+
+    console.log(currOrderID);
 
     let options: MutationOptions | null = null;
 
@@ -54,11 +65,11 @@ export const useGameStore = defineStore("GameStore", () => {
       options = {
         mutation: UPDATE_ORDER,
         variables: {
+          roomID: roomID.value,
           unitID: activeUnitID.value,
           instruction: instruction,
-          turnID: parseInt(turns.value[0].id),
+          turnID: turnID.value,
           currentLocation: currentLocationID.value,
-          orderID: currOrderID,
         },
       };
     } else if (
@@ -68,26 +79,26 @@ export const useGameStore = defineStore("GameStore", () => {
       options = {
         mutation: UPDATE_ORDER,
         variables: {
+          roomID: roomID.value,
           unitID: activeUnitID.value,
           instruction: instruction,
-          turnID: parseInt(turns.value[0].id),
+          turnID: turnID.value,
           currentLocation: currentLocationID.value,
           referenceUnitID: referenceUnitID.value,
           referenceUnitCurrentLocation: referenceUnitCurrentLocationID.value,
           referenceUnitTargetLocation: referenceUnitTargetLocationID.value,
-          orderID: currOrderID,
         },
       };
     } else {
       options = {
         mutation: UPDATE_ORDER,
         variables: {
+          roomID: roomID.value,
           unitID: activeUnitID.value,
           instruction: instruction,
-          turnID: parseInt(turns.value[0].id),
+          turnID: turnID.value,
           currentLocation: currentLocationID.value,
           targetLocation: targetLocationID.value,
-          orderID: currOrderID,
         },
       };
     }
@@ -128,6 +139,8 @@ export const useGameStore = defineStore("GameStore", () => {
 
   return {
     roomID,
+    activePlayerID,
+    turnID,
     orders,
     activeUnitID,
     currentLocationID,

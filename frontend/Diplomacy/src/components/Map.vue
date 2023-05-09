@@ -47,6 +47,7 @@
         :unit_id="unit.id"
         :type="unit.canFloat ? 'F' : 'A'"
         :color="unit.owner.colour"
+        :owner_id="unit.owner.id"
         :location_name="unit.location.name"
         :location_id="unit.location.id"
         :locationIsSea="unit.location.isSea"
@@ -80,6 +81,7 @@
     LocationType,
     OrderType,
     PlayerType,
+    RoomType,
     TurnType,
     UnitType,
   } from "@/gql/graphql";
@@ -98,21 +100,22 @@
 
   gameStore.turnStart();
 
-  const {
+  let {
     result: init_return,
     loading: init_loading,
     error: init_error,
-  } = useQuery(INITIAL_MAP_SETUP, {
-    variables: {
+  } = useQuery(INITIAL_MAP_SETUP, () => {
+    return {
       roomID: gameStore.roomID,
       userID: parseInt(String(authStore.userID)),
-    },
+    };
   });
 
   let territories = ref<LocationType[]>([]);
   let locationOwners = ref<LocationOwnerType[]>([]);
   let player = ref<PlayerType | null>(null);
   let units = ref<UnitType[]>([]);
+  let room = ref<RoomType | null>(null);
 
   watchEffect(() => {
     territories.value = computed(() => init_return.value?.location).value;
@@ -121,28 +124,34 @@
       () => init_return.value?.locationOwner
     ).value;
     player.value = computed(() => init_return.value?.player).value;
+    room.value = computed(() => init_return.value?.room).value;
   });
 
-  watch(locationOwners, () => {
-    for (let i = 0; i < init_return.value?.location.length; i++) {
-      init_return.value?.location[i].locationForPlayer =
-        locationOwners.value.filter(
-          (locationOwner) =>
-            locationOwner.location.id === init_return.value?.location[i].id
-        );
-    }
-    // territories.value.forEach((territory) => {
-    //   territory.locationForPlayer = locationOwners.value.filter(
-    //     (locationOwner) => locationOwner.location.id === territory.id
-    //   );
-    // });
+  watchEffect(() => {
+    gameStore.activePlayerID = computed(() => player.value?.country?.id).value;
+    gameStore.turnID = computed(() => room.value?.currentTurn?.id).value;
   });
 
-  watch(units, () => {
-    units.value.forEach((unit) => {
-      unit.owner.id = player.value?.userId.toString() ?? unit.owner.id;
-    });
-  });
+  // watch(locationOwners, () => {
+  //   for (let i = 0; i < init_return.value?.location.length; i++) {
+  //     init_return.value?.location[i].locationForPlayer =
+  //       locationOwners.value.filter(
+  //         (locationOwner) =>
+  //           locationOwner.location.id === init_return.value?.location[i].id
+  //       );
+  //   }
+  //   // territories.value.forEach((territory) => {
+  //   //   territory.locationForPlayer = locationOwners.value.filter(
+  //   //     (locationOwner) => locationOwner.location.id === territory.id
+  //   //   );
+  //   // });
+  // });
+
+  // watch(units, () => {
+  //   units.value.forEach((unit) => {
+  //     unit.owner.id = player.value?.userId.toString() ?? unit.owner.id;
+  //   });
+  // });
 </script>
 
 <style scoped>
