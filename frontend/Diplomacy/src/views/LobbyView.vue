@@ -1,7 +1,7 @@
 <template>
   <div class="pt-24 pb-4 flex flex-col items-center w-full">
-    <div v-if="error" class="text-red-600">{{ errorM }}</div>
-    <div v-else-if="loading" class="text-slate-50">Loading...</div>
+    <div v-if="hostError" class="text-red-600">{{ hostErrorM }}</div>
+    <div v-else-if="hostLoading" class="text-slate-50">Loading...</div>
     <h1 v-else class="text-3xl">{{ hostRoom?.room_name }}</h1>
   </div>
   <div class="w-3/5 grid grid-cols-3 m-auto gap-4">
@@ -22,15 +22,19 @@
         <h3 class="text-center text-2xl">Lobby Data</h3>
         <div class="grid grid-cols-2 mt-4 gap-y-4">
           <p>Game Code:</p>
-          <p v-if="hostRoom?.room_code">{{ hostRoom?.room_code }}</p>
+          <p v-if="hostRoom?.room_code">
+            {{ hostRoom?.room_code }}
+          </p>
           <p>Lobby Name:</p>
-          <p v-if="hostRoom?.room_name">{{ hostRoom?.room_name }}</p>
+          <p v-if="hostRoom?.room_name">
+            {{ hostRoom?.room_name }}
+          </p>
           <p>Map:</p>
           <p>Europe</p>
           <p>Visibility:</p>
           <p>Public</p>
           <p>Players:</p>
-          <p v-if="loading">... / 7</p>
+          <p v-if="player_loading">... / 7</p>
           <p v-else>{{ players?.length }} / 7</p>
         </div>
       </div>
@@ -62,46 +66,26 @@
   import type { HostData, PlayerData } from "@/models/API_support";
   import router from "@/router";
   import { RoomStatus } from "@/models/API_support";
+  import { useGameStore } from "@/stores/GameStore";
+  import { API_URL, useInitGameStore } from "@/stores/InitGameStore";
+  import { storeToRefs } from "pinia";
 
-  const API_URL = import.meta.env.VITE_HOST_URL + "/api";
   const REFRESH_RATE = 3000;
 
   const authStore = useAuthStore();
+  const initGameStore = useInitGameStore();
+  const { hostRoom, hostLoading, hostError, hostErrorM } =
+    storeToRefs(initGameStore);
+  const gameStore = useGameStore();
 
   // Get the host ID from the route
   const route = useRoute();
   const host_id = String(route.params.id);
 
-  // Container for host data
-  const hostRoom = ref<HostData>();
+  initGameStore.fetchHostRoom(parseInt(host_id), false);
 
-  // Load host data from the API once
-  const host_loading = ref(false);
   const error = ref(false);
   const errorM = ref("");
-
-  const host_config = {
-    method: "get",
-    url: API_URL + "/host/",
-  };
-
-  host_loading.value = true;
-
-  axios(host_config)
-    .then((response) => {
-      // Get the room data from the response
-      const allHosts: HostData[] = response.data;
-
-      hostRoom.value = allHosts.find((host) => host.id.toString() === host_id);
-
-      host_loading.value = false;
-    })
-    .catch((err) => {
-      error.value = true;
-      errorM.value = err;
-      console.log(err);
-      host_loading.value = false;
-    });
 
   // Reload players data from the API every REFRESH_RATE
   // Prepare data and config for the request
@@ -162,7 +146,11 @@
           .then((response) => {
             const status = response.data?.status;
             if (status === RoomStatus.INITIALIZE) {
-              router.push("/game/" + response.data?.room_id);
+              // Redirect user to the game
+              router.push({
+                name: "game",
+                params: { host_id: host_id, room_id: response.data?.room_id },
+              });
               return;
             }
           })
@@ -202,8 +190,11 @@
         // If start successful, redirect to game
         const room_id = response.data?.data?.createRoom?.room?.id;
         if (room_id) {
-          // TODO: Create a new apollo client in the store for the game
-          router.push({ name: "game", params: { id: room_id } });
+          // Redirect user to the game
+          router.push({
+            name: "game",
+            params: { host_id: host_id, room_id: room_id },
+          });
           game_loading.value = false;
           return;
         }

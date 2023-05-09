@@ -1,14 +1,17 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { useApolloClient } from "@vue/apollo-composable";
+import { provideApolloClient, useApolloClient } from "@vue/apollo-composable";
 import { PLAYER_ORDERS, TURNS, UPDATE_ORDER } from "@/gql/documents/map";
 import type { OrderType, TurnType } from "@/gql/graphql";
 import { RoomOrderInstructionChoices } from "@/gql/graphql";
 import type { MutationOptions } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client/core";
 
 export const useGameStore = defineStore("GameStore", () => {
   const { resolveClient } = useApolloClient();
   const client = resolveClient();
+
+  const roomID = ref<number>(0);
 
   const activeUnitID = ref<number>(0);
   const currentLocationID = ref<number>(0);
@@ -41,7 +44,7 @@ export const useGameStore = defineStore("GameStore", () => {
     // Get the order id for the current unit and turn
     const currOrderID = orders.value.find(
       (o) =>
-        parseInt(o.targetUnit!.id) === activeUnitID.value &&
+        parseInt(o.unit!.id) === activeUnitID.value &&
         o.turn!.id === turns.value[0].id
     )?.id;
 
@@ -115,7 +118,16 @@ export const useGameStore = defineStore("GameStore", () => {
     return order_update_result.data.updateOrder.ok;
   };
 
+  const setNewGraphQLLink = (url: string) => {
+    const httpLink = new HttpLink({
+      uri: url,
+    });
+
+    client.setLink(httpLink);
+  };
+
   return {
+    roomID,
     orders,
     activeUnitID,
     currentLocationID,
@@ -127,5 +139,6 @@ export const useGameStore = defineStore("GameStore", () => {
     setCurrentLocationID,
     updateOrder,
     turnStart,
+    setNewGraphQLLink,
   };
 });
