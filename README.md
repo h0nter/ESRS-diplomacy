@@ -1,3 +1,7 @@
+[![Build and Push Django Images to AWS ECR](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/main.yml/badge.svg)](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/main.yml)
+[![Django Host Tests CI](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/host-tests.yml/badge.svg)](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/host-tests.yml)
+[![Django Room Tests CI](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/room-tests.yml/badge.svg)](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/room-tests.yml)
+[![Run Frontend (Vue.js) Tests](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/frontend-tests.yml/badge.svg)](https://github.com/h0nter/ESRS-diplomacy/actions/workflows/frontend-tests.yml)
 # ESRS-democracy
 Democracy game developed as part of the submission for the ESRS module.
 
