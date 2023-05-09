@@ -32,13 +32,9 @@ jobs:
       - name: Install Pip Updates
         run: |
           python -m pip install --upgrade pip
-      - name: Install host requirements
+      - name: Install requirements
         run: |
-          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/hostproject/
-          pip install -r requirements.txt
-      - name: Install room requirements
-        run: |
-          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/
+          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/
           pip install -r requirements.txt
       - name: Run Host Tests
         # env:
