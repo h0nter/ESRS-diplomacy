@@ -1,0 +1,10 @@
+[
+    {
+        "model": "room.map",
+        "pk": 1,
+        "fields": {
+            "name": "Europe",
+            "max_countries": 7
+        }
+    }
+]

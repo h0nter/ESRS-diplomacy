@@ -1,14 +1,33 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
+import { createApp, h, provide } from "vue";
+
+import { DefaultApolloClient } from "@vue/apollo-composable";
+import { apolloClient } from "@/apollo-config";
 
 import App from "./App.vue";
 import router from "./router";
 
+import { createPinia } from "pinia";
+
 import "./assets/main.css";
 
-const app = createApp(App);
+import "./index.css";
 
-app.use(createPinia());
+import NavigationBar from "@/components/NavigationBar.vue";
+import Spinner from "@/components/Spinner.vue";
+
+const app = createApp({
+  setup() {
+    provide(DefaultApolloClient, apolloClient);
+  },
+  render: () => h(App),
+});
+
 app.use(router);
+
+const pinia = createPinia();
+app.use(pinia);
+
+app.component("Navigation-Bar", NavigationBar);
+app.component("Spinner", Spinner);
 
 app.mount("#app");

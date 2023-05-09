@@ -9,6 +9,8 @@ __pycache__/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+backend/roomproject/room.sqlite3
+backend/hostproject/host.sqlite3
 media
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
@@ -282,3 +284,10 @@ yarn-error.log
 
 ### Jetbrains IDEs
 .idea/
+
+## vscode
+.vscode/
+
+### GQL Frontend Schema
+remote-schema.graphql
+backend/roomproject/room.sqlite3

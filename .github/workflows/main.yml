@@ -1,0 +1,62 @@
+name: Build and Push Django Images to AWS ECR
+on:
+  push:
+    branches: [ dev, containers ]
+jobs:
+  build-and-push:
+    name: Build and Push to ECR
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerpath: backend/roomproject/
+            dockerfile: dockerfile
+            image: django-room-image
+            repository: django-room
+          - dockerpath: backend/hostproject/
+            dockerfile: dockerfile
+            image: django-host-image
+            repository: django-host
+          - dockerpath: frontend/Diplomacy/
+            dockerfile: dockerfile
+            image: vue-image
+            repository: vue
+    permissions:
+      contents: read
+      packages: write
+
+
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # Enter access key here in giuthub secrets
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Enter secret key here in giuthub secrets
+        aws-region: eu-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+  #  - name: Automatic Tagging of Releases
+  #    id: increment-git-tag
+  #    run: |
+  #      bash ./build/git_update.sh -v major
+
+    - name: Build, Tag, and Push the django and vue images to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ matrix.repository }}
+        IMAGE_TAG: ${{ matrix.image }}
+      run: |
+        cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/${{ matrix.dockerpath }}
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ${{ matrix.dockerfile }} .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        

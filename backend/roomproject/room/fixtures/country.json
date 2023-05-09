@@ -1,0 +1,65 @@
+[
+    {
+        "model": "room.country",
+        "pk": 1,
+        "fields": {
+            "name": "England",
+            "map": 1,
+            "colour": "#0000FF"
+        }
+    },
+    {
+        "model": "room.country",
+        "pk": 2,
+        "fields": {
+            "name": "France",
+            "map": 1,
+            "colour": "#00FFFF"
+        }
+    },
+    {
+        "model": "room.country",
+        "pk": 3,
+        "fields": {
+            "name": "Germany",
+            "map": 1,
+            "colour": "#808080"
+        }
+    },
+    {
+        "model": "room.country",
+        "pk": 4,
+        "fields": {
+            "name": "Italy",
+            "map": 1,
+            "colour": "#00FF00"
+        }
+    },
+    {
+        "model": "room.country",
+        "pk": 5,
+        "fields": {
+            "name": "Austria",
+            "map": 1,
+            "colour": "#FF0000"
+        }
+    },
+    {
+        "model": "room.country",
+        "pk": 6,
+        "fields": {
+            "name": "Russia",
+            "map": 1,
+            "colour": "#008000"
+        }
+    },
+    {
+        "model": "room.country",
+        "pk": 7,
+        "fields": {
+            "name": "Turkey",
+            "map": 1,
+            "colour": "#FFFF00"
+        }
+    }
+]

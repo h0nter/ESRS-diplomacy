@@ -1,0 +1,1074 @@
+[
+    {
+        "model": "room.location",
+        "pk": 1,
+        "fields": {
+            "name": "Norwegian Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 220,
+            "text_pos_y":  70,
+            "map": 1,
+            "abbreviation": "NWG"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 2,
+        "fields": {
+            "name": "North Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 190,
+            "text_pos_y":  230,
+            "map": 1,
+            "abbreviation": "NTH"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 3,
+        "fields": {
+            "name": "Adriatic Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 308,
+            "text_pos_y":  460,
+            "map": 1,
+            "abbreviation": "ADR"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 4,
+        "fields": {
+            "name": "Aegean Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 392,
+            "text_pos_y":  510,
+            "map": 1,
+            "abbreviation": "AEG"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 5,
+        "fields": {
+            "name": "Albania",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 333,
+            "text_pos_y":  460,
+            "map": 1,
+            "abbreviation": "Alb"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 6,
+        "fields": {
+            "name": "Ankara",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 510,
+            "text_pos_y":  455,
+            "map": 1,
+            
+            "abbreviation": "Ank"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 7,
+        "fields": {
+            "name": "Apulia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 291,
+            "text_pos_y":  470,
+            "map": 1,
+            "abbreviation": "Apu"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 8,
+        "fields": {
+            "name": "Armenia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 585,
+            "text_pos_y":  467,
+            "map": 1,
+            "abbreviation": "Arm"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 9,
+        "fields": {
+            "name": "Baltic Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 308,
+            "text_pos_y":  260,
+            "map": 1,
+            "abbreviation": "BAL"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 10,
+        "fields": {
+            "name": "Barents Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 440,
+            "text_pos_y":  15,
+            "map": 1,
+            "abbreviation": "BAR"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 11,
+        "fields": {
+            "name": "Belgium",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 192,
+            "text_pos_y":  321,
+            "map": 1,
+            "abbreviation": "Bel"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 12,
+        "fields": {
+            "name": "Berlin",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 272,
+            "text_pos_y":  292,
+            "map": 1,
+            
+            "abbreviation": "Ber"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 13,
+        "fields": {
+            "name": "Black Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 500,
+            "text_pos_y":  418,
+            "map": 1,
+            "abbreviation": "BLA"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 14,
+        "fields": {
+            "name": "Bohemia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 283,
+            "text_pos_y":  347,
+            "map": 1,
+            "abbreviation": "Boh"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 15,
+        "fields": {
+            "name": "Brest",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 130,
+            "text_pos_y":  345,
+            "map": 1,
+            
+            "abbreviation": "Bre"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 16,
+        "fields": {
+            "name": "Budapest",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 350,
+            "text_pos_y":  390,
+            "map": 1,
+            
+            "abbreviation": "Bud"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 17,
+        "fields": {
+            "name": "Bulgaria",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 395,
+            "text_pos_y":  443,
+            "map": 1,
+            "abbreviation": "Bul"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 18,
+        "fields": {
+            "name": "Burgundy",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 185,
+            "text_pos_y":  371,
+            "map": 1,
+            "abbreviation": "Bur"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 19,
+        "fields": {
+            "name": "Clyde",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 133,
+            "text_pos_y":  201,
+            "map": 1,
+            "abbreviation": "Cly"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 20,
+        "fields": {
+            "name": "Constantinople",
+            "is_sea": true,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 435,
+            "text_pos_y":  483,
+            "map": 1,
+            
+            "abbreviation": "Con"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 21,
+        "fields": {
+            "name": "Denmark",
+            "is_sea": true,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 250,
+            "text_pos_y":  235,
+            "map": 1,
+            "abbreviation": "Den"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 22,
+        "fields": {
+            "name": "Eastern Mediterranean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 455,
+            "text_pos_y":  550,
+            "map": 1,
+            "abbreviation": "EAS"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 23,
+        "fields": {
+            "name": "Edinburgh",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 152,
+            "text_pos_y":  202,
+            "map": 1,
+            
+            "abbreviation": "Edi"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 24,
+        "fields": {
+            "name": "English Channel",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 135,
+            "text_pos_y":  306,
+            "map": 1,
+            "abbreviation": "ENG"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 25,
+        "fields": {
+            "name": "Finland",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 375,
+            "text_pos_y":  160,
+            "map": 1,
+            "abbreviation": "Fin"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 26,
+        "fields": {
+            "name": "Galicia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 355,
+            "text_pos_y":  343,
+            "map": 1,
+            "abbreviation": "Gal"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 27,
+        "fields": {
+            "name": "Gascony",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 130,
+            "text_pos_y":  400,
+            "map": 1,
+            "abbreviation": "Gas"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 28,
+        "fields": {
+            "name": "Greece",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 352,
+            "text_pos_y":  490,
+            "map": 1,
+            "abbreviation": "Gre"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 29,
+        "fields": {
+            "name": "Gulf of Lyon",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 170,
+            "text_pos_y":  457,
+            "map": 1,
+            "abbreviation": "LYO"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 30,
+        "fields": {
+            "name": "Gulf of Bothnia",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 328,
+            "text_pos_y":  175,
+            "map": 1,
+            "abbreviation": "BOT"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 31,
+        "fields": {
+            "name": "Helgoland Bight",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 220,
+            "text_pos_y":  265,
+            "map": 1,
+            "abbreviation": "HEL"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 32,
+        "fields": {
+            "name": "Holland",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 210,
+            "text_pos_y":  290,
+            "map": 1,
+            "abbreviation": "Hol"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 33,
+        "fields": {
+            "name": "Ionian Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 315,
+            "text_pos_y":  520,
+            "map": 1,
+            "abbreviation": "ION"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 34,
+        "fields": {
+            "name": "Irish Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 95,
+            "text_pos_y":  270,
+            "map": 1,
+            "abbreviation": "IRI"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 35,
+        "fields": {
+            "name": "Kiel",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 237,
+            "text_pos_y":  285,
+            "map": 1,
+            
+            "abbreviation": "Kie"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 36,
+        "fields": {
+            "name": "Liverpool",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 138,
+            "text_pos_y":  230,
+            "map": 1,
+            
+            "abbreviation": "Lvp"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 37,
+        "fields": {
+            "name": "Livonia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 380,
+            "text_pos_y":  260,
+            "map": 1,
+            "abbreviation": "Lvn"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 38,
+        "fields": {
+            "name": "London",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 160,
+            "text_pos_y":  280,
+            "map": 1,
+            
+            "abbreviation": "Lon"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 39,
+        "fields": {
+            "name": "Marseilles",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 173,
+            "text_pos_y":  412,
+            "map": 1,
+            
+            "abbreviation": "Mar"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 40,
+        "fields": {
+            "name": "Mid Atlantic Ocean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 50,
+            "text_pos_y":  355,
+            "map": 1,
+            "abbreviation": "MAO"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 41,
+        "fields": {
+            "name": "Moscow",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 460,
+            "text_pos_y":  265,
+            "map": 1,
+            
+            "abbreviation": "Mos"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 42,
+        "fields": {
+            "name": "Munich",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 235,
+            "text_pos_y":  360,
+            "map": 1,
+            
+            "abbreviation": "Mun"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 43,
+        "fields": {
+            "name": "Naples",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 293,
+            "text_pos_y":  493,
+            "map": 1,
+            
+            "abbreviation": "Nap"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 44,
+        "fields": {
+            "name": "North Atlantic Ocean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 65,
+            "text_pos_y":  120,
+            "map": 1,
+            "abbreviation": "NAO"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 45,
+        "fields": {
+            "name": "North Africa",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 130,
+            "text_pos_y":  536,
+            "map": 1,
+            "abbreviation": "Naf"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 46,
+        "fields": {
+            "name": "Norway",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 250,
+            "text_pos_y":  175,
+            "map": 1,
+            "abbreviation": "Nwy"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 47,
+        "fields": {
+            "name": "Paris",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 155,
+            "text_pos_y":  358,
+            "map": 1,
+            
+            "abbreviation": "Par"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 48,
+        "fields": {
+            "name": "Picardy",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 168,
+            "text_pos_y":  326,
+            "map": 1,
+            "abbreviation": "Pic"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 49,
+        "fields": {
+            "name": "Piedmont",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 215,
+            "text_pos_y":  408,
+            "map": 1,
+            "abbreviation": "Pie"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 50,
+        "fields": {
+            "name": "Portugal",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 22,
+            "text_pos_y":  440,
+            "map": 1,
+            "abbreviation": "Por"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 51,
+        "fields": {
+            "name": "Prussia",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 335,
+            "text_pos_y":  283,
+            "map": 1,
+            "abbreviation": "Pru"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 52,
+        "fields": {
+            "name": "Rome",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 257,
+            "text_pos_y":  452,
+            "map": 1,
+            
+            "abbreviation": "Rom"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 53,
+        "fields": {
+            "name": "Ruhr",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 215,
+            "text_pos_y":  330,
+            "map": 1,
+            "abbreviation": "Ruh"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 54,
+        "fields": {
+            "name": "Rumania",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 410,
+            "text_pos_y":  415,
+            "map": 1,
+            "abbreviation": "Rum"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 55,
+        "fields": {
+            "name": "Serbia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 350,
+            "text_pos_y":  450,
+            "map": 1,
+            "abbreviation": "Ser"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 56,
+        "fields": {
+            "name": "Sevastopol",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 540,
+            "text_pos_y":  350,
+            "map": 1,
+            
+            "abbreviation": "Sev"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 57,
+        "fields": {
+            "name": "Silesia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 304,
+            "text_pos_y":  325,
+            "map": 1,
+            "abbreviation": "Sil"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 58,
+        "fields": {
+            "name": "Skagerrak",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 255,
+            "text_pos_y":  220,
+            "map": 1,
+            "abbreviation": "SKA"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 59,
+        "fields": {
+            "name": "Smyrna",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 460,
+            "text_pos_y":  510,
+            "map": 1,
+            
+            "abbreviation": "Smy"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 60,
+        "fields": {
+            "name": "Spain",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 85,
+            "text_pos_y":  450,
+            "map": 1,
+            "abbreviation": "Spa"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 61,
+        "fields": {
+            "name": "St Petersburg",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 460,
+            "text_pos_y":  149,
+            "map": 1,
+            
+            "abbreviation": "Stp"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 62,
+        "fields": {
+            "name": "Sweden",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 300,
+            "text_pos_y":  170,
+            "map": 1,
+            "abbreviation": "Swe"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 63,
+        "fields": {
+            "name": "Syria",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 570,
+            "text_pos_y":  535,
+            "map": 1,
+            "abbreviation": "Syr"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 64,
+        "fields": {
+            "name": "Trieste",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 305,
+            "text_pos_y":  425,
+            "map": 1,
+            
+            "abbreviation": "Tri"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 65,
+        "fields": {
+            "name": "Tunis",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 210,
+            "text_pos_y":  555,
+            "map": 1,
+            "abbreviation": "Tun"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 66,
+        "fields": {
+            "name": "Tuscany",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 240,
+            "text_pos_y":  425,
+            "map": 1,
+            "abbreviation": "Tus"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 67,
+        "fields": {
+            "name": "Tyrolia",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 255,
+            "text_pos_y":  380,
+            "map": 1,
+            "abbreviation": "Tyr"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 68,
+        "fields": {
+            "name": "Tyrrhenian Sea",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 245,
+            "text_pos_y":  495,
+            "map": 1,
+            "abbreviation": "TYS"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 69,
+        "fields": {
+            "name": "Ukraine",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 420,
+            "text_pos_y":  340,
+            "map": 1,
+            "abbreviation": "Ukr"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 70,
+        "fields": {
+            "name": "Venice",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": true,
+            "text_pos_x": 245,
+            "text_pos_y":  407,
+            "map": 1,
+            
+            "abbreviation": "Ven"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 71,
+        "fields": {
+            "name": "Vienna",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 307,
+            "text_pos_y":  370,
+            "map": 1,
+            
+            "abbreviation": "Vie"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 72,
+        "fields": {
+            "name": "Wales",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 130,
+            "text_pos_y":  275,
+            "map": 1,
+            "abbreviation": "Wal"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 73,
+        "fields": {
+            "name": "Warsaw",
+            "is_sea": false,
+            "is_coast": false,
+            "unit_spawn": true,
+            "text_pos_x": 355,
+            "text_pos_y":  304,
+            "map": 1,
+            
+            "abbreviation": "War"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 74,
+        "fields": {
+            "name": "Western Mediterranean",
+            "is_sea": true,
+            "is_coast": false,
+            "unit_spawn": false,
+            "text_pos_x": 160,
+            "text_pos_y":  491,
+            "map": 1,
+            "abbreviation": "WES"
+        }
+    },
+    {
+        "model": "room.location",
+        "pk": 75,
+        "fields": {
+            "name": "Yorkshire",
+            "is_sea": false,
+            "is_coast": true,
+            "unit_spawn": false,
+            "text_pos_x": 155,
+            "text_pos_y":  254,
+            "map": 1,
+            "abbreviation": "Yor"
+        }
+    }
+]
