@@ -51,3 +51,17 @@ def player_list(request):
             })
         
         return Response(res)
+
+
+@api_view(['POST'])
+def host_status(request):
+    if request.method == 'POST':
+        host_id = request.POST['host_id']
+        res = None
+        for host in Host.objects.filter(pk=host_id):
+            res = {
+                "status": host.status,
+                "room_id": host.room_id
+            }
+
+        return Response(res)

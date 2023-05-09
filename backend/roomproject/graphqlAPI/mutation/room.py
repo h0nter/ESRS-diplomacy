@@ -29,7 +29,7 @@ class InitialRoom(Mutation):
     @staticmethod
     def mutate(root, info, room_id):
         room = Room.objects.get(pk=room_id)
-        room.status = 'INITIALIZE'
+        room.status = RoomStatus.INITIALIZE
         room.save()
         return InitialRoom(room=room)
     
