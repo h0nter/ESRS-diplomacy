@@ -5,7 +5,7 @@ ENV PYTHONBUFFERED 1
 WORKDIR /
 #home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/
 
-COPY /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 

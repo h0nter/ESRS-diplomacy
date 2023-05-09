@@ -11,13 +11,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./backend/roomproject/dockerfile
+          - dockerpath: /backend/roomproject/
+            dockerfile: dockerfile
             image: django-room-image
             repository: django-room
-          - dockerfile: ./backend/hostproject/dockerfile
+          - dockerpath: /backend/hostproject/
+            dockerfile: dockerfile
             image: django-host-image
             repository: django-host
-          - dockerfile: ./frontend/Diplomacy/dockerfile
+          - dockerpath: /frontend/Diplomacy/
+            dockerfile: dockerfile
             image: vue-image
             repository: vue
     permissions:
@@ -53,7 +56,7 @@ jobs:
         ECR_REPOSITORY: ${{ matrix.repository }}
         IMAGE_TAG: ${{ matrix.image }}
       run: |
-        pwd
+        cd ${{ matrix.dockerpath }}
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ${{ matrix.dockerfile }} .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         
