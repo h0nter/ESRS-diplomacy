@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-WORKDIR /
+WORKDIR /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/frontend/Diplomacy/
 
 COPY COPY package*.json ./
 
