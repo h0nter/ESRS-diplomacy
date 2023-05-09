@@ -80,6 +80,9 @@
   import { useRouter } from "vue-router";
   import { useAuthStore } from "@/stores/AuthStore";
   import axios from "axios";
+  import { RoomStatus } from "@/models/API_support";
+
+  const API_URL = import.meta.env.VITE_HOST_URL + "/api";
 
   interface game {
     id: string;
@@ -101,14 +104,14 @@
 
   const config = {
     method: "get",
-    url: "http://127.0.0.1:8000/api/host/",
+    url: API_URL + "/host/",
   };
 
   axios(config)
     .then((response) => {
       let loadedGames: Array<game> = [];
       response.data.forEach((data) => {
-        if (data.status != "REGISTERD") {
+        if (data.status != RoomStatus.REGISTERED) {
           return;
         }
         let newGame = {
@@ -132,18 +135,47 @@
       console.log(loading.value);
     });
 
-  function joinGame(id: string) {
-    const data = new FormData();
-    data.append("room", id);
-    data.append("user", authStore.userID);
+  async function joinGame(id: string) {
+    // Get the list of players in the game
+    const pl_req_data = new FormData();
+    pl_req_data.append("host_id", id);
 
-    const config = {
+    const pl_req_config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/player/",
-      data: data,
+      url: API_URL + "/player_list/",
+      data: pl_req_data,
     };
 
-    axios(config)
+    let joined = false;
+
+    // Fetch the list - if we can't load it, abandon the join
+    const response = await axios(pl_req_config).catch(function (error) {
+      alert("Failed to join game");
+    });
+
+    // Check if the user is already in the game
+    response?.data.filter((data) => {
+      if (data.user_id.toString() === authStore.userID) {
+        // If the user is already in the game, redirect to the lobby
+        router.push("/lobby/" + id + "/");
+        joined = true;
+      }
+    });
+
+    // If redirecting to the lobby, don't join the game
+    if (joined) return;
+
+    const join_req_data = new FormData();
+    join_req_data.append("host", id);
+    join_req_data.append("user", authStore.userID);
+
+    const join_req_config = {
+      method: "post",
+      url: API_URL + "/player/",
+      data: join_req_data,
+    };
+
+    axios(join_req_config)
       .then(function (response) {
         router.push("/lobby/" + id + "/");
       })

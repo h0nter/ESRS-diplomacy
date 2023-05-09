@@ -216,6 +216,11 @@ export type Query = {
 };
 
 
+export type QueryMapArgs = {
+  mapId?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryOrderArgs = {
   roomId?: InputMaybe<Scalars['Int']>;
   turnId?: InputMaybe<Scalars['Int']>;
@@ -224,12 +229,14 @@ export type QueryOrderArgs = {
 
 
 export type QueryPlayerArgs = {
+  roomId?: InputMaybe<Scalars['ID']>;
   userId?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type QueryRoomArgs = {
   playerId?: InputMaybe<Scalars['Int']>;
+  roomId?: InputMaybe<Scalars['ID']>;
 };
 
 

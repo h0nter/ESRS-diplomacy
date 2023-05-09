@@ -29,13 +29,13 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/lobby",
+    path: "/lobby/:id",
     name: "lobby",
     component: () => import("@/views/LobbyView.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path: "/game",
+    path: "/game/:id",
     name: "game",
     component: () => import("@/views/GameView.vue"),
     meta: { requiresAuth: true },

@@ -136,7 +136,7 @@
 
     let config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/host/",
+      url: import.meta.env.VITE_HOST_URL + "/api/host/",
       data: data,
     };
 
@@ -144,26 +144,7 @@
 
     axios(config)
       .then((response) => {
-        let data = new FormData();
-        data.append("host_id", response.data.id);
-
-        var config = {
-          method: "post",
-          url: "http://127.0.0.1:8000/api/start_game/",
-          data: data,
-        };
-
-        axios(config)
-          .then((response) => {
-            console.log(response.data.data.createRoom.room.id);
-            router.push("/lobby/" + response.data.data.createRoom.room.id);
-          })
-          .catch((err) => {
-            error.value = true;
-            errorM.value = err;
-            console.log(err);
-            loading.value = false;
-          });
+        router.push("/lobby/" + response.data.id);
       })
       .catch((err) => {
         error.value = true;
