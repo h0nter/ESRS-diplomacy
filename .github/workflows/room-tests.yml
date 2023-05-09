@@ -1,4 +1,4 @@
-name: Django Tests CI
+name: Django Room Tests CI
 
 on:
   push:
@@ -31,20 +31,8 @@ jobs:
           python-version: '3.10'
           cache: 'pip'
       - run: pip install --upgrade pip
-      - run: pip install -r /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/requirements.txt
-      - run: pip test
-      - name: Run Host Tests
-        # env:
-         # DEBUG: ${{ secrets.DEBUG }}
-         # SECRET_KEY: ${{ secrets.SECRET_KEY }}
-         # DB_ENGINE: ${{ secrets.DB_ENGINE }}
-         # DB_NAME: ${{ secrets.DB_NAME }}
-         # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
-         # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-        run: |
-          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/hostproject/
-          python manage.py test
-      - name: Run Host Tests
+      - run: pip install -r /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/requirements.txt
+      - name: Run Room Tests
           # env:
            # DEBUG: ${{ secrets.DEBUG }}
            # SECRET_KEY: ${{ secrets.SECRET_KEY }}
