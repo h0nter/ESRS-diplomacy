@@ -5,59 +5,141 @@ from room.models.order import Order, MoveType
 from room.models.outcome import Outcome
 from room.models.turn import Turn
 from room.models.unit import Unit
-from django.core.management import call_command
+from room.models.country import Country
+from room.models.location import Location
+from room.models.location import Map
+from room.models.location_owner import LocationOwner
+from room.models.player import Player
+from django.core.management import call_command, base
+from django.core.management.commands import loaddata
+import json
+import datetime
+import os
+
 
 class Step:
     @classmethod
     def __init__(cls, room_id: int):
+        print('Step class init:', room_id)
         cls.room = Room.objects.get(pk=room_id)
-        cls.status = cls.room.room_status
-        if cls.status == RoomStatus.REGISTERED:  # Formating the room database
-            cls.initialize()
-            # sets RoomStatus to OPEN
+        cls.status = cls.room.status
+        cls.map_pk = 1 if cls.room.map is None else int(cls.room.map.pk)
 
-    # @classmethod
-    # def room_factory(cls, room_id):
-    #     return cls(room_id)
+        print(cls.status)
+        if cls.status == RoomStatus.INITIALIZE:  # Formating the room database
+            print(cls.status)
+            cls.initialize()
+            #sets RoomStatus to OPEN
 
     @classmethod
     def isFinished(cls) -> bool:
-        return True
+        return cls.current_turn.year > 1950
     
     @classmethod
-    def initializeUnits(cls):
-        for unit in Unit.objects.all():
-            pass
+    def initializeDatabase(cls,path):
+        #json_files = [pos_json for pos_json in os.listdir(cwd) if pos_json.endswith('.json')]
+        json_files = ['map.json','turn.json','country.json','location.json','next_to.json','map_polygon.json']
+        # format the room database
+        try:
+            with open(path + '/room/game/data/loaddata_out.txt', 'w') as file:
+                try:
+                    for json_file in json_files:
+                        file.write(json_file + ': ')
+                        call_command(loaddata.Command(), path+'/room/fixtures/'+json_file, stdout=file, verbosity=1)
+                        file.write('\n')
+                except (IOError, OSError, base.CommandError,Exception) as e:
+                    print("Error writing to file {}".format(e))
+        except (FileNotFoundError, PermissionError, OSError):
+            print("Error opening file")
+    
+    @classmethod
+    def initializeUnits(cls,path):
+        try:
+            with open(path + '/room/game/data/unit.json','r') as j:
+                try:
+                    units_all = json.loads(j.read())
+                    units = units_all[str(cls.map_pk)]
+                    for unit in units:
+                        unitModel = Unit(
+                            owner=Country.objects.get(pk=unit['unit_owner']),
+                            room=cls.room,
+                            location=Location.objects.get(pk=unit['unit_location']),
+                            can_float=unit['unit_can_float']
+                        )
+                        unitModel.save()
+                except (IOError, OSError,Exception) as e:
+                    print("Error writing to file {}".format(e))
+        except (FileNotFoundError, PermissionError, OSError):
+            print("Error opening file")
+        
+
+    @classmethod
+    def initializeLocationOwners(cls,path):
+        try:
+            with open(path+'/room/game/data/location_owner.json','r') as j:
+                try:
+                    location_owners_all = json.loads(j.read())
+                    location_owners = location_owners_all[str(cls.map_pk)]
+                    for location_owner in location_owners:
+                        location_ownerModel = LocationOwner(
+                            current_owner=Country.objects.get(pk=location_owner['country_pk']),
+                            room=cls.room,
+                            location=Location.objects.get(pk=location_owner['location_pk']),
+                        )
+                        location_ownerModel.save()
+                except (IOError, OSError,Exception) as e:
+                    print("{} Error writing to file {}".format(type(e),e))
+        except (FileNotFoundError, PermissionError, OSError):
+            print("Error opening file")
+            
 
     @classmethod
     def initializeTurnOrders(cls):
-        for unit in Unit.objects.all():
+        for unit in Unit.objects.filter(room=cls.room):
             order = Order(instruction=MoveType.HOLD,
-                          turn=cls.current_turn,
-                          target_unit=unit,
-                          current_location=unit.location)
+                        turn=cls.current_turn,
+                        room=cls.room,
+                        unit=unit,
+                        current_location=unit.location)
             order.save()
 
     @classmethod
-    def initialize(cls) -> None:  # format the room database
-        call_command('loaddata', 'room/fixtures/*json')
+    def initializePlayerCountries(cls):
+
+        print('initializePlayerCountries', Player.objects.filter(room=cls.room))
+        i = 1
+        for player in Player.objects.filter(room=cls.room):
+            print(i)
+            player.country = Country.objects.get(pk=i)
+            player.save()
+            i += 1
+
+    @classmethod
+    def initialize(cls) -> None:
+        cwd = os.getcwd()  
+        # Initialise Database 
+        cls.initializeDatabase(cwd)
+        cls.initializeLocationOwners(cwd)
+        cls.initializeUnits(cwd)
+        cls.initializePlayerCountries()
 
         # set first turn
-        cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False)
+        cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False, is_retreat_turn=False)
         cls.current_turn = cls.room.current_turn
-
-        cls.initializeUnits()
         cls.initializeTurnOrders()
-
         cls.room.status = RoomStatus.WAITING
+        if cls.room.map is None:
+            cls.room.map = Map.objects.get(pk=1)
         cls.room.save()
 
     @classmethod
     def waiting(cls) -> None:  # wait for user to make a decision
-
-        # Check time, if past time go to resolve
-        cls.room.status = RoomStatus.RESOLVE
-        cls.room.save()
+        if cls.room.close_time is None:
+            cls.room.set_close_time()
+        elif cls.room.close_time <= datetime.datetime.now():
+            # Check time, if past time go to resolve
+            cls.room.status = RoomStatus.RESOLVE
+            cls.room.save()
 
     @classmethod
     def resolve(cls) -> None:  # resolve orders
@@ -87,10 +169,12 @@ class Step:
 
     @classmethod
     def retreat(cls) -> None:  # wait for user to make a decision on retreats
-
-        # check time, if past time go to resolve
-        cls.room.status = RoomStatus.RESOLVE
-        cls.room.save()
+        if cls.room.close_time is None:
+            cls.room.set_close_time()
+        elif cls.room.close_time <= datetime.datetime.now():
+            # check time, if past time go to resolve
+            cls.room.status = RoomStatus.RESOLVE
+            cls.room.save()
 
     @classmethod
     def update(cls) -> None:  # Update map with new Unit Positions

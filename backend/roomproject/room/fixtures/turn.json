@@ -1,6 +1,7 @@
 [
     {
         "model": "room.turn",
+        "pk": 1,
         "fields": {
         "year":"1901",
         "is_autumn":false
@@ -8,6 +9,7 @@
     },
     {
         "model": "room.turn",
+        "pk": 2,
         "fields": {
         "year":"1901",
         "is_autumn":false,
@@ -16,6 +18,7 @@
     },
     {
         "model": "room.turn",
+        "pk": 3,
         "fields": {
         "year":"1901",
         "is_autumn":true
@@ -23,6 +26,7 @@
     },
     {
         "model": "room.turn",
+        "pk": 4,
         "fields": {
         "year":"1901",
         "is_autumn":true,

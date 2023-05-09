@@ -1,18 +1,44 @@
 from graphene_django import DjangoObjectType
-from room.models.locations import Location, Map, Country, Map_Polygon, Next_to
+from room.models.location import Location, Map_Polygon, Next_to
+from room.models.country import Country
+from room.models.map import Map
 from room.models.order import Order
 from room.models.turn import Turn
 from room.models.outcome import Outcome 
 from room.models.unit import Unit
 from room.models.player import Player
-from room.models.room import Room
+from room.models.room import Room, RoomStatus
+import graphene
 
+from room.models.location_owner import LocationOwner
+
+
+# class RoomStatusChoices(graphene.Enum):
+#     @classmethod
+#     def from_enum(cls, enum):
+#         return cls(*[(choice.value, choice.name) for choice in enum])
+    
+#     REGISTERED = RoomStatus.REGISTERED
+#     INITIALIZE =  RoomStatus.INITIALIZE
+#     WAITING =RoomStatus.WAITING
+#     RESOLVE = RoomStatus.RESOLVE
+#     RETREAT =RoomStatus.RETREAT
+#     UPDATE = RoomStatus.UPDATE
+#     RESUPPLY = RoomStatus.RESUPPLY
+#     CHECKING = RoomStatus.CHECKING
+#     CLOSED = RoomStatus.CLOSED
 
 
 # set access fields, in different models
 class LocationType(DjangoObjectType):
     class Meta: 
         model = Location
+        fields = "__all__"
+
+
+class LocationOwnerType(DjangoObjectType):
+    class Meta:
+        model = LocationOwner
         fields = "__all__"
 
 
@@ -73,7 +99,7 @@ class PlayerType(DjangoObjectType):
 class RoomType(DjangoObjectType):
     class Meta: 
         model = Room
+        # status = graphene.Field(RoomStatusChoices)
         fields = "__all__"
-
-
-
+    
+    

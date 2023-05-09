@@ -111,7 +111,7 @@ class ResolveOrders():
 
     def _check_disruptions(self,mve_order_result,cvy_order_result):
         # determines convoy disruptions
-        from room.models.order import Next_to
+        from room.models.location import Next_to
         from room.models.outcome import Outcome
         for outcome in Outcome.objects.grab_all_cvy_mve_orders(self.turn,self.room,add_marked=True):
             if type(outcome) is not Outcome: raise TypeError('outcome should be of type Outcome')
@@ -177,7 +177,7 @@ class ResolveOrders():
     def _bounce(self):
         from room.models.order import MoveType
         from room.models.outcome import Outcome, OutcomeType
-        from room.models.locations import Location
+        from room.models.location import Location
         # marks all units that can't get where they are going as bounced
         # loops to handle bounce chains
         bounced = 1
@@ -371,7 +371,7 @@ class ResolveOrders():
     def _unbounce(self,outcome_location):
         # unbounce any powerful-enough move that can now take the spot being vacated by the dislodger
         from room.models.outcome import Outcome, OutcomeType
-        from room.models.locations import Location
+        from room.models.location import Location
         # Detecting if there is only one attack winning at site
         if type(outcome_location) is not Location: raise TypeError('outcome_location should be of type Location')
         highest_attack_mve = Outcome.objects.grab_highest_attacking_mve(outcome_location,self.turn,self.room,include_bounce=True)

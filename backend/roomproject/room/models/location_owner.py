@@ -1,5 +1,6 @@
 from django.db import models
-from .locations import Location, Country
+from .location import Location
+from .country import Country
 from .room import Room
 
 
