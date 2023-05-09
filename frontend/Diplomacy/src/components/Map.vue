@@ -22,6 +22,8 @@
         :location_id="territory.id"
         :name="territory.name"
         :countryColor="territory.locationForPlayer[0]?.currentOwner?.colour"
+        :isCoast="territory.isCoast"
+        :unitSpawn="territory.unitSpawn"
         :polygons="territory.polygons"
         :text="territory.abbreviation"
         :textX="territory.textPosX"
@@ -85,6 +87,7 @@
   import { useGameStore } from "@/stores/GameStore";
   import ArrowHeadSetup from "@/components/ArrowHeadSetup.vue";
   import Arrow from "@/components/Arrow.vue";
+  import SpawnPointSetup from "@/components/SpawnPointSetup.vue";
 
   // Load store for handling territory hover and unit clicks
   const mapStore = useMapStore();

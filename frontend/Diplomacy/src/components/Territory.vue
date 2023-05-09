@@ -17,6 +17,10 @@
       "
     />
     <text :x="textX" :y="textY">{{ text }}</text>
+    <g v-if="unitSpawn">
+      <circle :cx="textX + 8" :cy="textY + 6" r="5" class="unit-spawn" />
+      <circle :cx="textX + 8" :cy="textY + 6" r="3" />
+    </g>
   </g>
 
   <!--  v-bind="{'xlink:href' : unit}"-->
@@ -45,6 +49,10 @@
       required: true,
     },
     isCoast: {
+      type: Boolean,
+      required: true,
+    },
+    unitSpawn: {
       type: Boolean,
       required: true,
     },
@@ -179,5 +187,11 @@
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
     pointer-events: none;
+  }
+
+  .unit-spawn {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
   }
 </style>
