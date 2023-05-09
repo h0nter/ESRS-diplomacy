@@ -29,22 +29,16 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-      - name: Change dir
-        run: |
-          cd backend
-          pwd
       - name: Install Pip Updates
         run: |
           python -m pip install --upgrade pip
       - name: Install host requirements
         run: |
-          ls
-          cd hostproject 
+          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/hostproject/
           pip install -r requirements.txt
       - name: Install room requirements
         run: |
-          ls
-          cd ../roomproject
+          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/
           pip install -r requirements.txt
       - name: Run Host Tests
         # env:
@@ -55,7 +49,8 @@ jobs:
          # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
          # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: |
-          python hostproject/manage.py test
+          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/hostproject/
+          python manage.py test
       - name: Run Host Tests
           # env:
            # DEBUG: ${{ secrets.DEBUG }}
@@ -65,5 +60,6 @@ jobs:
            # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
            # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: |
-          python roomproject/manage.py test
+          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/
+          python manage.py test
 
