@@ -12,7 +12,7 @@ class Broadcast(graphene.ObjectType):
     turn = graphene.List(TurnType, room_id=graphene.Int())
     room = graphene.List(RoomType, player_id=graphene.Int(), room_id=graphene.ID())
     player = graphene.List(PlayerType, user_id=graphene.ID(), room_id=graphene.ID())
-    order = graphene.List(OrderType, turn_id=graphene.Int(), room_id=graphene.Int(), unit_id=graphene.Int())
+    order = graphene.List(OrderType, turn_id=graphene.ID(), room_id=graphene.ID(), unit_id=graphene.ID())
 
     """
     A Resolver is a method that helps us answer Queries by fetching data for a Field in our Schema.
@@ -42,12 +42,19 @@ class Broadcast(graphene.ObjectType):
 
     def resolve_player(root, info, **kwargs):
         user_id = kwargs.get('user_id')
-        if user_id != None:
-            return  Player.objects.filter(user_id=user_id)
-
         room_id = kwargs.get('room_id')
+
+        print('user_id', user_id)
+        print('room_id', room_id)
+
+        if user_id is not None and room_id is not None:
+            return Player.objects.filter(user_id=user_id, room_id=room_id)
+
+        if user_id is not None:
+            return Player.objects.filter(user_id=user_id)
+
         if room_id is not None:
-            return  Player.objects.filter(room_id=room_id)
+            return Player.objects.filter(room_id=room_id)
             
         return Player.objects.all()
 
@@ -56,7 +63,7 @@ class Broadcast(graphene.ObjectType):
             turn_id = kwargs.get('turn_id')
             room_id = kwargs.get('room_id')
             unit_id = kwargs.get('unit_id')
-            return Order.objects.filter(room__id=room_id, order__turn__id=turn_id, order__unit__id=unit_id)
+            return Order.objects.filter(room__id=room_id, turn__id=turn_id, unit__id=unit_id)
         else:
             return Order.objects.all()
         
