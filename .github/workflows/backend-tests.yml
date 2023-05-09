@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
-      matrix:
-        python-version: [3.10, 3.11]
+      # matrix:
+      #   python-version: [3.10, 3.11]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,10 +25,10 @@ jobs:
       #    if [ ! -f "/etc/lsb-release" ] ; then
       #      echo "DISTRIB_RELEASE=18.04" > /etc/lsb-release
       #    fi
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.10'
       - name: Change dir
         run: |
           cd backend
