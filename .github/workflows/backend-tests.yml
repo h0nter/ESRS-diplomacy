@@ -38,10 +38,12 @@ jobs:
           python -m pip install --upgrade pip
       - name: Install host requirements
         run: |
+          ls
           cd hostproject 
           pip install -r requirements.txt
       - name: Install room requirements
         run: |
+          ls
           cd ../roomproject
           pip install -r requirements.txt
       - name: Run Host Tests
