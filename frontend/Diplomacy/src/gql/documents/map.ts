@@ -7,6 +7,7 @@ export const INITIAL_MAP_SETUP = gql`
       name
       isCoast
       isSea
+      unitSpawn
       abbreviation
       textPosX
       textPosY

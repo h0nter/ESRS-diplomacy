@@ -22,6 +22,8 @@
         :location_id="territory.id"
         :name="territory.name"
         :countryColor="territory.locationForPlayer[0]?.currentOwner?.colour"
+        :isCoast="territory.isCoast"
+        :unitSpawn="territory.unitSpawn"
         :polygons="territory.polygons"
         :text="territory.abbreviation"
         :textX="territory.textPosX"
