@@ -32,15 +32,16 @@ jobs:
       - name: Change dir
         run: |
           cd backend
+          pwd
       - name: Install Pip Updates
         run: |
           python -m pip install --upgrade pip
       - name: Install host requirements
         run: |
-          pip install -r hostproject/requirements.txt
+          pip install -r /hostproject/requirements.txt
       - name: Install host requirements
         run: |
-          pip install -r roomproject/requirements.txt
+          pip install -r /roomproject/requirements.txt
       - name: Run Host Tests
         # env:
          # DEBUG: ${{ secrets.DEBUG }}
