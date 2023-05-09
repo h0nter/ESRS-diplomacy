@@ -37,7 +37,7 @@ class Step:
         json_files = ['map.json','turn.json','country.json','location.json','next_to.json','map_polygon.json']
         # format the room database
         try:
-            with open('room/game/data/loaddata_out.txt', 'w') as file:
+            with open(path + '/room/game/data/loaddata_out.txt', 'w') as file:
                 try:
                     for json_file in json_files:
                         file.write(json_file + ': ')
