@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 export const useAuthStore = defineStore("AuthStore", () => {
+  const API_URL = import.meta.env.VITE_HOST_URL + "/api";
+
   const token = ref<string | null>(null);
   const userID = ref<string | null>(null);
 
@@ -13,7 +15,7 @@ export const useAuthStore = defineStore("AuthStore", () => {
 
     const config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/get_login/",
+      url: API_URL + "/get_login/",
       data: data,
     };
 
@@ -45,7 +47,7 @@ export const useAuthStore = defineStore("AuthStore", () => {
 
     const config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/register/",
+      url: API_URL + "/register/",
       data: data,
     };
 

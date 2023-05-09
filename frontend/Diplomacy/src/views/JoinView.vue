@@ -82,6 +82,8 @@
   import axios from "axios";
   import { RoomStatus } from "@/models/API_support";
 
+  const API_URL = import.meta.env.VITE_HOST_URL + "/api";
+
   interface game {
     id: string;
     name: string;
@@ -102,7 +104,7 @@
 
   const config = {
     method: "get",
-    url: "http://127.0.0.1:8000/api/host/",
+    url: API_URL + "/host/",
   };
 
   axios(config)
@@ -140,7 +142,7 @@
 
     const pl_req_config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/player_list/",
+      url: API_URL + "/player_list/",
       data: pl_req_data,
     };
 
@@ -169,7 +171,7 @@
 
     const join_req_config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/player/",
+      url: API_URL + "/player/",
       data: join_req_data,
     };
 

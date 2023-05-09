@@ -37,11 +37,11 @@
       <div class="bg-slate-700 p-4">
         <button
           v-if="hostRoom?.hoster.toString() === authStore.userID"
-          class="w-full p-3 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-bold"
+          class="w-full p-3 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-600 rounded-lg font-bold"
+          :disabled="game_loading"
+          v-html="game_loading ? 'Loading...' : 'Start Game'"
           @click="startGame"
-        >
-          Start Game
-        </button>
+        ></button>
         <button
           v-else
           class="w-full p-3 disabled:bg-slate-600 rounded-lg font-bold"
@@ -60,21 +60,29 @@
   import { useAuthStore } from "@/stores/AuthStore";
   import { onMounted, onUnmounted, ref } from "vue";
   import type { HostData, PlayerData } from "@/models/API_support";
+  import router from "@/router";
+  import { RoomStatus } from "@/models/API_support";
+
+  const API_URL = import.meta.env.VITE_HOST_URL + "/api";
+  const REFRESH_RATE = 3000;
 
   const authStore = useAuthStore();
 
+  // Get the host ID from the route
   const route = useRoute();
   const host_id = String(route.params.id);
 
+  // Container for host data
   const hostRoom = ref<HostData>();
 
+  // Load host data from the API once
   const host_loading = ref(false);
   const error = ref(false);
   const errorM = ref("");
 
   const host_config = {
     method: "get",
-    url: "http://127.0.0.1:8000/api/host/",
+    url: API_URL + "/host/",
   };
 
   host_loading.value = true;
@@ -95,28 +103,45 @@
       host_loading.value = false;
     });
 
+  // Reload players data from the API every REFRESH_RATE
+  // Prepare data and config for the request
   const players = ref<PlayerData[]>();
 
   const player_loading = ref(false);
-  const player_error = ref(false);
-  const player_errorM = ref("");
 
   const pl_req_data = new FormData();
   pl_req_data.append("host_id", host_id);
 
   const players_config = {
     method: "post",
-    url: "http://127.0.0.1:8000/api/player_list/",
+    url: API_URL + "/player_list/",
     data: pl_req_data,
   };
 
-  player_loading.value = true;
-
+  // Setup the interval variable for cleanup in onUnmounted
   // eslint-disable-next-line no-undef
   let players_interval: NodeJS.Timeout = null;
 
+  // Handle starting the game if the user isn't the host
+  // Prepare data and config for the request
+  const hs_req_data = new FormData();
+  hs_req_data.append("host_id", host_id);
+
+  const host_status_config = {
+    method: "post",
+    url: API_URL + "/host_status/",
+    data: hs_req_data,
+  };
+
+  // Setup the interval variable for cleanup in onUnmounted
+  // eslint-disable-next-line no-undef
+  let host_status_interval: NodeJS.Timeout = null;
+
+  // Start the intervals on component mount
   onMounted(() => {
+    // Interval for reloading players
     players_interval = setInterval(() => {
+      player_loading.value = true;
       axios(players_config)
         .then((response) => {
           players.value = response.data;
@@ -128,10 +153,71 @@
           errorM.value = err;
           player_loading.value = false;
         });
-    }, 3000);
+    }, REFRESH_RATE);
+
+    // Interval for checking the room status and redirecting to the game
+    if (hostRoom.value?.hoster.toString() !== authStore.userID) {
+      host_status_interval = setInterval(() => {
+        axios(host_status_config)
+          .then((response) => {
+            const status = response.data?.status;
+            if (status === RoomStatus.INITIALIZE) {
+              router.push("/game/" + response.data?.room_id);
+              return;
+            }
+          })
+          .catch((err) => {
+            error.value = true;
+            errorM.value = err;
+          });
+      }, REFRESH_RATE);
+    }
   });
 
+  // Clean up the intervals on component unmount
   onUnmounted(() => {
     clearInterval(players_interval);
+    if (host_status_interval !== null) clearInterval(host_status_interval);
   });
+
+  // Handle game start if user is the host
+  // Game loading status
+  const game_loading = ref(false);
+
+  const startGame = () => {
+    const data = new FormData();
+    data.append("host_id", host_id);
+
+    const start_config = {
+      method: "post",
+      url: API_URL + "/start_game/",
+      data: data,
+    };
+
+    game_loading.value = true;
+
+    axios(start_config)
+      .then((response) => {
+        console.log(response.data);
+        // If start successful, redirect to game
+        const room_id = response.data?.data?.createRoom?.room?.id;
+        if (room_id) {
+          // TODO: Create a new apollo client in the store for the game
+          router.push({ name: "game", params: { id: room_id } });
+          game_loading.value = false;
+          return;
+        }
+        // If start unsuccessful, show error
+        error.value = true;
+        errorM.value =
+          "There was a problem starting your game. Please try again.";
+        game_loading.value = false;
+      })
+      .catch((err) => {
+        error.value = true;
+        errorM.value = err;
+        console.log(err);
+        game_loading.value = false;
+      });
+  };
 </script>

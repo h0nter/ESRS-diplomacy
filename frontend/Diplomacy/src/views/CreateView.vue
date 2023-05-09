@@ -136,7 +136,7 @@
 
     let config = {
       method: "post",
-      url: "http://127.0.0.1:8000/api/host/",
+      url: import.meta.env.VITE_HOST_URL + "/api/host/",
       data: data,
     };
 
