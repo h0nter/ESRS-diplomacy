@@ -1,19 +1,19 @@
-name: Django Tests CI
+name: Django Host Tests CI
 
 on:
-  #push:
-  #  branches: [main]
+  push:
+   branches: [containers]
   pull_request:
     types: [opened, synchronize]
-    branches: [dev]
+    branches: [containers,dev]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
-      matrix:
-        python-version: [3.10, 3.11]
+      # matrix:
+      #   python-version: [3.10, 3.11]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,18 +25,14 @@ jobs:
       #    if [ ! -f "/etc/lsb-release" ] ; then
       #      echo "DISTRIB_RELEASE=18.04" > /etc/lsb-release
       #    fi
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Change dir
-        run: |
-          cd backend
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run Tests
+          python-version: '3.10'
+          cache: 'pip'
+      - run: pip install --upgrade pip
+      - run: pip install -r /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/hostproject/requirements.txt
+      - name: Run Host Tests
         # env:
          # DEBUG: ${{ secrets.DEBUG }}
          # SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -45,4 +41,6 @@ jobs:
          # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
          # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: |
+          cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/hostproject/
           python manage.py test
+

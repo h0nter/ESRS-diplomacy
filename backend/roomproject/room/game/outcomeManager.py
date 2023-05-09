@@ -223,7 +223,7 @@ class OutcomeManager(models.Manager):
         return False
 
     def is_alternative_convoy_route(self,turn,room,order,location):
-        from backend.roomproject.room.models.location import Location, Next_to
+        from room.models.location import Location, Next_to
         from room.models.turn import Turn
         from room.models.order import Order
         from room.models.room import Room
