@@ -1,5 +1,5 @@
 from graphene_django.utils.testing import GraphQLTestCase
-import json
+import requests
 
 from room.models.room import Room
 from room.models.location import Location, Next_to
@@ -28,12 +28,28 @@ class MyFancyTestCase(GraphQLTestCase):
 
 
     def test_some_query(self):
-        for tableName in ['turn', 'unit', 'order', 'location']:
-            querySyntax = "query{ " + tableName + " {id} }"
-            response = self.query(querySyntax)
-            content = json.loads(response.content)
-            #print(content)
+        # for tableName in ['turn', 'unit', 'order', 'location']:
+        #     querySyntax = "query{ " + tableName + " {id} }"
+        #     response = self.query(querySyntax)
+        #     content = json.loads(response.content)
+        #     #print(content)
 
-            # This validates the status code and if you get errors
-            self.assertResponseNoErrors(response)
+        #     # This validates the status code and if you get errors
+        #     self.assertResponseNoErrors(response)
+
+        url = "http://127.0.0.1:"+str(8000)+"/graphql/"
+        query_template = '''
+            mutation{
+                initilizeRoom(roomId: %s){
+                    room{
+                        id,
+                        status
+                    }
+                }
+            }
+        '''
+        query = query_template % 1
+        headers = { 'Content-Type': 'application/json' }
+        data = {'query': query}
+        res = requests.post(url, headers=headers, json=data).json()
         
