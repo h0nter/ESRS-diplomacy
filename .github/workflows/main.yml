@@ -53,6 +53,7 @@ jobs:
         ECR_REPOSITORY: ${{ matrix.repository }}
         IMAGE_TAG: ${{ matrix.image }}
       run: |
+        pwd
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ${{ matrix.dockerfile }} .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         
