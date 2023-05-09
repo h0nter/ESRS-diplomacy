@@ -11,13 +11,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./backend/roomproject/Dockerfile
+          - dockerfile: ./backend/roomproject/dockerfile
             image: django-room-image
             repository: django-room
-          - dockerfile: ./backend/hostproject/Dockerfile
+          - dockerfile: ./backend/hostproject/dockerfile
             image: django-host-image
             repository: django-host
-          - dockerfile: ./frontend/Diplomacy/Dockerfile
+          - dockerfile: ./frontend/Diplomacy/dockerfile
             image: vue-image
             repository: vue
     permissions:
