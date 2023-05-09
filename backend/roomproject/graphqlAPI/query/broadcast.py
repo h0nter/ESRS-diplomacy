@@ -10,8 +10,8 @@ from room.models.room import Room
 class Broadcast(graphene.ObjectType):
 
     turn = graphene.List(TurnType, room_id=graphene.Int())
-    room = graphene.List(RoomType, player_id=graphene.Int())
-    player = graphene.List(PlayerType, user_id=graphene.Int())
+    room = graphene.List(RoomType, player_id=graphene.Int(), room_id=graphene.ID())
+    player = graphene.List(PlayerType, user_id=graphene.ID(), room_id=graphene.ID())
     order = graphene.List(OrderType, turn_id=graphene.Int(), room_id=graphene.Int(), unit_id=graphene.Int())
 
     """
@@ -33,6 +33,10 @@ class Broadcast(graphene.ObjectType):
         if player_id != None:
             room_id = Player.objects.get(pk=player_id).room.pk
             return  Room.objects.filter(pk=room_id)
+
+        room_id = kwargs.get('room_id')
+        if room_id is not None:
+            return  Room.objects.filter(pk=room_id)
             
         return Room.objects.all()
 
@@ -40,6 +44,10 @@ class Broadcast(graphene.ObjectType):
         user_id = kwargs.get('user_id')
         if user_id != None:
             return  Player.objects.filter(user_id=user_id)
+
+        room_id = kwargs.get('room_id')
+        if room_id is not None:
+            return  Player.objects.filter(room_id=room_id)
             
         return Player.objects.all()
 

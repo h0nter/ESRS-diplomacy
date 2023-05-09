@@ -10,6 +10,8 @@ from room.models.player import Player
 from room.models.room import Room, RoomStatus
 import graphene
 
+from room.models.location_owner import LocationOwner
+
 
 # class RoomStatusChoices(graphene.Enum):
 #     @classmethod
@@ -31,6 +33,12 @@ import graphene
 class LocationType(DjangoObjectType):
     class Meta: 
         model = Location
+        fields = "__all__"
+
+
+class LocationOwnerType(DjangoObjectType):
+    class Meta:
+        model = LocationOwner
         fields = "__all__"
 
 

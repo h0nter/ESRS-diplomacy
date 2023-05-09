@@ -13,5 +13,6 @@ urlpatterns =[
     path('get_login/', views.get_login, name='get_login'),
     path('start_game/', views.start_game, name='start_game'),
     path('player_list/', views.player_list, name='player_list'),
+    path('host_status/', views.host_status, name='host_status'),
 ]
 

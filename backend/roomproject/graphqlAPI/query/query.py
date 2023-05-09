@@ -6,14 +6,16 @@ from room.models.country import Country
 from room.models.outcome import Outcome
 from room.models.unit import Unit
 from .broadcast import Broadcast
+from room.models.location_owner import LocationOwner
 
 
 class Query(Broadcast, graphene.ObjectType):
 
-    unit = graphene.List(UnitType)
+    unit = graphene.List(UnitType, room_id=graphene.ID())
     outcome = graphene.List(OutcomeType)
-    location = graphene.List(LocationType)
-    map = graphene.List(MapType)
+    location = graphene.List(LocationType, room_id=graphene.ID())
+    location_owner = graphene.List(LocationOwnerType, room_id=graphene.ID())
+    map = graphene.List(MapType, map_id=graphene.ID())
     country = graphene.List(CountryType)
     map_polygon = graphene.List(Map_PolygonType)
     next_to = graphene.List(Next_toType)
@@ -25,15 +27,33 @@ class Query(Broadcast, graphene.ObjectType):
     """
     
     def resolve_unit(root, info, **kwargs):
+        room_id = kwargs.get('room_id')
+        if room_id is not None:
+            return Unit.objects.filter(room_id=room_id)
+
         return Unit.objects.all()
 
     def resolve_outcome(root, info, **kwargs):
         return Outcome.objects.all()
     
     def resolve_location(root, info, **kwargs):
+        room_id = kwargs.get('room_id')
+        if room_id is not None:
+            return Location.objects.filter(room_id=room_id)
         return Location.objects.all()
 
+    def resolve_location_owner(root, info, **kwargs):
+        room_id = kwargs.get('room_id')
+        if room_id is not None:
+            return LocationOwner.objects.filter(room_id=room_id)
+
+        return LocationOwner.objects.all()
+
     def resolve_map(root, info, **kwargs):
+        map_id = kwargs.get('map_id')
+        if map_id is not None:
+            return Map.objects.filter(pk=map_id)
+
         return Map.objects.all()
 
     def resolve_map_polygon(root, info, **kwargs):

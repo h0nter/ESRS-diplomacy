@@ -9,20 +9,24 @@ from room.models.country import Country
 from room.models.location import Location
 from room.models.location import Map
 from room.models.location_owner import LocationOwner
+from room.models.player import Player
 from django.core.management import call_command, base
 from django.core.management.commands import loaddata
 import json
 import datetime
 import os
 
+
 class Step:
     @classmethod
     def __init__(cls, room_id: int):
+        print('Step class init:', room_id)
         cls.room = Room.objects.get(pk=room_id)
         cls.status = cls.room.status
         cls.map_pk = 1 if cls.room.map is None else int(cls.room.map.pk)
 
-        if cls.status == RoomStatus.REGISTERED:  # Formating the room database
+        print(cls.status)
+        if cls.status == RoomStatus.INITIALIZE:  # Formating the room database
             print(cls.status)
             cls.initialize()
             #sets RoomStatus to OPEN
@@ -91,7 +95,7 @@ class Step:
 
     @classmethod
     def initializeTurnOrders(cls):
-        for unit in Unit.objects.all():
+        for unit in Unit.objects.filter(room=cls.room):
             order = Order(instruction=MoveType.HOLD,
                         turn=cls.current_turn,
                         room=cls.room,
@@ -100,12 +104,24 @@ class Step:
             order.save()
 
     @classmethod
+    def initializePlayerCountries(cls):
+
+        print('initializePlayerCountries', Player.objects.filter(room=cls.room))
+        i = 1
+        for player in Player.objects.filter(room=cls.room):
+            print(i)
+            player.country = Country.objects.get(pk=i)
+            player.save()
+            i += 1
+
+    @classmethod
     def initialize(cls) -> None:
         cwd = os.getcwd()  
         # Initialise Database 
         cls.initializeDatabase(cwd)
         cls.initializeLocationOwners(cwd)
         cls.initializeUnits(cwd)
+        cls.initializePlayerCountries()
 
         # set first turn
         cls.room.current_turn = Turn.objects.get(year=1901, is_autumn=False, is_retreat_turn=False)
