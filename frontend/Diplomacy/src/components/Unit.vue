@@ -29,6 +29,7 @@
   import UnitActionMenu from "@/components/UnitActionMenu.vue";
   import { useMapStore } from "@/stores/MapStore";
   import { useGameStore } from "@/stores/GameStore";
+  import { useAuthStore } from "@/stores/AuthStore";
 
   const props = defineProps({
     unit_id: {
@@ -36,6 +37,10 @@
       required: true,
     },
     type: {
+      type: String,
+      required: true,
+    },
+    owner_id: {
       type: String,
       required: true,
     },
@@ -69,6 +74,7 @@
     },
   });
 
+  const authStore = useAuthStore();
   const mapStore = useMapStore();
   const gameStore = useGameStore();
 
@@ -78,6 +84,7 @@
   const onUnitClick = () => {
     // If no orders are set, show the action menu
     if (
+      authStore.userID === props.owner_id &&
       !mapStore.moveOrder &&
       !mapStore.supportOrder &&
       !mapStore.convoyOrder &&

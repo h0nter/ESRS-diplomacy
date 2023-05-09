@@ -228,21 +228,31 @@ export type Query = {
 };
 
 
+export type QueryLocationArgs = {
+  roomId?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryLocationOwnerArgs = {
+  roomId?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryMapArgs = {
   mapId?: InputMaybe<Scalars['ID']>;
 };
 
 
 export type QueryOrderArgs = {
-  roomId?: InputMaybe<Scalars['Int']>;
-  turnId?: InputMaybe<Scalars['Int']>;
-  unitId?: InputMaybe<Scalars['Int']>;
+  roomId?: InputMaybe<Scalars['ID']>;
+  turnId?: InputMaybe<Scalars['ID']>;
+  unitId?: InputMaybe<Scalars['ID']>;
 };
 
 
 export type QueryPlayerArgs = {
   roomId?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -254,6 +264,11 @@ export type QueryRoomArgs = {
 
 export type QueryTurnArgs = {
   roomId?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryUnitArgs = {
+  roomId?: InputMaybe<Scalars['ID']>;
 };
 
 /** An enumeration. */

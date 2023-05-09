@@ -47,6 +47,7 @@
         :unit_id="unit.id"
         :type="unit.canFloat ? 'F' : 'A'"
         :color="unit.owner.colour"
+        :owner_id="unit.owner.id"
         :location_name="unit.location.name"
         :location_id="unit.location.id"
         :locationIsSea="unit.location.isSea"
@@ -69,15 +70,18 @@
     UPDATE_ORDER,
   } from "@/gql/documents/map";
   import { useQuery, useLazyQuery, useMutation } from "@vue/apollo-composable";
-  import { computed, watchEffect } from "vue";
+  import { computed, watch, watchEffect } from "vue";
 
   import { ref } from "vue";
   import Territory from "@/components/Territory.vue";
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
   import type {
+    LocationOwnerType,
     LocationType,
     OrderType,
+    PlayerType,
+    RoomType,
     TurnType,
     UnitType,
   } from "@/gql/graphql";
@@ -87,26 +91,67 @@
   import { useGameStore } from "@/stores/GameStore";
   import ArrowHeadSetup from "@/components/ArrowHeadSetup.vue";
   import Arrow from "@/components/Arrow.vue";
+  import { useAuthStore } from "@/stores/AuthStore";
 
   // Load store for handling territory hover and unit clicks
+  const authStore = useAuthStore();
   const mapStore = useMapStore();
   const gameStore = useGameStore();
 
   gameStore.turnStart();
 
-  const {
+  let {
     result: init_return,
     loading: init_loading,
     error: init_error,
-  } = useQuery(INITIAL_MAP_SETUP);
+  } = useQuery(INITIAL_MAP_SETUP, () => {
+    return {
+      roomID: gameStore.roomID,
+      userID: parseInt(String(authStore.userID)),
+    };
+  });
 
-  let territories: LocationType[] = [];
-  let units: UnitType[] = [];
+  let territories = ref<LocationType[]>([]);
+  let locationOwners = ref<LocationOwnerType[]>([]);
+  let player = ref<PlayerType | null>(null);
+  let units = ref<UnitType[]>([]);
+  let room = ref<RoomType | null>(null);
 
   watchEffect(() => {
-    territories = computed(() => init_return.value?.location).value;
-    units = computed(() => init_return.value?.unit).value;
+    territories.value = computed(() => init_return.value?.location).value;
+    units.value = computed(() => init_return.value?.unit).value;
+    locationOwners.value = computed(
+      () => init_return.value?.locationOwner
+    ).value;
+    player.value = computed(() => init_return.value?.player).value;
+    room.value = computed(() => init_return.value?.room).value;
   });
+
+  watchEffect(() => {
+    gameStore.activePlayerID = computed(() => player.value?.country?.id).value;
+    gameStore.turnID = computed(() => room.value?.currentTurn?.id).value;
+  });
+
+  // watch(locationOwners, () => {
+  //   for (let i = 0; i < init_return.value?.location.length; i++) {
+  //     init_return.value?.location[i].locationForPlayer =
+  //       locationOwners.value.filter(
+  //         (locationOwner) =>
+  //           locationOwner.location.id === init_return.value?.location[i].id
+  //       );
+  //   }
+  //   // territories.value.forEach((territory) => {
+  //   //   territory.locationForPlayer = locationOwners.value.filter(
+  //   //     (locationOwner) => locationOwner.location.id === territory.id
+  //   //   );
+  //   // });
+  // });
+
+  // watch(units, () => {
+  //   units.value.forEach((unit) => {
+  //     unit.owner.id = player.value?.userId.toString() ?? unit.owner.id;
+  //   });
+  // });
 </script>
 
 <style scoped>

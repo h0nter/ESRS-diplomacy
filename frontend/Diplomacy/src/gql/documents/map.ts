@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client/core";
 
 export const INITIAL_MAP_SETUP = gql`
-  query {
+  query GetInitialMapData($roomID: ID, $userID: ID) {
     location {
       id
       name
@@ -23,10 +23,27 @@ export const INITIAL_MAP_SETUP = gql`
         }
       }
     }
-    unit {
+    locationOwner(roomId: $roomID) {
+      location {
+        id
+      }
+      currentOwner {
+        id
+        name
+        colour
+      }
+    }
+    room(roomId: $roomID) {
+      closeTime
+      currentTurn {
+        id
+      }
+    }
+    unit(roomId: $roomID) {
       id
       canFloat
       owner {
+        id
         name
         colour
       }
@@ -37,6 +54,12 @@ export const INITIAL_MAP_SETUP = gql`
         isCoast
         textPosX
         textPosY
+      }
+    }
+    player(userId: $userID, roomId: $roomID) {
+      userId
+      country {
+        id
       }
     }
   }
@@ -58,8 +81,8 @@ export const UNITS = gql`
 `;
 
 export const PLAYER_ORDERS = gql`
-  query {
-    order {
+  query ($roomID: ID, $unitID: ID, $turnID: ID) {
+    order(roomId: $roomID, unitId: $unitID, turnId: $turnID) {
       id
       instruction
       turn {
@@ -109,7 +132,6 @@ export const UPDATE_ORDER = gql`
     $unitID: ID!
     $instruction: String!
     $turnID: ID!
-    $orderID: ID!
     $roomID: ID = 1
     $targetLocation: ID = null
     $referenceUnitID: ID = null
@@ -127,7 +149,6 @@ export const UPDATE_ORDER = gql`
         referenceUnitCurrentLocationId: $referenceUnitCurrentLocation
         referenceUnitNewLocationId: $referenceUnitTargetLocation
       }
-      id: $orderID
     ) {
       ok
       order {
