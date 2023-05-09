@@ -2,9 +2,10 @@ FROM python:3.10-buster
 
 ENV PYTHONBUFFERED 1
 
-WORKDIR /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/
+WORKDIR /
+#home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/
 
-COPY requirements.txt requirements.txt
+COPY /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/backend/roomproject/requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 

@@ -1,8 +1,9 @@
 FROM node:lts-alpine
 
-WORKDIR /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/frontend/Diplomacy/
+WORKDIR /
+#home/runner/work/ESRS-diplomacy/ESRS-diplomacy/frontend/Diplomacy/
 
-COPY COPY package*.json ./
+COPY COPY /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/frontend/Diplomacy/package*.json ./
 
 RUN npm install
 
