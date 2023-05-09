@@ -5,7 +5,7 @@ on:
   #  branches: [main]
   pull_request:
     types: [opened, synchronize]
-    branches: [dev]
+    branches: [containers,dev]
 
 jobs:
   test:
@@ -32,11 +32,16 @@ jobs:
       - name: Change dir
         run: |
           cd backend
-      - name: Install Dependencies
+      - name: Install Pip Updates
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run Tests
+      - name: Install host requirements
+        run: |
+          pip install -r hostproject/requirements.txt
+      - name: Install host requirements
+        run: |
+          pip install -r roomproject/requirements.txt
+      - name: Run Host Tests
         # env:
          # DEBUG: ${{ secrets.DEBUG }}
          # SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -45,4 +50,15 @@ jobs:
          # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
          # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: |
-          python manage.py test
+          python hostproject/manage.py test
+      - name: Run Host Tests
+          # env:
+           # DEBUG: ${{ secrets.DEBUG }}
+           # SECRET_KEY: ${{ secrets.SECRET_KEY }}
+           # DB_ENGINE: ${{ secrets.DB_ENGINE }}
+           # DB_NAME: ${{ secrets.DB_NAME }}
+           # BASE_WEATHER_API_URL: ${{ secrets.BASE_WEATHER_API_URL }}
+           # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+        run: |
+          python roomproject/manage.py test
+
