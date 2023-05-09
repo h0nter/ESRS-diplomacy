@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from host.models import Host, UserRoom
+from host.models import Host, UserHost
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -10,7 +10,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'first_name', 'last_name')
+        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'id')
         extra_kwargs = {
             'username': {'required': True},
             'password': {'required': True}
@@ -48,5 +48,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class UserRoomSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserRoom
+        model = UserHost
         fields = '__all__'

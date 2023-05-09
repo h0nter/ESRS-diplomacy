@@ -1,6 +1,8 @@
 import graphene
 from .table_type import *
-from room.models.locations import Map, Country, Location
+from room.models.location import Location
+from room.models.map import Map
+from room.models.country import Country
 from room.models.outcome import Outcome
 from room.models.unit import Unit
 from .broadcast import Broadcast

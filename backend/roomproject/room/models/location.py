@@ -1,29 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-
-class Map(models.Model):
-    name = models.CharField(max_length=30)
-    max_countries = models.IntegerField()
-
-    class Meta:
-        verbose_name_plural = 'Maps'
-
-    def __str__(self):
-        return '' + self.name
-
-
-class Country(models.Model):
-
-    name = models.CharField(max_length=10)
-    map = models.ForeignKey(Map, on_delete=models.CASCADE)
-    colour = models.CharField(max_length=10)
-
-    def __str__(self):
-        return '' + self.name
-
-    class Meta:
-        verbose_name_plural = 'Countries'
+from room.models.map import Map
 
 
 class Location(models.Model):

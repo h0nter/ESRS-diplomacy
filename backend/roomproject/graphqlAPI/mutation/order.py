@@ -1,5 +1,5 @@
 import graphene
-from room.models.locations import Location
+from room.models.location import Location
 from room.models.room import Room
 from room.models.order import Turn, Order, Unit, MoveType
 from graphqlAPI.query.table_type import OrderType

@@ -1,6 +1,6 @@
 from django.db import models
 from .room import Room
-from .locations import Country
+from .country import Country
 
 
 class Player(models.Model):

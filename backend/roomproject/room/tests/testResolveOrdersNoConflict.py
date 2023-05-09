@@ -4,7 +4,9 @@ from room.models.room import Room
 from room.models.unit import Unit
 from room.game.legitamiseOrders import LegitamiseOrders
 from room.game.resolveOrders import ResolveOrders
-from room.models.locations import Country, Map, Location, Next_to
+from room.models.location import Location,Next_to
+from room.models.map import Map
+from room.models.country import Country
 from room.models.order import MoveType, Order
 from room.models.outcome import Outcome, OutcomeType
 from room.models.turn import Turn
@@ -15,8 +17,9 @@ class room_app_test_resolve_orders_no_conflict(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.turn = Turn.objects.create(year=1994)
-        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room')
         cls.map = Map.objects.create(name="A test map", max_countries=7)
+        cls.room = Room.objects.create(current_turn=cls.turn,room_name='test Room',map=cls.map)
+
 
         # Locations
         cls.locationA = Location.objects.create(name="location A",map=cls.map)

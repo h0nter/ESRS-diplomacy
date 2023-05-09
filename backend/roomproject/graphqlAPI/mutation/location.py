@@ -1,5 +1,5 @@
 import graphene
-from room.models.locations import Location
+from room.models.location import Location
 from graphqlAPI.query.table_type import LocationType
 
 class UpdateLocation(graphene.Mutation):

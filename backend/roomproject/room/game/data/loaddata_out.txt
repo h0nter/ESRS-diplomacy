@@ -1,0 +1,12 @@
+map.json: Installed 1 object(s) from 1 fixture(s)
+
+turn.json: Installed 4 object(s) from 1 fixture(s)
+
+country.json: Installed 7 object(s) from 1 fixture(s)
+
+location.json: Installed 75 object(s) from 1 fixture(s)
+
+next_to.json: Installed 403 object(s) from 1 fixture(s)
+
+map_polygon.json: Installed 78 object(s) from 1 fixture(s)
+
