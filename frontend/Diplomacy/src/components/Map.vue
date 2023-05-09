@@ -87,7 +87,6 @@
   import { useGameStore } from "@/stores/GameStore";
   import ArrowHeadSetup from "@/components/ArrowHeadSetup.vue";
   import Arrow from "@/components/Arrow.vue";
-  import SpawnPointSetup from "@/components/SpawnPointSetup.vue";
 
   // Load store for handling territory hover and unit clicks
   const mapStore = useMapStore();
