@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client/core";
 
 export const INITIAL_MAP_SETUP = gql`
-  query {
+  query GetInitialMapData($roomID: ID, $userID: ID) {
     location {
       id
       name
@@ -23,10 +23,21 @@ export const INITIAL_MAP_SETUP = gql`
         }
       }
     }
+    locationOwner(roomId: $roomID) {
+      location {
+        id
+      }
+      currentOwner {
+        id
+        name
+        colour
+      }
+    }
     unit {
       id
       canFloat
       owner {
+        id
         name
         colour
       }
@@ -37,6 +48,15 @@ export const INITIAL_MAP_SETUP = gql`
         isCoast
         textPosX
         textPosY
+      }
+    }
+    player(userId: $userID) {
+      userId
+      room {
+        id
+      }
+      country {
+        id
       }
     }
   }

@@ -69,15 +69,17 @@
     UPDATE_ORDER,
   } from "@/gql/documents/map";
   import { useQuery, useLazyQuery, useMutation } from "@vue/apollo-composable";
-  import { computed, watchEffect } from "vue";
+  import { computed, watch, watchEffect } from "vue";
 
   import { ref } from "vue";
   import Territory from "@/components/Territory.vue";
   import Unit from "@/components/Unit.vue";
   import UnitsSetup from "@/components/UnitsSetup.vue";
   import type {
+    LocationOwnerType,
     LocationType,
     OrderType,
+    PlayerType,
     TurnType,
     UnitType,
   } from "@/gql/graphql";
@@ -87,8 +89,10 @@
   import { useGameStore } from "@/stores/GameStore";
   import ArrowHeadSetup from "@/components/ArrowHeadSetup.vue";
   import Arrow from "@/components/Arrow.vue";
+  import { useAuthStore } from "@/stores/AuthStore";
 
   // Load store for handling territory hover and unit clicks
+  const authStore = useAuthStore();
   const mapStore = useMapStore();
   const gameStore = useGameStore();
 
@@ -98,14 +102,46 @@
     result: init_return,
     loading: init_loading,
     error: init_error,
-  } = useQuery(INITIAL_MAP_SETUP);
+  } = useQuery(INITIAL_MAP_SETUP, {
+    variables: {
+      roomID: gameStore.roomID,
+      userID: parseInt(String(authStore.userID)),
+    },
+  });
 
-  let territories: LocationType[] = [];
-  let units: UnitType[] = [];
+  let territories = ref<LocationType[]>([]);
+  let locationOwners = ref<LocationOwnerType[]>([]);
+  let player = ref<PlayerType | null>(null);
+  let units = ref<UnitType[]>([]);
 
   watchEffect(() => {
-    territories = computed(() => init_return.value?.location).value;
-    units = computed(() => init_return.value?.unit).value;
+    territories.value = computed(() => init_return.value?.location).value;
+    units.value = computed(() => init_return.value?.unit).value;
+    locationOwners.value = computed(
+      () => init_return.value?.locationOwner
+    ).value;
+    player.value = computed(() => init_return.value?.player).value;
+  });
+
+  watch(locationOwners, () => {
+    for (let i = 0; i < init_return.value?.location.length; i++) {
+      init_return.value?.location[i].locationForPlayer =
+        locationOwners.value.filter(
+          (locationOwner) =>
+            locationOwner.location.id === init_return.value?.location[i].id
+        );
+    }
+    // territories.value.forEach((territory) => {
+    //   territory.locationForPlayer = locationOwners.value.filter(
+    //     (locationOwner) => locationOwner.location.id === territory.id
+    //   );
+    // });
+  });
+
+  watch(units, () => {
+    units.value.forEach((unit) => {
+      unit.owner.id = player.value?.userId.toString() ?? unit.owner.id;
+    });
   });
 </script>
 
