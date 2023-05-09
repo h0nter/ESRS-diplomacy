@@ -43,6 +43,7 @@ export type CreatePlayer = {
 export type CreateRoom = {
   __typename?: 'CreateRoom';
   room?: Maybe<RoomType>;
+  roomName?: Maybe<Scalars['String']>;
 };
 
 export type CreateTurn = {
@@ -53,6 +54,11 @@ export type CreateTurn = {
 export type CreateUnit = {
   __typename?: 'CreateUnit';
   unit?: Maybe<UnitType>;
+};
+
+export type InitialRoom = {
+  __typename?: 'InitialRoom';
+  room?: Maybe<RoomType>;
 };
 
 export type LocationOwnerType = {
@@ -108,8 +114,9 @@ export type Mutation = {
   createOrder?: Maybe<CreateOrder>;
   createPlayer?: Maybe<CreatePlayer>;
   createRoom?: Maybe<CreateRoom>;
-  createTrun?: Maybe<CreateTurn>;
+  createTurn?: Maybe<CreateTurn>;
   createUnit?: Maybe<CreateUnit>;
+  initilizeRoom?: Maybe<InitialRoom>;
   updateOrder?: Maybe<UpdateOrder>;
 };
 
@@ -130,7 +137,7 @@ export type MutationCreateRoomArgs = {
 };
 
 
-export type MutationCreateTrunArgs = {
+export type MutationCreateTurnArgs = {
   isAutumn?: InputMaybe<Scalars['Boolean']>;
   year: Scalars['Int'];
 };
@@ -141,6 +148,11 @@ export type MutationCreateUnitArgs = {
   location?: InputMaybe<Scalars['ID']>;
   owner?: InputMaybe<Scalars['ID']>;
   room?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type MutationInitilizeRoomArgs = {
+  roomId: Scalars['ID'];
 };
 
 
@@ -296,6 +308,8 @@ export enum RoomRoomStatusChoices {
   Check = 'CHECK',
   /** Will only change the status when room is closed */
   Closed = 'CLOSED',
+  /** initialize */
+  Initialize = 'INITIALIZE',
   /** registered */
   Registerd = 'REGISTERD',
   /** Resolving Orders */
@@ -316,7 +330,7 @@ export type RoomType = {
   currentTurn?: Maybe<TurnType>;
   id: Scalars['ID'];
   locationownerSet: Array<LocationOwnerType>;
-  map: MapType;
+  map?: Maybe<MapType>;
   playrJoinedRoom: Array<PlayerType>;
   roomName: Scalars['String'];
   roomOder: Array<OrderType>;

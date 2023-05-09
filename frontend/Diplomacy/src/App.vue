@@ -23,7 +23,9 @@
 
 <template>
   <Navigation-Bar />
-  <RouterView />
+  <Suspense>
+    <RouterView />
+  </Suspense>
 </template>
 
 <style scoped>
