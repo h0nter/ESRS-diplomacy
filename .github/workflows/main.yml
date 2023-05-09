@@ -11,15 +11,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerpath: /backend/roomproject/
+          - dockerpath: backend/roomproject/
             dockerfile: dockerfile
             image: django-room-image
             repository: django-room
-          - dockerpath: /backend/hostproject/
+          - dockerpath: backend/hostproject/
             dockerfile: dockerfile
             image: django-host-image
             repository: django-host
-          - dockerpath: /frontend/Diplomacy/
+          - dockerpath: frontend/Diplomacy/
             dockerfile: dockerfile
             image: vue-image
             repository: vue
@@ -56,7 +56,7 @@ jobs:
         ECR_REPOSITORY: ${{ matrix.repository }}
         IMAGE_TAG: ${{ matrix.image }}
       run: |
-        cd ${{ matrix.dockerpath }}
+        cd /home/runner/work/ESRS-diplomacy/ESRS-diplomacy/${{ matrix.dockerpath }}
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ${{ matrix.dockerfile }} .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         
